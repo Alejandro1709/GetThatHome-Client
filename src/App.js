@@ -1,8 +1,14 @@
+import styled from "@emotion/styled";
+
+const StyledContainer = styled.div`
+  margin: auto;
+`
+
 function App() {
   return (
-    <div className='App'>
+    <StyledContainer>
       <h1>Hola</h1>
-    </div>
+    </StyledContainer>
   );
 }
 
