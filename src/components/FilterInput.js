@@ -30,7 +30,7 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
   font-size: 1.2rem;
 `;
 
-function SelectInput({
+function FilterInput({
   id,
   name,
   type = 'text',
@@ -56,4 +56,4 @@ function SelectInput({
   );
 }
 
-export default SelectInput;
+export default FilterInput;

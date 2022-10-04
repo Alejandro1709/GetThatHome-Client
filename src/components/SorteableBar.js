@@ -1,5 +1,6 @@
-import SelectInput from './SelectInput';
+import FilterInput from './FilterInput';
 import ButtonGroup from './ButtonGroup';
+import SelectInput from './SelectInput';
 import styled from '@emotion/styled';
 
 const StyledSorteableBar = styled.div`
@@ -19,10 +20,9 @@ function SorteableBar() {
   return (
     <StyledSorteableBar>
       <StyledSorteableBarTop>
-        <SelectInput placeholder='Search by address...' hasIcon />
+        <FilterInput placeholder='Search by address...' hasLeftIcon />
         <ButtonGroup />
-        {/* SelectInput */}
-        LOLS
+        <SelectInput />
       </StyledSorteableBarTop>
       <StyledSorteableBarBot>24 Properties found</StyledSorteableBarBot>
     </StyledSorteableBar>
