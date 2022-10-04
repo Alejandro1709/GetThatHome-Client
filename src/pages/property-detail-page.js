@@ -8,15 +8,25 @@ import Slider from "../components/Slider";
 import imagen1 from "../assets/images/apartment1.jpg";
 import imagen2 from "../assets/images/apartment2.jpg";
 import imagen3 from "../assets/images/apartment3.jpg";
-import MapComponent from "../components/MapComponent";
+import MapBox from "../components/MapBox";
+import PropertyCustomCard from "../components/PropertyCustomCard";
 
 const myImgs = [imagen1, imagen2, imagen3];
+const testCoords = {
+  latitude: -12.025,
+  longitude: -77.065,
+};
 
 const Container = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const MainContainer = styled.div`
   width: 830px;
   margin: 2rem 0;
   padding: 0 2rem;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 const SliderContainer = styled.div`
@@ -87,64 +97,73 @@ const AboutDesc = styled.div`
     font-weight: 500;
   }
 `;
+const AsideSection = styled.aside``;
+const CardContainer = styled.div`
+  padding: 2rem;
+`;
 const Map = styled.div``;
 
 export default function PropertyDetailPage() {
   return (
     <Container>
-      <SliderContainer>
-        <Slider images={myImgs} />
-      </SliderContainer>
-      <AboutSection>
-        <DescHeader>
-          <DescHeaderLeft>
-            <h2>Francisco de Paula Ugarriza 27</h2>
-            <h4>Miraflores, Lima</h4>
-          </DescHeaderLeft>
-          <DescHeaderRight>
-            <DescMoney>
-              <MoneyIcon />
-              <h4>3,000</h4>
-            </DescMoney>
-            <h5>+100</h5>
-          </DescHeaderRight>
-        </DescHeader>
-        <DescOptions>
-          <DescSingleOpt>
-            <BiBed />
-            <h4>4 bedrooms</h4>
-          </DescSingleOpt>
-          <DescSingleOpt>
-            <BiBath />
-            <h4>4 bedrooms</h4>
-          </DescSingleOpt>
-          <DescSingleOpt>
-            <BiArea />
-            <h4>4 bedrooms</h4>
-          </DescSingleOpt>
-          <DescSingleOpt>
-            <MdPets />
-            <h4>4 bedrooms</h4>
-          </DescSingleOpt>
-        </DescOptions>
-        <AboutDesc>
-          <h3>About this property</h3>
-          <p>
-            3 Bedroom/2 Bathroom apartment available for ASAP move-in! Apartment
-            features hardwood floors throughout, virtual doorman, Central
-            AC/heat, dishwasher and a microwave. The kitchen has custom
-            cabinetry and the living room is big enough to fit a dinner table, a
-            couch and a tv set up.
-          </p>
-        </AboutDesc>
-        <AboutDesc>
-          <h3>Location</h3>
-          <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
-        </AboutDesc>
-      </AboutSection>
-      <MapComponent />
-      {/* <Map id="mapincomponent">
-      </Map> */}
+      <MainContainer>
+        <SliderContainer>
+          <Slider images={myImgs} />
+        </SliderContainer>
+        <AboutSection>
+          <DescHeader>
+            <DescHeaderLeft>
+              <h2>Francisco de Paula Ugarriza 27</h2>
+              <h4>Miraflores, Lima</h4>
+            </DescHeaderLeft>
+            <DescHeaderRight>
+              <DescMoney>
+                <MoneyIcon />
+                <h4>3,000</h4>
+              </DescMoney>
+              <h5>+100</h5>
+            </DescHeaderRight>
+          </DescHeader>
+          <DescOptions>
+            <DescSingleOpt>
+              <BiBed />
+              <h4>4 bedrooms</h4>
+            </DescSingleOpt>
+            <DescSingleOpt>
+              <BiBath />
+              <h4>4 bedrooms</h4>
+            </DescSingleOpt>
+            <DescSingleOpt>
+              <BiArea />
+              <h4>4 bedrooms</h4>
+            </DescSingleOpt>
+            <DescSingleOpt>
+              <MdPets />
+              <h4>4 bedrooms</h4>
+            </DescSingleOpt>
+          </DescOptions>
+          <AboutDesc>
+            <h3>About this property</h3>
+            <p>
+              3 Bedroom/2 Bathroom apartment available for ASAP move-in!
+              Apartment features hardwood floors throughout, virtual doorman,
+              Central AC/heat, dishwasher and a microwave. The kitchen has
+              custom cabinetry and the living room is big enough to fit a dinner
+              table, a couch and a tv set up.
+            </p>
+          </AboutDesc>
+          <AboutDesc>
+            <h3>Location</h3>
+            <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
+          </AboutDesc>
+        </AboutSection>
+        <MapBox coordValues={testCoords} />
+      </MainContainer>
+      <AsideSection>
+        <CardContainer>
+          <PropertyCustomCard />
+        </CardContainer>
+      </AsideSection>
     </Container>
   );
 }
