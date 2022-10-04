@@ -1,4 +1,5 @@
 import SelectInput from './SelectInput';
+import ButtonGroup from './ButtonGroup';
 import styled from '@emotion/styled';
 
 const StyledSorteableBar = styled.div`
@@ -6,7 +7,11 @@ const StyledSorteableBar = styled.div`
   flex-direction: column;
 `;
 
-const StyledSorteableBarTop = styled.div``;
+const StyledSorteableBarTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const StyledSorteableBarBot = styled.div``;
 
@@ -15,8 +20,9 @@ function SorteableBar() {
     <StyledSorteableBar>
       <StyledSorteableBarTop>
         <SelectInput placeholder='Search by address...' hasIcon />
-        {/* ButtonGroup */}
+        <ButtonGroup />
         {/* SelectInput */}
+        LOLS
       </StyledSorteableBarTop>
       <StyledSorteableBarBot>24 Properties found</StyledSorteableBarBot>
     </StyledSorteableBar>
