@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import { boxShadow } from "../styles/utils";
-import casa1 from "../assets/images/casa1.jpg";
-import { colors } from "../styles/colors";
-import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
-import { fonts, typography } from "../styles/typography";
-import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
-import { FaPaw } from "react-icons/fa";
+import styled from '@emotion/styled';
+import { boxShadow } from '../styles/utils';
+import casa1 from '../assets/images/casa1.jpg';
+import { colors } from '../styles/colors';
+import { RiCoinsLine, RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { fonts, typography } from '../styles/typography';
+import { BiBed, BiBuildingHouse, BiBath, BiArea } from 'react-icons/bi';
+import { FaPaw } from 'react-icons/fa';
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
@@ -13,6 +13,9 @@ export const ShowCaseBox = styled.div`
   flex-direction: column;
   ${boxShadow[1]};
   border-radius: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  user-select: none;
 `;
 
 export const CardImg = styled.div`
@@ -118,7 +121,7 @@ function PropertyCardDetail() {
           <RiCoinsLine />
           <Rental>For Rental</Rental>
         </Deal>
-        <ShowCaseImg src={casa1} alt="casa1" />
+        <ShowCaseImg src={casa1} alt='casa1' />
       </CardImg>
       <ShowCaseData>
         <CostProperty>
@@ -132,18 +135,18 @@ function PropertyCardDetail() {
           </Type>
         </CostProperty>
         <ContactDetails>
-          {" "}
-          86872 Jacob Gateway, Durganport, WV 48044{" "}
+          {' '}
+          86872 Jacob Gateway, Durganport, WV 48044{' '}
         </ContactDetails>
         <Additionals>
           <DataIcons>
-            <BiBed /> 4{" "}
+            <BiBed /> 4{' '}
           </DataIcons>
           <DataIcons>
-            <BiBath /> 2{" "}
+            <BiBath /> 2{' '}
           </DataIcons>
           <DataIcons>
-            <BiArea /> 180 m2{" "}
+            <BiArea /> 180 m2{' '}
           </DataIcons>
           <DataIcons>
             <FaPaw />
