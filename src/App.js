@@ -1,14 +1,14 @@
-import styled from "@emotion/styled";
-import PropertyCardDetail from "./components/PropertyCardDetail";
+import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
-  margin: auto;
+  margin: 0 auto;
+  /* background-color: aqua; */
 `;
 
 function App() {
   return (
     <StyledContainer>
-      <PropertyCardDetail />
+      <h1>Hello</h1>
     </StyledContainer>
   );
 }
