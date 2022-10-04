@@ -24,10 +24,6 @@ const ContainerNavBar = styled.div`
   align-items: center;
 `;
 
-const LogoHome = styled.img`
-  display: flex;
-`;
-
 const ButtonsNavBar = styled.div`
   display: flex;
   gap: 1rem;
@@ -68,7 +64,7 @@ function NavBar() {
   return (
     <NavBarContainer>
       <ContainerNavBar>
-        <LogoHome src={IconHome} alt="Logo Home" />
+        <img src={IconHome} alt="Logo Home" />
         <ButtonsNavBar>
           <FindHome>
             <FiSearch />
