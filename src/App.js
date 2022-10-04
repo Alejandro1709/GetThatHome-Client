@@ -1,13 +1,16 @@
 import styled from "@emotion/styled";
+import LandingPage from "./components/LandingPage";
+import SearchForm from "./components/SearchForm";
 
 const StyledContainer = styled.div`
-  margin: auto;
+  margin: 0 auto;
+  /* background-color: aqua; */
 `;
 
 function App() {
   return (
     <StyledContainer>
-      <h1>hola</h1>
+      <LandingPage />
     </StyledContainer>
   );
 }
