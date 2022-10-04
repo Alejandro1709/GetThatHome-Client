@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { boxShadow } from '../styles/utils';
 import casa1 from '../assets/images/casa1.jpg';
 import { colors } from '../styles/colors';
@@ -6,6 +5,7 @@ import { RiCoinsLine, RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { fonts, typography } from '../styles/typography';
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from 'react-icons/bi';
 import { FaPaw } from 'react-icons/fa';
+import styled from '@emotion/styled';
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;

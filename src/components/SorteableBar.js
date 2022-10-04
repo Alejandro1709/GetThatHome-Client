@@ -1,4 +1,3 @@
-import React from 'react';
 import SelectInput from './SelectInput';
 import styled from '@emotion/styled';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropertyCardDetail from './PropertyCardDetail';
 import styled from '@emotion/styled';
 

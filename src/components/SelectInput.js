@@ -14,7 +14,6 @@ const StyledTop = styled.div`
   align-items: center;
   gap: 0.31rem;
   padding: 0.5rem 0.62rem;
-  /* border-bottom: 1px solid ${colors.primary[400]}; */
 `;
 
 const StyledInput = styled.input`
