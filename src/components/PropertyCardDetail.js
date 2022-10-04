@@ -3,7 +3,7 @@ import { boxShadow } from "../styles/utils";
 import casa1 from "../assets/images/casa1.jpg";
 import { colors } from "../styles/colors";
 import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
-import { fonts , typography } from "../styles/typography";
+import { fonts, typography } from "../styles/typography";
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
 import { FaPaw } from "react-icons/fa";
 
@@ -18,7 +18,6 @@ export const ShowCaseBox = styled.div`
 export const CardImg = styled.div`
   display: flex;
   justify-content: flex-end;
-  
 `;
 
 export const ShowCaseImg = styled.img`
@@ -111,39 +110,49 @@ export const DataIcons = styled.div`
   margin-right: 1rem;
 `;
 
-
-function ShowCase() {
+function PropertyCardDetail() {
   return (
     <ShowCaseBox>
       <CardImg>
-        <Deal><RiCoinsLine/><Rental>For Rental</Rental></Deal>
-        <ShowCaseImg src = {casa1} alt = "casa1"/>
+        <Deal>
+          <RiCoinsLine />
+          <Rental>For Rental</Rental>
+        </Deal>
+        <ShowCaseImg src={casa1} alt="casa1" />
       </CardImg>
       <ShowCaseData>
         <CostProperty>
           <Rent>
-            <RiMoneyDollarCircleLine/>
+            <RiMoneyDollarCircleLine />
             <Cost>3000</Cost>
           </Rent>
           <Type>
-            <BiBuildingHouse/>
+            <BiBuildingHouse />
             <TypeName>Apartment</TypeName>
           </Type>
         </CostProperty>
-        <ContactDetails> 86872 Jacob Gateway, Durganport, WV 48044 </ContactDetails>
+        <ContactDetails>
+          {" "}
+          86872 Jacob Gateway, Durganport, WV 48044{" "}
+        </ContactDetails>
         <Additionals>
-          <DataIcons><BiBed/> 4 </DataIcons>
-          <DataIcons><BiBath/> 2 </DataIcons>
-          <DataIcons><BiArea/> 180 m2 </DataIcons>
-          <DataIcons><FaPaw/></DataIcons>
+          <DataIcons>
+            <BiBed /> 4{" "}
+          </DataIcons>
+          <DataIcons>
+            <BiBath /> 2{" "}
+          </DataIcons>
+          <DataIcons>
+            <BiArea /> 180 m2{" "}
+          </DataIcons>
+          <DataIcons>
+            <FaPaw />
+          </DataIcons>
         </Additionals>
-        <Options/>
-
-
-
+        <Options />
       </ShowCaseData>
     </ShowCaseBox>
-  )
-};
+  );
+}
 
-export default ShowCase;
+export default PropertyCardDetail;
