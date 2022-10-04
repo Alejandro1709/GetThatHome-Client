@@ -1,16 +1,17 @@
 import styled from "@emotion/styled";
+import PropertyCardDetail from "./components/PropertyCardDetail";
 import PropertyDetailPage from "./pages/property-detail-page";
 
 const StyledContainer = styled.div`
   margin: auto;
-`
+`;
 
 function App() {
   return (
-    <PropertyDetailPage />
     // <StyledContainer>
-    //   <h1>Hola</h1>
+    //   <PropertyCardDetail />
     // </StyledContainer>
+    <PropertyDetailPage />
   );
 }
 
