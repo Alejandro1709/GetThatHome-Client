@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 const StyledList = styled.div`
   display: grid;
   place-items: center;
+  margin-top: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 1rem;
   row-gap: 2rem;
