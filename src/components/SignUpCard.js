@@ -27,9 +27,9 @@ const StyledCardDesc = styled.p`
   ${typography.subtitle[2]}
 `;
 
-function SignUpCard({ title, desc, Image }) {
+function SignUpCard({ title, desc, Image, onClick }) {
   return (
-    <StyledCard>
+    <StyledCard onClick={onClick}>
       <StyledCardImage src={Image} alt='Illustration' draggable={false} />
       <StyledCardInfo>
         <StyledCardTitle>{title}</StyledCardTitle>

@@ -5,11 +5,15 @@ import styled from '@emotion/styled';
 
 const StyledFormWrapper = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
+  margin: 0 auto;
   align-items: center;
   max-width: 388px;
   border: 1px solid #e5e5e5;
+  background-color: white;
   user-select: none;
+  top: 50%;
   border-radius: 8px;
   ${boxShadow[1]}
 `;
@@ -95,7 +99,7 @@ function SignUpForm() {
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='password'>Password</StyledFormLabel>
-          <StyledFormInput type='password' id='name' placeholder='******' />
+          <StyledFormInput type='password' id='password' placeholder='******' />
           <StyledFormError>At least 6 characters</StyledFormError>
         </StyledFormGroup>
         <StyledFormGroup>

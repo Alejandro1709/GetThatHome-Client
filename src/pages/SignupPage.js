@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import SignUpForm from '../components/SignUpForm';
 import { colors } from '../styles';
 import SignUpWelcome from '../components/SignUpWelcome';
@@ -13,10 +14,15 @@ const StyledHeader = styled.header`
 `;
 
 function SignupPage() {
+  const [isShowingForm, setIsShowingForm] = useState(false);
   return (
     <StyledSignUpPage>
       <StyledHeader>
-        <SignUpWelcome />
+        {isShowingForm ? (
+          <SignUpForm />
+        ) : (
+          <SignUpWelcome onClick={setIsShowingForm} />
+        )}
       </StyledHeader>
     </StyledSignUpPage>
   );
