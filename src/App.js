@@ -1,4 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import LandingPage from "./components/LandingPage";
+import SearchForm from "./components/SearchForm";
 
 const StyledContainer = styled.div`
   margin: 0 auto;
@@ -8,7 +10,7 @@ const StyledContainer = styled.div`
 function App() {
   return (
     <StyledContainer>
-      <h1>Hello</h1>
+      <LandingPage />
     </StyledContainer>
   );
 }
