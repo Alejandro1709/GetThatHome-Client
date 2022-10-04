@@ -4,6 +4,10 @@ import styled from "@emotion/styled";
 import { fonts, typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import SearchForm from "./SearchForm";
+import LayoutCase from "./LayoutCase";
+import SignUpHero from "./SignUpHero";
+import TeamSection from "./TeamSection";
+import Footer from "./Footer";
 
 const SectionOne = styled.div`
   position: relative;
@@ -49,6 +53,10 @@ function LandingPage() {
           <SearchForm />
         </TitleSection>
       </SectionOne>
+      <LayoutCase />
+      <SignUpHero />
+      <TeamSection />
+      <Footer />
     </>
   );
 }
