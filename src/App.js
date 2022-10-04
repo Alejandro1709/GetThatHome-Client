@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
-import PropertyCardDetail from "./components/PropertyCardDetail";
+import LandingPage from "./components/LandingPage";
+// import LandingPage from "./components/LandingPage";
+import SearchForm from "./components/SearchForm";
+// import PropertyCardDetail from "./components/PropertyCardDetail";
 
 const StyledContainer = styled.div`
   margin: auto;
@@ -8,7 +11,7 @@ const StyledContainer = styled.div`
 function App() {
   return (
     <StyledContainer>
-      <PropertyCardDetail />
+      <LandingPage />
     </StyledContainer>
   );
 }

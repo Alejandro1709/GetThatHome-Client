@@ -4,6 +4,7 @@ import App from "./App";
 import { Global } from "@emotion/react";
 import { global, reset } from "./styles";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./components/LandingPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,7 @@ root.render(
     <Global styles={reset} />
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<h1>Landing Page</h1>} />
+        <Route path="/" element={<LandingPage />} />
         <Route
           path="/properties"
           element={<h1>Properties List View Page</h1>}
@@ -28,6 +29,5 @@ root.render(
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </BrowserRouter>
-    <App />
   </React.StrictMode>
 );
