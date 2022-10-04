@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { colors } from "./colors";
-import { fonts, typography } from "./typography";
+import { fonts } from "./typography";
 
 export const reset = css`
   @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap");

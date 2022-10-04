@@ -54,6 +54,7 @@ const DescHeaderLeft = styled.div`
     ${typography.subtitle[1]}
   }
 `;
+
 const DescHeaderRight = styled.div`
   text-align: end;
   & h5 {
@@ -80,6 +81,7 @@ const DescSingleOpt = styled.div`
     ${typography.headline[5]}
   }
 `;
+
 const DescMoney = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -87,21 +89,22 @@ const DescMoney = styled.div`
     ${typography.headline[4]}
   }
 `;
+
 const MoneyIcon = styled(RiMoneyDollarCircleLine)`
   height: 3rem;
   width: 3rem;
 `;
+
 const AboutDesc = styled.div`
   & h3 {
     color: ${colors.primary[400]};
     font-weight: 500;
   }
 `;
-const AsideSection = styled.aside``;
+
 const CardContainer = styled.div`
   padding: 2rem;
 `;
-const Map = styled.div``;
 
 export default function PropertyDetailPage() {
   return (
@@ -159,11 +162,11 @@ export default function PropertyDetailPage() {
         </AboutSection>
         <MapBox coordValues={testCoords} />
       </MainContainer>
-      <AsideSection>
+      <aside>
         <CardContainer>
           <PropertyCustomCard />
         </CardContainer>
-      </AsideSection>
+      </aside>
     </Container>
   );
 }
