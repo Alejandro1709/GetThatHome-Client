@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import ShowCase from "./components/ShowCase";
 
 const StyledContainer = styled.div`
   margin: auto;
@@ -7,7 +8,7 @@ const StyledContainer = styled.div`
 function App() {
   return (
     <StyledContainer>
-      <h1>Hola</h1>
+      <ShowCase />
     </StyledContainer>
   );
 }
