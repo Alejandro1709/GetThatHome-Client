@@ -16,10 +16,6 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/properties"
-          element={<h1>Properties List View Page</h1>}
-        />
         <Route path="/properties" element={<PropertiesPage />} />
         {/* For the route property detail page add the id of the property */}
         <Route path="/properties/1" element={<PropertyDetailPage />} />

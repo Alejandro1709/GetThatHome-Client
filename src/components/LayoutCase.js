@@ -7,7 +7,8 @@ const Container = styled.div`
   height: 37.75rem;
   display: flex;
   justify-content: center;
-  margin: 4rem auto;
+  margin: auto;
+  align-items: center;
 `;
 const ContainerCase = styled.div`
   display: flex;
