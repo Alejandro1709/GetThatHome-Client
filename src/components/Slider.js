@@ -18,16 +18,16 @@ const Box = styled.div`
 
 export default function Slider({ images }) {
   const [actualImg, setActualImg] = useState(0);
-  const cantidad = images?.length;
+  const cant = images?.length;
 
-  if (!Array.isArray(images) || cantidad === 0) return;
+  if (!Array.isArray(images) || cant === 0) return;
 
   const next = () => {
-    setActualImg(actualImg === cantidad - 1 ? 0 : actualImg + 1);
+    setActualImg(actualImg === cant - 1 ? 0 : actualImg + 1);
   };
 
   const prev = () => {
-    setActualImg(actualImg === 0 ? cantidad - 1 : actualImg - 1);
+    setActualImg(actualImg === 0 ? cant - 1 : actualImg - 1);
   };
 
   return (

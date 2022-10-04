@@ -8,18 +8,21 @@ import Slider from "../components/Slider";
 import imagen1 from "../assets/images/apartment1.jpg";
 import imagen2 from "../assets/images/apartment2.jpg";
 import imagen3 from "../assets/images/apartment3.jpg";
+import MapComponent from "../components/MapComponent";
 
 const myImgs = [imagen1, imagen2, imagen3];
 
 const Container = styled.div`
   width: 830px;
+  margin: 2rem 0;
   padding: 0 2rem;
-  border: 1px solid black;
   height: 100vh;
 `;
 
 const SliderContainer = styled.div`
-  /* height: 24rem; */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 `;
 
 const AboutSection = styled.div`
@@ -87,17 +90,6 @@ const AboutDesc = styled.div`
 const Map = styled.div``;
 
 export default function PropertyDetailPage() {
-  // function iniciarMap() {
-  //   var coord = { lat: -34.5956145, lng: -58.4431949 };
-  //   var map = new google.maps.Map(document.getElementById("map"), {
-  //     zoom: 10,
-  //     center: coord,
-  //   });
-  //   var marker = new google.maps.Marker({
-  //     position: coord,
-  //     map: map,
-  //   });
-  // }
   return (
     <Container>
       <SliderContainer>
@@ -150,10 +142,9 @@ export default function PropertyDetailPage() {
           <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
         </AboutDesc>
       </AboutSection>
-      <Map>
-        <div id="map"></div>
-        {/* <img src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDaeWicvigtP9xPv919E-RNoxfvC-Hqik&callback=iniciarMap" /> */}
-      </Map>
+      <MapComponent />
+      {/* <Map id="mapincomponent">
+      </Map> */}
     </Container>
   );
 }
