@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import PropertyDetailPage from "./pages/property-detail-page";
 
 const StyledContainer = styled.div`
   margin: auto;
@@ -6,9 +7,10 @@ const StyledContainer = styled.div`
 
 function App() {
   return (
-    <StyledContainer>
-      <h1>Hola</h1>
-    </StyledContainer>
+    <PropertyDetailPage />
+    // <StyledContainer>
+    //   <h1>Hola</h1>
+    // </StyledContainer>
   );
 }
 
