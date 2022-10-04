@@ -1,5 +1,6 @@
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
+import { fonts, typography } from "../styles/typography";
 
 const StyledButton = styled.button`
   border: none;
@@ -8,7 +9,8 @@ const StyledButton = styled.button`
   background-color: ${colors.primary[300]};
   cursor: pointer;
   border-radius: 1rem;
-
+  font-family: ${fonts.secondary};
+  ${typography.button}
   &:hover {
     background-color: ${colors.primary[400]};
   }
@@ -20,10 +22,11 @@ const StyledButtonWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-function Button({ children, hasIcon, Icon, onClick }) {
+function Button({ children, hasIcon, Icon, leftIcon, onClick }) {
   return (
     <StyledButton onClick={onClick}>
       <StyledButtonWrapper>
+        {leftIcon}
         {children}
         {hasIcon && <Icon />}
       </StyledButtonWrapper>

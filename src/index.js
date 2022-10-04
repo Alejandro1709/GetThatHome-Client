@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PropertiesPage from "./pages/PropertiesPage";
 import SignupPage from "./pages/SignupPage";
 import LandingPage from "./components/LandingPage";
+import PropertyDetailPage from "./pages/property-detail-page";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,7 +22,7 @@ root.render(
         />
         <Route path="/properties" element={<PropertiesPage />} />
         {/* For the route property detail page add the id of the property */}
-        <Route path="/properties/1" element={<h1>Property Detail Page</h1>} />
+        <Route path="/properties/1" element={<PropertyDetailPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route
           path="/myproperties"
