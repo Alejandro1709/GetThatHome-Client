@@ -3,8 +3,6 @@ import { colors, typography } from "../styles";
 import { useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
