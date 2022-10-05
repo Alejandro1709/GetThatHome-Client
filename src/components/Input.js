@@ -1,22 +1,26 @@
 import styled from "@emotion/styled";
 import { colors, typography } from "../styles";
+import { fonts } from "../styles/typography";
 
 const StyledInputContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
   padding: 0.5rem;
+  gap: 0.5rem;
   border: 1px solid ${colors.primary[300]};
   width: ${({ width }) => width};
-  &::placeholder {
-    color: ${colors.secondary[500]};
-  }
 `;
 
 const StyledInput = styled.input`
   border: none;
   outline: none;
   width: 100%;
+  font-family: ${fonts.secondary};
+  ${typography.body[1]}
+  &::placeholder {
+    color: ${colors.secondary[500]};
+  }
 `;
 
 const StyledLabel = styled.label`

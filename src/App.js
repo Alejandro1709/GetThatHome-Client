@@ -8,6 +8,7 @@ import LoginForm from "./components/LoginForm";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyDetailPage from "./pages/property-detail-page";
 import SignupPage from "./pages/SignupPage";
+import NewPropertyForm from "./components/NewPropertyForm";
 
 const StyledContainer = styled.div`
   margin: 0 auto;
@@ -55,6 +56,7 @@ function App() {
         {/* For the route property detail page add the id of the property */}
         <Route path="/properties/1" element={<PropertyDetailPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/create" element={<NewPropertyForm />} />
         <Route
           path="/myproperties"
           element={<h1>Landlord Properties Page</h1>}
