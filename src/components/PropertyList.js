@@ -10,18 +10,13 @@ const StyledList = styled.div`
   row-gap: 2rem;
 `;
 
-function PropertyList() {
+function PropertyList({ length = 9 }) {
+  const items = Array.from({ length: length }, (_, i) => i + 1);
   return (
     <StyledList>
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
-      <PropertyCardDetail />
+      {items.map((item) => (
+        <PropertyCardDetail key={item} />
+      ))}
     </StyledList>
   );
 }
