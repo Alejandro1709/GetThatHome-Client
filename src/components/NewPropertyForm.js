@@ -7,6 +7,7 @@ import { fonts } from "../styles/typography";
 import Button from "./Button";
 
 const Container = styled.form`
+  min-height: inherit;
   width: 600px;
   display: flex;
   flex-direction: column;
@@ -121,6 +122,46 @@ const Type = styled.div`
   }
 `;
 
+const PropertyTypeWrapper = styled.div`
+  display: flex;
+  position: relative;
+  gap: 0.25rem;
+  & label {
+    ${typography.body[2]}
+    color: ${colors.secondary[600]};
+  }
+
+  & input[type="radio"] {
+    appearance: none;
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  & input[type="radio"]::before {
+    position: absolute;
+    content: "";
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid ${colors.primary[300]};
+    cursor: pointer;
+  }
+  & input[type="radio"]:checked::before {
+    position: absolute;
+    content: "\u2714";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: ${colors.secondary[200]};
+    background-color: ${colors.primary[300]};
+    border: 1px solid ${colors.primary[300]};
+  }
+`;
+
 export default function NewPropertyForm() {
   return (
     <Container>
@@ -169,13 +210,24 @@ export default function NewPropertyForm() {
           width="50%"
         />
       </div>
-      <div>
-        <label>
-          property type
-          <input type="radio" value="apartment" name="prop_type" />
-          <input type="radio" value="house" name="prop_type" />
-        </label>
-      </div>
+      <InputWrapper>
+        <h5>property type</h5>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <PropertyTypeWrapper>
+            <input
+              type="radio"
+              value="apartment"
+              id="apartment"
+              name="prop_type"
+            />
+            <label htmlFor="apartment">Apartment</label>
+          </PropertyTypeWrapper>
+          <PropertyTypeWrapper>
+            <input type="radio" value="house" id="house" name="prop_type" />
+            <label htmlFor="house">House</label>
+          </PropertyTypeWrapper>
+        </div>
+      </InputWrapper>
       <SelectWrapper>
         <InputWrapper>
           <p>bedrooms</p>
