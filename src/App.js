@@ -1,13 +1,15 @@
-import styled from '@emotion/styled';
-import { useEffect, useState, Fragment } from 'react';
-import { getProperties } from './services/property-services';
-import { Routes, Route } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
-import Modal from './components/Modal';
-import LoginForm from './components/LoginForm';
-import PropertiesPage from './pages/PropertiesPage';
-import PropertyDetailPage from './pages/property-detail-page';
-import SignupPage from './pages/SignupPage';
+import styled from "@emotion/styled";
+import { useEffect, useState, Fragment } from "react";
+import { getProperties } from "./services/property-services";
+import { Routes, Route } from "react-router-dom";
+import LandingPage from "./components/LandingPage";
+import Modal from "./components/Modal";
+import LoginForm from "./components/LoginForm";
+import PropertiesPage from "./pages/PropertiesPage";
+import PropertyDetailPage from "./pages/property-detail-page";
+import SignupPage from "./pages/SignupPage";
+import LandlordPage from "./pages/LandlordPage";
+import HomeseekerPage from "./pages/HomeSeekerPage";
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 
@@ -56,14 +58,11 @@ function App() {
         />
         <Route path='/properties' element={<PropertiesPage />} />
         {/* For the route property detail page add the id of the property */}
-        <Route path='/properties/1' element={<PropertyDetailPage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route
-          path='/myproperties'
-          element={<h1>Landlord Properties Page</h1>}
-        />
-        <Route path='/saved' element={<h1>Homeseeker Properties Page</h1>} />
-        <Route path='*' element={<h1>Not Found</h1>} />
+        <Route path="/properties/1" element={<PropertyDetailPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/myproperties" element={<LandlordPage />} />
+        <Route path="/saved" element={<HomeseekerPage />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <Footer />
     </Fragment>
