@@ -5,6 +5,7 @@ import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
 import Button from "./Button";
+import { useState } from "react";
 
 const Container = styled.form`
   min-height: inherit;
@@ -163,14 +164,21 @@ const PropertyTypeWrapper = styled.div`
 `;
 
 export default function NewPropertyForm() {
+  const [type, setType] = useState("sale");
+
+  const changeType = (event) => {
+    console.log(event.target.value);
+    // setType()
+  };
+
   return (
     <Container>
       <h2>Create a property listing</h2>
       <TypePicker>
-        <Type left={true} value="rent">
+        <Type left={true} value="rent" onClick={changeType}>
           Rent
         </Type>
-        <Type className="activeType" value="sale">
+        <Type className="activeType" value="sale" onClick={changeType}>
           Sale
         </Type>
       </TypePicker>
@@ -184,32 +192,53 @@ export default function NewPropertyForm() {
           }
         />
       </div>
-      <div>
-        <Input
-          label="montly rent"
-          leftIcon={
-            <RiMoneyDollarCircleLine
-              size="1.25rem"
-              color={`${colors.secondary[500]}`}
+      {type === "rent" && (
+        <>
+          <div>
+            <Input
+              label="montly rent"
+              leftIcon={
+                <RiMoneyDollarCircleLine
+                  size="1.25rem"
+                  color={`${colors.secondary[500]}`}
+                />
+              }
+              placeholder="200"
+              width="50%"
             />
-          }
-          placeholder="200"
-          width="50%"
-        />
-      </div>
-      <div>
-        <Input
-          label="maintanance"
-          leftIcon={
-            <RiMoneyDollarCircleLine
-              size="1.25rem"
-              color={`${colors.secondary[500]}`}
+          </div>
+          <div>
+            <Input
+              label="maintanance"
+              leftIcon={
+                <RiMoneyDollarCircleLine
+                  size="1.25rem"
+                  color={`${colors.secondary[500]}`}
+                />
+              }
+              placeholder="100"
+              width="50%"
             />
-          }
-          placeholder="100"
-          width="50%"
-        />
-      </div>
+          </div>
+        </>
+      )}
+      {type === "sale" && (
+        <>
+          <div>
+            <Input
+              label="price"
+              leftIcon={
+                <RiMoneyDollarCircleLine
+                  size="1.25rem"
+                  color={`${colors.secondary[500]}`}
+                />
+              }
+              placeholder="100"
+              width="50%"
+            />
+          </div>
+        </>
+      )}
       <InputWrapper>
         <h5>property type</h5>
         <div style={{ display: "flex", gap: "1rem" }}>
