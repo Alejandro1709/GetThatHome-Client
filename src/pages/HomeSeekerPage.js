@@ -1,10 +1,8 @@
-import styled from "@emotion/styled";
-import { colors, typography } from "../styles";
-import { useState } from "react";
-import PaginationBar from "../components/PaginationBar";
-import PropertyList from "../components/PropertyList";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import styled from '@emotion/styled';
+import { colors, typography } from '../styles';
+import { useState } from 'react';
+import PaginationBar from '../components/PaginationBar';
+import PropertyList from '../components/PropertyList';
 
 const ContainerPageHomeSeeker = styled.div``;
 

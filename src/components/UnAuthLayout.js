@@ -1,31 +1,10 @@
-import { useState } from 'react';
 import styled from '@emotion/styled';
-import IconHome from '../assets/icons/LogoHome.png';
-import { fonts, typography } from '../styles/typography';
+import { typography } from '../styles/typography';
 import { FiSearch } from 'react-icons/fi';
 import { RiUserReceivedLine } from 'react-icons/ri';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { colors } from '../styles/colors';
-import { boxShadow } from '../styles/utils';
-import HomeSeekerLayout from './HomeSeekerLayout';
-import LandLordLayout from './LandLordLayout';
-
-const NavBarContainer = styled.div`
-  position: relative;
-  ${boxShadow[1]};
-  z-index: 1;
-`;
-
-const ContainerNavBar = styled.div`
-  font-family: ${fonts.secondary};
-  ${typography.button};
-  display: flex;
-  align-items: center;
-  padding: 1rem 2rem;
-  gap: 0.625rem;
-  justify-content: space-between;
-  align-items: center;
-`;
+import { NavLink } from 'react-router-dom';
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -66,6 +45,11 @@ const ButtonLogin = styled.button`
   cursor: pointer;
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${colors.secondary[200]};
+`;
+
 function UnAuthLayout({ onLoginClick }) {
   return (
     <ButtonsNavBar>
@@ -74,8 +58,10 @@ function UnAuthLayout({ onLoginClick }) {
         FIND A HOME
       </FindHome>
       <ButtonJoin>
-        <AiOutlineUserAdd />
-        JOIN
+        <StyledNavLink to='/signup'>
+          <AiOutlineUserAdd />
+          JOIN
+        </StyledNavLink>
       </ButtonJoin>
       <ButtonLogin onClick={onLoginClick}>
         <RiUserReceivedLine />
