@@ -1,13 +1,11 @@
-import NavBar from './NavBar';
 import Home from '../assets/images/home.png';
-import styled from '@emotion/styled';
 import { fonts, typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import SearchForm from './SearchForm';
 import LayoutCase from './LayoutCase';
 import SignUpHero from './SignUpHero';
 import TeamSection from './TeamSection';
-import Footer from './Footer';
+import styled from '@emotion/styled';
 
 const SectionOne = styled.div`
   position: relative;
@@ -39,10 +37,9 @@ const SubTitleSection = styled.span`
   margin-bottom: 4rem;
 `;
 
-function LandingPage({ onLoginClick }) {
+function LandingPage() {
   return (
     <>
-      <NavBar onLoginClick={onLoginClick} />
       <SectionOne>
         <SectionBackground src={Home} alt='Home' />
         <TitleSection>
@@ -56,7 +53,6 @@ function LandingPage({ onLoginClick }) {
       <LayoutCase />
       <SignUpHero />
       <TeamSection />
-      <Footer />
     </>
   );
 }
