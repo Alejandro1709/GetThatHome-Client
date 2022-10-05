@@ -1,13 +1,15 @@
-import styled from "@emotion/styled";
-import { useEffect, useState, Fragment } from "react";
-import { getProperties } from "./services/property-services";
-import { Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import Modal from "./components/Modal";
-import LoginForm from "./components/LoginForm";
-import PropertiesPage from "./pages/PropertiesPage";
-import PropertyDetailPage from "./pages/property-detail-page";
-import SignupPage from "./pages/SignupPage";
+import styled from '@emotion/styled';
+import { useEffect, useState, Fragment } from 'react';
+import { getProperties } from './services/property-services';
+import { Routes, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import Modal from './components/Modal';
+import LoginForm from './components/LoginForm';
+import PropertiesPage from './pages/PropertiesPage';
+import PropertyDetailPage from './pages/property-detail-page';
+import SignupPage from './pages/SignupPage';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
 
 const StyledContainer = styled.div`
   margin: 0 auto;
@@ -22,7 +24,7 @@ function App() {
   // }, []);
 
   function handleCloseModal(e) {
-    if (e.target.dataset.type === "modal") {
+    if (e.target.dataset.type === 'modal') {
       setIsModalOpen(false);
     }
   }
@@ -46,22 +48,24 @@ function App() {
           <LoginForm />
         </Modal>
       )}
+      <NavBar onLoginClick={() => setIsModalOpen(true)} />
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={<LandingPage onLoginClick={() => setIsModalOpen(true)} />}
         />
-        <Route path="/properties" element={<PropertiesPage />} />
+        <Route path='/properties' element={<PropertiesPage />} />
         {/* For the route property detail page add the id of the property */}
-        <Route path="/properties/1" element={<PropertyDetailPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path='/properties/1' element={<PropertyDetailPage />} />
+        <Route path='/signup' element={<SignupPage />} />
         <Route
-          path="/myproperties"
+          path='/myproperties'
           element={<h1>Landlord Properties Page</h1>}
         />
-        <Route path="/saved" element={<h1>Homeseeker Properties Page</h1>} />
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path='/saved' element={<h1>Homeseeker Properties Page</h1>} />
+        <Route path='*' element={<h1>Not Found</h1>} />
       </Routes>
+      <Footer />
     </Fragment>
   );
 }
