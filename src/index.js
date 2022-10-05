@@ -5,9 +5,12 @@ import { global, reset } from './styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PropertiesPage from './pages/PropertiesPage';
 import SignupPage from './pages/SignupPage';
+import LoginForm from './components/LoginForm';
+import Modal from './components/Modal';
 import LandingPage from './components/LandingPage';
 import PropertyDetailPage from './pages/property-detail-page';
 import LandlordPage from './pages/LandlordPage';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +18,9 @@ root.render(
     <Global styles={global} />
     <Global styles={reset} />
     <BrowserRouter>
+      <Modal>
+        <LoginForm />
+      </Modal>
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/properties' element={<PropertiesPage />} />
