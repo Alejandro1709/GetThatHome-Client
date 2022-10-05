@@ -8,7 +8,6 @@ const StyledContainer = styled.div`
   min-height: inherit;
   max-width: 1200px;
   margin: 0 auto;
-  /* background-color: aqua; */
 `;
 
 const StyledTabs = styled.div`

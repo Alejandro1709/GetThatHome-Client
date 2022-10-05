@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import SignUpForm from '../components/SignUpForm';
-import { colors } from '../styles';
-import SignUpWelcome from '../components/SignUpWelcome';
-import styled from '@emotion/styled';
+import { useState } from "react";
+import SignUpForm from "../components/SignUpForm";
+import { colors } from "../styles";
+import SignUpWelcome from "../components/SignUpWelcome";
+import styled from "@emotion/styled";
 
 const StyledSignUpPage = styled.div`
-  min-height: 100vh;
+  min-height: inherit;
 `;
 
 const StyledHeader = styled.header`

@@ -1,12 +1,12 @@
-import PropertyList from '../components/PropertyList';
-import SorteableBar from '../components/SorteableBar';
-import PaginationBar from '../components/PaginationBar';
-import styled from '@emotion/styled';
+import PropertyList from "../components/PropertyList";
+import SorteableBar from "../components/SorteableBar";
+import PaginationBar from "../components/PaginationBar";
+import styled from "@emotion/styled";
 
 const StyledContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  /* background-color: aqua; */
+  min-height: inherit;
 `;
 
 function PropertiesPage() {

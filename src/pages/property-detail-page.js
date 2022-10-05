@@ -18,6 +18,7 @@ const testCoords = {
 };
 
 const TotalContainer = styled.div`
+  min-height: inherit;
   margin: auto;
 `;
 
@@ -31,7 +32,6 @@ const MainContainer = styled.div`
   width: 830px;
   margin: 2rem 0;
   padding: 0 2rem;
-  /* height: 100vh; */
 `;
 
 const SliderContainer = styled.div`
