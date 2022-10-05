@@ -5,6 +5,7 @@ import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
 import Button from "./Button";
+import { useState } from "react";
 
 const Container = styled.form`
   width: 600px;
@@ -71,8 +72,9 @@ const PhotoUploader = styled.div`
 `;
 
 const StyledUploader = styled.div`
-  width: fit-content;
+  position: relative;
   padding: 0.5rem;
+  width: 8.37rem;
   height: 2.25rem;
   border-radius: 0.5rem;
   background-color: ${colors.primary[300]};
@@ -84,12 +86,26 @@ const StyledUploader = styled.div`
   gap: 0.5rem;
 `;
 
+const InputFile = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+`;
+
 const UploadedBoxContainer = styled.div`
+  display: flex;
+  gap: 1rem;
   background-color: ${colors.secondary[300]};
   padding: 0.5rem;
 `;
 
-const UploadedBox = styled.div`
+export const UploadedBox = styled.div`
   width: 7.5rem;
   height: 7.5rem;
   border-radius: 0.5rem;
@@ -122,6 +138,54 @@ const Type = styled.div`
 `;
 
 export default function NewPropertyForm() {
+  const [images, setimages] = useState([]);
+
+  const changeInput = (e) => {
+    //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
+    let indexImg;
+    //aquí evaluamos si ya hay imagenes antes de este input, para saber en dónde debe empezar el index del proximo array
+    if (images.length > 0) {
+      indexImg = images[images.length - 1].index + 1;
+    } else {
+      indexImg = 0;
+    }
+
+    let newImgsToState = readmultifiles(e, indexImg);
+    let newImgsState = [...images, ...newImgsToState];
+    setimages(newImgsState);
+
+    console.log(newImgsState);
+  };
+
+  function readmultifiles(e, indexInicial) {
+    const files = e.currentTarget.files;
+    //el array con las imagenes nuevas
+    const arrayImages = [];
+    Object.keys(files).forEach((i) => {
+      const file = files[i];
+      let url = URL.createObjectURL(file);
+      //console.log(file);
+      arrayImages.push({
+        index: indexInicial,
+        name: file.name,
+        url,
+        file,
+      });
+      indexInicial++;
+    });
+    //despues de haber concluido el ciclo retornamos las nuevas imagenes
+    return arrayImages;
+  }
+
+  function deleteImg(indice) {
+    //console.log("borrar img " + indice);
+    const newImgs = images.filter(function (element) {
+      return element.index !== indice;
+    });
+    console.log(newImgs);
+    setimages(newImgs);
+  }
+
   return (
     <Container>
       <h2>Create a property listing</h2>
@@ -215,13 +279,26 @@ export default function NewPropertyForm() {
           <StyledUploader>
             <RiUploadLine size="1.25rem" />
             Choose a file
+            <InputFile type="file" onChange={changeInput} />
           </StyledUploader>
           <input type="file" style={{ display: "none" }} />
         </PhotoUploader>
         <p>Only images, max 5MB</p>
       </PhotoSectionContainer>
       <UploadedBoxContainer>
-        <UploadedBox>No photos yet</UploadedBox>
+        {images.map((imagen) => (
+          <UploadedBox key={imagen.index}>
+            <div className="content_img">
+              <button onClick={deleteImg.bind(this, imagen.index)}> X </button>
+              <img
+                alt="algo"
+                src={imagen.url}
+                data-toggle="modal"
+                data-target="#ModalPreViewImg"
+              />
+            </div>
+          </UploadedBox>
+        ))}
       </UploadedBoxContainer>
       <Button
         type="submit"
