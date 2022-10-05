@@ -37,6 +37,26 @@ const StyledHeading = styled.h2`
   ${typography.headline[6]}
 `;
 
+function ActiveLandlordProperties() {
+  return (
+    <StyledSection>
+      <StyledHeading>4 Properties found</StyledHeading>
+      <PropertyList length={4} />
+      <PaginationBar />
+    </StyledSection>
+  );
+}
+
+function ClosedLandlordProperties() {
+  return (
+    <StyledSection>
+      <StyledHeading>2 Properties found</StyledHeading>
+      <PropertyList length={2} />
+      <PaginationBar />
+    </StyledSection>
+  );
+}
+
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
   return (
@@ -50,9 +70,11 @@ function LandlordPage() {
         </StyledTab>
       </StyledTabs>
       <StyledSection>
-        <StyledHeading>4 Properties found</StyledHeading>
-        <PropertyList length={4} />
-        <PaginationBar />
+        {activeTab ? (
+          <ClosedLandlordProperties />
+        ) : (
+          <ActiveLandlordProperties />
+        )}
       </StyledSection>
     </StyledContainer>
   );
