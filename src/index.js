@@ -6,9 +6,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PropertiesPage from './pages/PropertiesPage';
 import SignupPage from './pages/SignupPage';
 import LoginForm from './components/LoginForm';
+import Modal from './components/Modal';
 import LandingPage from './components/LandingPage';
 import PropertyDetailPage from './pages/property-detail-page';
-import Modal from './components/Modal';
+import LandlordPage from './pages/LandlordPage';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,10 +27,7 @@ root.render(
         {/* For the route property detail page add the id of the property */}
         <Route path='/properties/1' element={<PropertyDetailPage />} />
         <Route path='/signup' element={<SignupPage />} />
-        <Route
-          path='/myproperties'
-          element={<h1>Landlord Properties Page</h1>}
-        />
+        <Route path='/myproperties' element={<LandlordPage />} />
         <Route path='/saved' element={<h1>Homeseeker Properties Page</h1>} />
         <Route path='*' element={<h1>Not Found</h1>} />
       </Routes>
