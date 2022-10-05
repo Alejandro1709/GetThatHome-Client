@@ -3,6 +3,7 @@ import { FiSearch } from 'react-icons/fi';
 import { AiOutlineLogout, AiFillHeart, AiOutlineUser } from 'react-icons/ai';
 import { colors } from '../styles';
 import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -43,6 +44,11 @@ const ButtonLogin = styled.button`
   cursor: pointer;
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${colors.secondary[200]};
+`;
+
 function HomeSeekerLayout() {
   return (
     <ButtonsNavBar>
@@ -55,12 +61,16 @@ function HomeSeekerLayout() {
         LOGOUT
       </ButtonJoin>
       <ButtonLogin>
-        <AiFillHeart />
-        SAVED PROPERTIES
+        <StyledNavLink to='/saved'>
+          <AiFillHeart />
+          SAVED PROPERTIES
+        </StyledNavLink>
       </ButtonLogin>
       <ButtonLogin>
-        <AiOutlineUser />
-        PROFILE
+        <StyledNavLink to='/profile'>
+          <AiOutlineUser />
+          PROFILE
+        </StyledNavLink>
       </ButtonLogin>
     </ButtonsNavBar>
   );

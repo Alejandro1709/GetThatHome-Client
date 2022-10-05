@@ -4,6 +4,7 @@ import { RiHome8Line } from 'react-icons/ri';
 import { AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 import { colors } from '../styles/colors';
 import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -44,6 +45,11 @@ const ButtonLogin = styled.button`
   cursor: pointer;
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${colors.secondary[200]};
+`;
+
 function LandLordLayout() {
   return (
     <ButtonsNavBar>
@@ -56,12 +62,16 @@ function LandLordLayout() {
         LOGOUT
       </ButtonJoin>
       <ButtonLogin>
-        <RiHome8Line />
-        MY PROPERTIES
+        <StyledNavLink to='/myproperties'>
+          <RiHome8Line />
+          MY PROPERTIES
+        </StyledNavLink>
       </ButtonLogin>
       <ButtonLogin>
-        <AiOutlineUser />
-        PROFILE
+        <StyledNavLink to='/profile'>
+          <AiOutlineUser />
+          PROFILE
+        </StyledNavLink>
       </ButtonLogin>
     </ButtonsNavBar>
   );
