@@ -2,12 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Global } from "@emotion/react";
 import { global, reset } from "./styles";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PropertiesPage from "./pages/PropertiesPage";
-import SignupPage from "./pages/SignupPage";
-import LandingPage from "./components/LandingPage";
-import PropertyDetailPage from "./pages/property-detail-page";
-import NewPropertyForm from "./components/NewPropertyForm";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,20 +11,7 @@ root.render(
     <Global styles={global} />
     <Global styles={reset} />
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/properties" element={<PropertiesPage />} />
-        {/* For the route property detail page add the id of the property */}
-        <Route path="/properties/1" element={<PropertyDetailPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/create" element={<NewPropertyForm />} />
-        <Route
-          path="/myproperties"
-          element={<h1>Landlord Properties Page</h1>}
-        />
-        <Route path="/saved" element={<h1>Homeseeker Properties Page</h1>} />
-        <Route path="*" element={<h1>Not Found</h1>} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

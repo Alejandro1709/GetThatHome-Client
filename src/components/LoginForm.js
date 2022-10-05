@@ -8,9 +8,10 @@ const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 388px;
+  width: 24.25rem;
   border: 1px solid #e5e5e5;
   user-select: none;
+  background-color: white;
   border-radius: 8px;
   ${boxShadow[1]}
 `;
