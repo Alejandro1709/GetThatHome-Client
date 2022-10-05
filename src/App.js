@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import LandingPage from "./components/LandingPage";
+import styled from '@emotion/styled';
+import LandingPage from './components/LandingPage';
 
 const StyledContainer = styled.div`
   margin: 0 auto;
