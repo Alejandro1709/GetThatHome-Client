@@ -6,7 +6,9 @@ import PropertyList from "../components/PropertyList";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 
-const ContainerPageHomeSeeker = styled.div``;
+const ContainerPageHomeSeeker = styled.div`
+  min-height: inherit;
+`;
 
 const ContainerListHomeSeeker = styled.div`
   max-width: 1200px;

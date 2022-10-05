@@ -15,12 +15,10 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 
 const MainContainer = styled.div`
-  /* position: relative; */
   min-height: 100vh;
 `;
 
 const FooterWrapper = styled.div`
-  /* position: fixed; */
   width: 100%;
   bottom: 0;
 `;
