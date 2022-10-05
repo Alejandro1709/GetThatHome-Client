@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import styled from '@emotion/styled';
-import IconHome from '../assets/icons/LogoHome.png';
-import { fonts, typography } from '../styles/typography';
-import { boxShadow } from '../styles/utils';
-import HomeSeekerLayout from './HomeSeekerLayout';
-import LandLordLayout from './LandLordLayout';
-import UnAuthLayout from './UnAuthLayout';
+import { useState } from "react";
+import styled from "@emotion/styled";
+import IconHome from "../assets/icons/LogoHome.png";
+import { fonts, typography } from "../styles/typography";
+import { boxShadow } from "../styles/utils";
+import HomeSeekerLayout from "./HomeSeekerLayout";
+import LandLordLayout from "./LandLordLayout";
+import UnAuthLayout from "./UnAuthLayout";
+import { NavLink } from "react-router-dom";
 
 const NavBarContainer = styled.div`
   position: relative;
@@ -27,19 +28,19 @@ const ContainerNavBar = styled.div`
 function NavBar({ onLoginClick }) {
   const dummyUser = {
     id: 1,
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-    avatar: 'https://randomuser.me/api/portraits/m/1.jpg',
-    role: 'home-seeker',
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    avatar: "https://randomuser.me/api/portraits/m/1.jpg",
+    role: "home-seeker",
   };
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(dummyUser);
 
   function deciderFunction() {
     if (user) {
-      if (user.role === 'home-seeker') {
+      if (user.role === "home-seeker") {
         return <HomeSeekerLayout />;
-      } else if (user.role === 'landlord') {
+      } else if (user.role === "landlord") {
         return <LandLordLayout />;
       }
     } else {
@@ -50,7 +51,9 @@ function NavBar({ onLoginClick }) {
   return (
     <NavBarContainer>
       <ContainerNavBar>
-        <img src={IconHome} alt='Logo Home' />
+        <NavLink to="/">
+          <img src={IconHome} alt="Logo Home" />
+        </NavLink>
         {deciderFunction()}
       </ContainerNavBar>
     </NavBarContainer>

@@ -10,11 +10,18 @@ import PropertyDetailPage from "./pages/property-detail-page";
 import SignupPage from "./pages/SignupPage";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
-const StyledContainer = styled.div`
-  margin: 0 auto;
+const MainContainer = styled.div`
+  /* position: relative; */
+  min-height: 100vh;
+`;
+
+const FooterWrapper = styled.div`
+  /* position: fixed; */
+  width: 100%;
+  bottom: 0;
 `;
 
 function App() {
@@ -26,7 +33,7 @@ function App() {
   // }, []);
 
   function handleCloseModal(e) {
-    if (e.target.dataset.type === 'modal') {
+    if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
@@ -44,28 +51,32 @@ function App() {
   // );
 
   return (
-    <Fragment>
-      {isModalOpen && (
-        <Modal onModalClose={handleCloseModal}>
-          <LoginForm />
-        </Modal>
-      )}
-      <NavBar onLoginClick={() => setIsModalOpen(true)} />
-      <Routes>
-        <Route
-          path='/'
-          element={<LandingPage onLoginClick={() => setIsModalOpen(true)} />}
-        />
-        <Route path='/properties' element={<PropertiesPage />} />
-        {/* For the route property detail page add the id of the property */}
-        <Route path="/properties/1" element={<PropertyDetailPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/myproperties" element={<LandlordPage />} />
-        <Route path="/saved" element={<HomeseekerPage />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
-      </Routes>
-      <Footer />
-    </Fragment>
+    <MainContainer id="maincontainer">
+      <Fragment>
+        {isModalOpen && (
+          <Modal onModalClose={handleCloseModal}>
+            <LoginForm />
+          </Modal>
+        )}
+        <NavBar onLoginClick={() => setIsModalOpen(true)} />
+        <Routes>
+          <Route
+            path="/"
+            element={<LandingPage onLoginClick={() => setIsModalOpen(true)} />}
+          />
+          <Route path="/properties" element={<PropertiesPage />} />
+          {/* For the route property detail page add the id of the property */}
+          <Route path="/properties/1" element={<PropertyDetailPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/myproperties" element={<LandlordPage />} />
+          <Route path="/saved" element={<HomeseekerPage />} />
+          <Route path="*" element={<h1>Not Found</h1>} />
+        </Routes>
+        <FooterWrapper>
+          <Footer />
+        </FooterWrapper>
+      </Fragment>
+    </MainContainer>
   );
 }
 
