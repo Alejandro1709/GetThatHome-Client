@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import PaginationBar from '../components/PaginationBar';
+import PropertyList from '../components/PropertyList';
 import { colors, typography } from '../styles';
 
 const StyledContainer = styled.div`
@@ -12,6 +14,7 @@ const StyledTabs = styled.div`
   align-items: center;
   gap: 1.25rem;
   width: fit-content;
+  margin-bottom: 1rem;
   ${typography.button}
 `;
 
@@ -27,6 +30,12 @@ const StyledTab = styled.button`
   cursor: pointer;
 `;
 
+const StyledSection = styled.section``;
+
+const StyledHeading = styled.h2`
+  ${typography.headline[6]}
+`;
+
 function LandlordPage() {
   return (
     <StyledContainer>
@@ -34,6 +43,11 @@ function LandlordPage() {
         <StyledTab isActive={true}>Active</StyledTab>
         <StyledTab>Closed</StyledTab>
       </StyledTabs>
+      <StyledSection>
+        <StyledHeading>4 Properties found</StyledHeading>
+        <PropertyList />
+        <PaginationBar />
+      </StyledSection>
     </StyledContainer>
   );
 }
