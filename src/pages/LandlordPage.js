@@ -1,7 +1,8 @@
-import styled from '@emotion/styled';
+import { useState } from 'react';
 import PaginationBar from '../components/PaginationBar';
 import PropertyList from '../components/PropertyList';
 import { colors, typography } from '../styles';
+import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   max-width: 1200px;
@@ -37,15 +38,20 @@ const StyledHeading = styled.h2`
 `;
 
 function LandlordPage() {
+  const [activeTab, setActiveTab] = useState(0);
   return (
     <StyledContainer>
       <StyledTabs>
-        <StyledTab isActive={true}>Active</StyledTab>
-        <StyledTab>Closed</StyledTab>
+        <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
+          Active
+        </StyledTab>
+        <StyledTab isActive={activeTab === 1} onClick={() => setActiveTab(1)}>
+          Closed
+        </StyledTab>
       </StyledTabs>
       <StyledSection>
         <StyledHeading>4 Properties found</StyledHeading>
-        <PropertyList />
+        <PropertyList length={4} />
         <PaginationBar />
       </StyledSection>
     </StyledContainer>
