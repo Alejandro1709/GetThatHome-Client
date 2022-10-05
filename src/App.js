@@ -10,6 +10,8 @@ import PropertyDetailPage from "./pages/property-detail-page";
 import SignupPage from "./pages/SignupPage";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
 
 const StyledContainer = styled.div`
   margin: 0 auto;
@@ -24,7 +26,7 @@ function App() {
   // }, []);
 
   function handleCloseModal(e) {
-    if (e.target.dataset.type === "modal") {
+    if (e.target.dataset.type === 'modal') {
       setIsModalOpen(false);
     }
   }
@@ -48,12 +50,13 @@ function App() {
           <LoginForm />
         </Modal>
       )}
+      <NavBar onLoginClick={() => setIsModalOpen(true)} />
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={<LandingPage onLoginClick={() => setIsModalOpen(true)} />}
         />
-        <Route path="/properties" element={<PropertiesPage />} />
+        <Route path='/properties' element={<PropertiesPage />} />
         {/* For the route property detail page add the id of the property */}
         <Route path="/properties/1" element={<PropertyDetailPage />} />
         <Route path="/signup" element={<SignupPage />} />
@@ -61,6 +64,7 @@ function App() {
         <Route path="/saved" element={<HomeseekerPage />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
+      <Footer />
     </Fragment>
   );
 }
