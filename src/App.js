@@ -8,6 +8,7 @@ import LoginForm from "./components/LoginForm";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyDetailPage from "./pages/property-detail-page";
 import SignupPage from "./pages/SignupPage";
+import NewPropertyForm from "./components/NewPropertyForm";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
 import NavBar from "./components/NavBar";
@@ -68,6 +69,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/myproperties" element={<LandlordPage />} />
           <Route path="/saved" element={<HomeseekerPage />} />
+          <Route path="/create" element={<NewPropertyForm />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
         <FooterWrapper>
