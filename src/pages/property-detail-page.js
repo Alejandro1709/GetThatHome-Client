@@ -17,8 +17,13 @@ const testCoords = {
   longitude: -77.065,
 };
 
+const TotalContainer = styled.div`
+  margin: auto;
+`;
+
 const Container = styled.div`
   display: flex;
+  justify-content: center;
   gap: 1rem;
 `;
 
@@ -108,65 +113,67 @@ const CardContainer = styled.div`
 
 export default function PropertyDetailPage() {
   return (
-    <Container>
-      <MainContainer>
-        <SliderContainer>
-          <Slider images={myImgs} />
-        </SliderContainer>
-        <AboutSection>
-          <DescHeader>
-            <DescHeaderLeft>
-              <h2>Francisco de Paula Ugarriza 27</h2>
-              <h4>Miraflores, Lima</h4>
-            </DescHeaderLeft>
-            <DescHeaderRight>
-              <DescMoney>
-                <MoneyIcon />
-                <h4>3,000</h4>
-              </DescMoney>
-              <h5>+100</h5>
-            </DescHeaderRight>
-          </DescHeader>
-          <DescOptions>
-            <DescSingleOpt>
-              <BiBed />
-              <h4>4 bedrooms</h4>
-            </DescSingleOpt>
-            <DescSingleOpt>
-              <BiBath />
-              <h4>4 bedrooms</h4>
-            </DescSingleOpt>
-            <DescSingleOpt>
-              <BiArea />
-              <h4>4 bedrooms</h4>
-            </DescSingleOpt>
-            <DescSingleOpt>
-              <MdPets />
-              <h4>4 bedrooms</h4>
-            </DescSingleOpt>
-          </DescOptions>
-          <AboutDesc>
-            <h3>About this property</h3>
-            <p>
-              3 Bedroom/2 Bathroom apartment available for ASAP move-in!
-              Apartment features hardwood floors throughout, virtual doorman,
-              Central AC/heat, dishwasher and a microwave. The kitchen has
-              custom cabinetry and the living room is big enough to fit a dinner
-              table, a couch and a tv set up.
-            </p>
-          </AboutDesc>
-          <AboutDesc>
-            <h3>Location</h3>
-            <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
-          </AboutDesc>
-        </AboutSection>
-        <MapBox coordValues={testCoords} />
-      </MainContainer>
-      <aside>
-        <CardContainer>
-          <PropertyCustomCard />
-        </CardContainer>
-      </aside>
-    </Container>
+    <TotalContainer>
+      <Container>
+        <MainContainer>
+          <SliderContainer>
+            <Slider images={myImgs} />
+          </SliderContainer>
+          <AboutSection>
+            <DescHeader>
+              <DescHeaderLeft>
+                <h2>Francisco de Paula Ugarriza 27</h2>
+                <h4>Miraflores, Lima</h4>
+              </DescHeaderLeft>
+              <DescHeaderRight>
+                <DescMoney>
+                  <MoneyIcon />
+                  <h4>3,000</h4>
+                </DescMoney>
+                <h5>+100</h5>
+              </DescHeaderRight>
+            </DescHeader>
+            <DescOptions>
+              <DescSingleOpt>
+                <BiBed />
+                <h4>4 bedrooms</h4>
+              </DescSingleOpt>
+              <DescSingleOpt>
+                <BiBath />
+                <h4>4 bedrooms</h4>
+              </DescSingleOpt>
+              <DescSingleOpt>
+                <BiArea />
+                <h4>4 bedrooms</h4>
+              </DescSingleOpt>
+              <DescSingleOpt>
+                <MdPets />
+                <h4>4 bedrooms</h4>
+              </DescSingleOpt>
+            </DescOptions>
+            <AboutDesc>
+              <h3>About this property</h3>
+              <p>
+                3 Bedroom/2 Bathroom apartment available for ASAP move-in!
+                Apartment features hardwood floors throughout, virtual doorman,
+                Central AC/heat, dishwasher and a microwave. The kitchen has
+                custom cabinetry and the living room is big enough to fit a
+                dinner table, a couch and a tv set up.
+              </p>
+            </AboutDesc>
+            <AboutDesc>
+              <h3>Location</h3>
+              <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
+            </AboutDesc>
+          </AboutSection>
+          <MapBox coordValues={testCoords} />
+        </MainContainer>
+        <aside>
+          <CardContainer>
+            <PropertyCustomCard />
+          </CardContainer>
+        </aside>
+      </Container>
+    </TotalContainer>
   );
 }

@@ -1,11 +1,12 @@
-import styled from '@emotion/styled';
-import IconHome from '../assets/icons/LogoHome.png';
-import { fonts, typography } from '../styles/typography';
-import { FiSearch } from 'react-icons/fi';
-import { RiUserReceivedLine } from 'react-icons/ri';
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { colors } from '../styles/colors';
-import { boxShadow } from '../styles/utils';
+import { useState } from "react";
+import styled from "@emotion/styled";
+import IconHome from "../assets/icons/LogoHome.png";
+import { fonts, typography } from "../styles/typography";
+import { boxShadow } from "../styles/utils";
+import HomeSeekerLayout from "./HomeSeekerLayout";
+import LandLordLayout from "./LandLordLayout";
+import UnAuthLayout from "./UnAuthLayout";
+import { NavLink } from "react-router-dom";
 
 const NavBarContainer = styled.div`
   position: relative;
@@ -24,62 +25,36 @@ const ContainerNavBar = styled.div`
   align-items: center;
 `;
 
-const ButtonsNavBar = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const FindHome = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  width: 10.5rem;
-  gap: 0.5rem;
-`;
-
-const ButtonJoin = styled.button`
-  ${typography.button};
-  background: ${colors.secondary[200]};
-  border: 1px solid ${colors.primary[300]};
-  border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem 1rem;
-`;
-
-const ButtonLogin = styled.button`
-  ${typography.button};
-  background: ${colors.primary[300]};
-  border-radius: 16px;
-  border: 1px solid ${colors.primary[300]};
-  color: ${colors.secondary[200]};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-`;
-
 function NavBar({ onLoginClick }) {
+  const dummyUser = {
+    id: 1,
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    avatar: "https://randomuser.me/api/portraits/m/1.jpg",
+    role: "home-seeker",
+  };
+
+  const [user, setUser] = useState(dummyUser);
+
+  function deciderFunction() {
+    if (user) {
+      if (user.role === "home-seeker") {
+        return <HomeSeekerLayout />;
+      } else if (user.role === "landlord") {
+        return <LandLordLayout />;
+      }
+    } else {
+      return <UnAuthLayout onLoginClick={onLoginClick} />;
+    }
+  }
+
   return (
     <NavBarContainer>
       <ContainerNavBar>
-        <img src={IconHome} alt='Logo Home' />
-        <ButtonsNavBar>
-          <FindHome>
-            <FiSearch />
-            FIND A HOME
-          </FindHome>
-          <ButtonJoin>
-            <AiOutlineUserAdd />
-            JOIN
-          </ButtonJoin>
-          <ButtonLogin onClick={onLoginClick}>
-            <RiUserReceivedLine />
-            LOGIN
-          </ButtonLogin>
-        </ButtonsNavBar>
+        <NavLink to="/">
+          <img src={IconHome} alt="Logo Home" />
+        </NavLink>
+        {deciderFunction()}
       </ContainerNavBar>
     </NavBarContainer>
   );

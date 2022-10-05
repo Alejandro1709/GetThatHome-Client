@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import PaginationBar from '../components/PaginationBar';
-import PropertyList from '../components/PropertyList';
-import { colors, typography } from '../styles';
-import styled from '@emotion/styled';
+import { useState } from "react";
+import PaginationBar from "../components/PaginationBar";
+import PropertyList from "../components/PropertyList";
+import { colors, typography } from "../styles";
+import styled from "@emotion/styled";
 
 const StyledContainer = styled.div`
+  min-height: inherit;
   max-width: 1200px;
   margin: 0 auto;
   /* background-color: aqua; */
