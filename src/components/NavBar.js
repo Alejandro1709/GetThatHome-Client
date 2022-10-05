@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import IconHome from "../assets/icons/LogoHome.png";
-import { fonts, typography } from "../styles/typography";
-import { FiSearch } from "react-icons/fi";
-import { RiUserReceivedLine } from "react-icons/ri";
-import { AiOutlineUserAdd } from "react-icons/ai";
-import { colors } from "../styles/colors";
-import { boxShadow } from "../styles/utils";
+import styled from '@emotion/styled';
+import IconHome from '../assets/icons/LogoHome.png';
+import { fonts, typography } from '../styles/typography';
+import { FiSearch } from 'react-icons/fi';
+import { RiUserReceivedLine } from 'react-icons/ri';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { colors } from '../styles/colors';
+import { boxShadow } from '../styles/utils';
 
 const NavBarContainer = styled.div`
   position: relative;
@@ -58,13 +58,14 @@ const ButtonLogin = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
-function NavBar() {
+function NavBar({ onLoginClick }) {
   return (
     <NavBarContainer>
       <ContainerNavBar>
-        <img src={IconHome} alt="Logo Home" />
+        <img src={IconHome} alt='Logo Home' />
         <ButtonsNavBar>
           <FindHome>
             <FiSearch />
@@ -74,7 +75,7 @@ function NavBar() {
             <AiOutlineUserAdd />
             JOIN
           </ButtonJoin>
-          <ButtonLogin>
+          <ButtonLogin onClick={onLoginClick}>
             <RiUserReceivedLine />
             LOGIN
           </ButtonLogin>

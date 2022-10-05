@@ -14,8 +14,12 @@ const StyledModal = styled.div`
   z-index: 100;
 `;
 
-function Modal({ children }) {
-  return <StyledModal>{children}</StyledModal>;
+function Modal({ children, onModalClose }) {
+  return (
+    <StyledModal data-type='modal' onClick={onModalClose}>
+      {children}
+    </StyledModal>
+  );
 }
 
 export default Modal;
