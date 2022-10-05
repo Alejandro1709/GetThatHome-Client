@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import PaginationBar from '../components/PaginationBar';
-import PropertyList from '../components/PropertyList';
-import { colors, typography } from '../styles';
-import styled from '@emotion/styled';
+import { useState } from "react";
+import PaginationBar from "../components/PaginationBar";
+import PropertyList from "../components/PropertyList";
+import { colors, typography } from "../styles";
+import styled from "@emotion/styled";
 
 const StyledContainer = styled.div`
   max-width: 1200px;

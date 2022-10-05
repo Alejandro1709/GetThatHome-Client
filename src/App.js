@@ -8,6 +8,8 @@ import LoginForm from "./components/LoginForm";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyDetailPage from "./pages/property-detail-page";
 import SignupPage from "./pages/SignupPage";
+import LandlordPage from "./pages/LandlordPage";
+import HomeseekerPage from "./pages/HomeSeekerPage";
 
 const StyledContainer = styled.div`
   margin: 0 auto;
@@ -55,11 +57,8 @@ function App() {
         {/* For the route property detail page add the id of the property */}
         <Route path="/properties/1" element={<PropertyDetailPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route
-          path="/myproperties"
-          element={<h1>Landlord Properties Page</h1>}
-        />
-        <Route path="/saved" element={<h1>Homeseeker Properties Page</h1>} />
+        <Route path="/myproperties" element={<LandlordPage />} />
+        <Route path="/saved" element={<HomeseekerPage />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </Fragment>
