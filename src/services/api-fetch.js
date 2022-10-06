@@ -3,13 +3,15 @@ export default async function apiFetch(
   endpoint,
   { method, headers, body } = {}
 ) {
-  const token = sessionStorage.getItem(tokenKey);
+  const token = JSON.parse(sessionStorage.getItem(tokenKey));
+  console.log(token);
   if (token) {
     headers = {
-      Authorization: `Bearer ${token}`,
+      ...token,
       ...headers,
     };
   }
+
   if (body) {
     headers = {
       "Content-Type": "application/json",
@@ -21,7 +23,9 @@ export default async function apiFetch(
     headers,
     body: body ? JSON.stringify(body) : null,
   };
+
   const response = await fetch(BASE_URI + endpoint, config);
+
   let data;
   if (!response.ok) {
     try {
