@@ -1,48 +1,44 @@
-import { AiOutlineSearch } from 'react-icons/ai';
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
+import { fonts, typography } from "../styles/typography";
 
 const StyledInputWrapper = styled.div`
-  display: inline-block;
   border: 1px solid ${colors.primary[400]};
   background-color: white;
   border-radius: 0.31rem;
+  font-family: ${fonts.secondary};
 `;
 
 const StyledTop = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.31rem;
-  padding: 0.5rem 0.62rem;
+  gap: 0.3rem;
+  padding: 0.5rem 0.6rem;
 `;
 
 const StyledInput = styled.input`
+  max-width: ${({ width }) => width};
   border: none;
   outline: none;
-
   &::placeholder {
     color: ${colors.secondary[500]};
   }
 `;
 
-const MagnifyingGlass = styled(AiOutlineSearch)`
-  color: ${colors.secondary[500]};
-  font-size: 1.2rem;
-`;
-
 function FilterInput({
   id,
   name,
-  type = 'text',
+  type = "text",
   placeholder,
   value,
   onChange,
   hasLeftIcon,
+  width,
 }) {
   return (
     <StyledInputWrapper>
       <StyledTop>
-        {hasLeftIcon && <MagnifyingGlass />}
+        {hasLeftIcon}
         <StyledInput
           id={id || name}
           name={name}
@@ -50,6 +46,7 @@ function FilterInput({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          width={width}
         />
       </StyledTop>
     </StyledInputWrapper>

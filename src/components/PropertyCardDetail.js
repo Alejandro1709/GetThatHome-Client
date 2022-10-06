@@ -1,11 +1,11 @@
-import { boxShadow } from '../styles/utils';
-import casa1 from '../assets/images/casa1.jpg';
-import { colors } from '../styles/colors';
-import { RiCoinsLine, RiMoneyDollarCircleLine } from 'react-icons/ri';
-import { fonts, typography } from '../styles/typography';
-import { BiBed, BiBuildingHouse, BiBath, BiArea } from 'react-icons/bi';
-import { FaPaw } from 'react-icons/fa';
-import styled from '@emotion/styled';
+import { boxShadow } from "../styles/utils";
+import casa1 from "../assets/images/casa1.jpg";
+import { colors } from "../styles/colors";
+import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
+import { fonts, typography } from "../styles/typography";
+import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
+import { FaPaw } from "react-icons/fa";
+import styled from "@emotion/styled";
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
@@ -98,6 +98,10 @@ export const ContactDetails = styled.div`
 export const Additionals = styled.div`
   margin: 1rem;
   display: flex;
+  gap: 1rem;
+  & svg {
+    color: ${colors.secondary[600]};
+  }
 `;
 
 export const Options = styled.div`
@@ -110,10 +114,13 @@ export const Options = styled.div`
 export const DataIcons = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 1rem;
+  gap: 0.25rem;
+  font-family: ${fonts.secondary};
 `;
 
-function PropertyCardDetail() {
+function PropertyCardDetail({ property }) {
+  const { address, area, bathrooms, bedrooms, property_type } = property;
+
   return (
     <ShowCaseBox>
       <CardImg>
@@ -121,7 +128,7 @@ function PropertyCardDetail() {
           <RiCoinsLine />
           <Rental>For Rental</Rental>
         </Deal>
-        <ShowCaseImg src={casa1} alt='casa1' />
+        <ShowCaseImg src={casa1} alt="casa1" />
       </CardImg>
       <ShowCaseData>
         <CostProperty>
@@ -131,22 +138,21 @@ function PropertyCardDetail() {
           </Rent>
           <Type>
             <BiBuildingHouse />
-            <TypeName>Apartment</TypeName>
+            <TypeName>{property_type.name}</TypeName>
           </Type>
         </CostProperty>
         <ContactDetails>
-          {' '}
-          86872 Jacob Gateway, Durganport, WV 48044{' '}
+          86872 Jacob Gateway, Durganport, WV 48044
         </ContactDetails>
         <Additionals>
           <DataIcons>
-            <BiBed /> 4{' '}
+            <BiBed size="1.5rem" /> {bedrooms}
           </DataIcons>
           <DataIcons>
-            <BiBath /> 2{' '}
+            <BiBath size="1.5rem" /> {bathrooms}
           </DataIcons>
           <DataIcons>
-            <BiArea /> 180 m2{' '}
+            <BiArea size="1.5rem" /> {area} m2
           </DataIcons>
           <DataIcons>
             <FaPaw />
