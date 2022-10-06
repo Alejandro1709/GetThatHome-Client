@@ -13,6 +13,11 @@ const Container = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  & p {
+    font-family: ${fonts.secondary};
+    ${typography.caption}
+    color: ${colors.secondary[600]};
+  }
 `;
 
 const SelectWrapper = styled.div`
@@ -21,9 +26,13 @@ const SelectWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  & h5 {
+  & h4,
+  h5 {
     ${typography.overline};
     margin: 0;
+  }
+  & h5 {
+    text-transform: uppercase;
   }
   p {
     ${typography.caption};
@@ -123,11 +132,12 @@ const Type = styled.div`
   }
 `;
 
-const PropertyTypeWrapper = styled.div`
+const CheckboxWrapper = styled.div`
   display: flex;
   position: relative;
   gap: 0.25rem;
   & label {
+    font-family: ${fonts.secondary};
     ${typography.body[2]}
     color: ${colors.secondary[600]};
   }
@@ -161,24 +171,59 @@ const PropertyTypeWrapper = styled.div`
     background-color: ${colors.primary[300]};
     border: 1px solid ${colors.primary[300]};
   }
+
+  & input[type="checkbox"] {
+    appearance: none;
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  & input[type="checkbox"]::before {
+    position: absolute;
+    content: "";
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid ${colors.primary[300]};
+    cursor: pointer;
+  }
+  & input[type="checkbox"]:checked::before {
+    position: absolute;
+    content: "\u2714";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: ${colors.secondary[200]};
+    background-color: ${colors.primary[300]};
+    border: 1px solid ${colors.primary[300]};
+  }
 `;
 
 export default function NewPropertyForm() {
   const [type, setType] = useState("sale");
 
-  const changeType = (event) => {
-    console.log(event.target.value);
-    // setType()
+  const changeType = (e) => {
+    setType(e.target.id);
+    const selected = e.target;
+    const active = document.querySelector(".activeType");
+    if (selected !== active) {
+      active.classList.remove("activeType");
+      selected.classList.add("activeType");
+    }
   };
 
   return (
     <Container>
       <h2>Create a property listing</h2>
       <TypePicker>
-        <Type left={true} value="rent" onClick={changeType}>
+        <Type left={true} id="rent" onClick={changeType}>
           Rent
         </Type>
-        <Type className="activeType" value="sale" onClick={changeType}>
+        <Type className="activeType" id="sale" onClick={changeType}>
           Sale
         </Type>
       </TypePicker>
@@ -240,9 +285,9 @@ export default function NewPropertyForm() {
         </>
       )}
       <InputWrapper>
-        <h5>property type</h5>
+        <h4>property type</h4>
         <div style={{ display: "flex", gap: "1rem" }}>
-          <PropertyTypeWrapper>
+          <CheckboxWrapper>
             <input
               type="radio"
               value="apartment"
@@ -250,16 +295,16 @@ export default function NewPropertyForm() {
               name="prop_type"
             />
             <label htmlFor="apartment">Apartment</label>
-          </PropertyTypeWrapper>
-          <PropertyTypeWrapper>
+          </CheckboxWrapper>
+          <CheckboxWrapper>
             <input type="radio" value="house" id="house" name="prop_type" />
             <label htmlFor="house">House</label>
-          </PropertyTypeWrapper>
+          </CheckboxWrapper>
         </div>
       </InputWrapper>
       <SelectWrapper>
         <InputWrapper>
-          <p>bedrooms</p>
+          <h5>bedrooms</h5>
           <StyledSelect>
             <option selected disabled hidden>
               Select...
@@ -268,7 +313,7 @@ export default function NewPropertyForm() {
           </StyledSelect>
         </InputWrapper>
         <InputWrapper>
-          <p>bathrooms</p>
+          <h5>bathrooms</h5>
           <StyledSelect>
             <option selected disabled hidden>
               Select...
@@ -277,12 +322,24 @@ export default function NewPropertyForm() {
           </StyledSelect>
         </InputWrapper>
         <InputWrapper>
-          <p>area</p>
+          <h5>area</h5>
           <Input placeholder="##" width="50%" />
         </InputWrapper>
       </SelectWrapper>
+      {type === "rent" && (
+        <>
+          <CheckboxWrapper>
+            <input type="checkbox" value="pets_allowed" id="pets_allowed" />
+            <label htmlFor="pets_allowed">Pets Allowed</label>
+          </CheckboxWrapper>
+          <p>
+            Allowing pets increases the likehood of renters liking the property
+            by 9001%. It also makes you a better person.
+          </p>
+        </>
+      )}
       <InputWrapper>
-        <h5>about this property</h5>
+        <h4>about this property</h4>
         <StyledTextArea placeholder="My apartment is great because..." />
         <p>
           Renters will read this first, so highlight any features or important
