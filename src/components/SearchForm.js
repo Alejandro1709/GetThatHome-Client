@@ -1,6 +1,9 @@
-import styled from "@emotion/styled";
-import { colors, typography } from "../styles";
-import { boxShadow } from "../styles/utils";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { colors, typography } from '../styles';
+import { boxShadow } from '../styles/utils';
+import styled from '@emotion/styled';
+import Input from './Input';
 
 const Form = styled.form`
   display: flex;
@@ -27,6 +30,15 @@ const LookingTipe = styled.select`
   color: ${colors.secondary[700]};
 `;
 
+const WhereingTipe = styled.input`
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  ${typography.body[1]};
+  color: ${colors.secondary[700]};
+`;
+
 const Search = styled.button`
   ${typography.button};
   background: ${colors.primary[300]};
@@ -37,6 +49,7 @@ const Search = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
+  cursor: pointer;
   margin: 1rem;
 `;
 
@@ -56,37 +69,60 @@ const Line = styled.div`
 `;
 
 function SearchForm() {
+  const [formData, setFormData] = useState({
+    looking: 'apartment',
+    wanting: 'rent',
+    location: '',
+  });
+
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    navigate('/properties', { state: formData });
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
+        <LookingTipe
+          name='looking'
+          onChange={handleChange}
+          value={formData.looking}
+        >
+          <option value='apartment'>An Apartment</option>
+          <option value='house'>A House</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
-        <LookingTipe name="select">
-          <option value="rent">Rent</option>
-          <option value="sell">Sell</option>
+        <LookingTipe
+          name='wanting'
+          onChange={handleChange}
+          value={formData.wanting}
+        >
+          <option value='rent'>Rent</option>
+          <option value='sell'>Sell</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
-        <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
-          <option selected disabled hidden>
-            {" "}
-            Favorite district
-          </option>
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
-        </LookingTipe>
+        <Frase>Where</Frase>
+        <WhereingTipe
+          name='location'
+          placeholder='Favorite district'
+          value={formData.location}
+          onChange={handleChange}
+        />
       </Looking>
       <Line />
-      <Search type="submit">Search</Search>
+      <Search type='submit'>Search</Search>
     </Form>
   );
 }
