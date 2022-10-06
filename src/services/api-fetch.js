@@ -1,5 +1,4 @@
 import { BASE_URI, tokenKey } from "../config";
-
 export default async function apiFetch(
   endpoint,
   { method, headers, body } = {}
@@ -19,7 +18,6 @@ export default async function apiFetch(
       ...headers,
     };
   }
-
   const config = {
     method: method || (body ? "POST" : "GET"),
     headers,
@@ -37,12 +35,10 @@ export default async function apiFetch(
     }
     throw new Error(JSON.stringify(data.errors));
   }
-
   try {
     data = await response.json();
   } catch (error) {
     data = response.statusText;
   }
-
   return data;
 }
