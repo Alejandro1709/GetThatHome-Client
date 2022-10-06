@@ -119,6 +119,7 @@ export const DataIcons = styled.div`
 `;
 
 function PropertyCardDetail({ property }) {
+  console.log(property);
   const { address, area, bathrooms, bedrooms, property_type } = property;
 
   return (

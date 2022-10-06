@@ -35,8 +35,15 @@ const PopUpCard = styled.div`
 
 const PricePopUp = styled.div`
   position: absolute;
-  top: 40px;
-  left: -15px;
+  top: 50px;
+  left: -100px;
+  z-index: 1;
+`;
+
+const TypePopUp = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 50px;
   z-index: 1;
 `;
 
@@ -49,6 +56,7 @@ const InputsWrapper = styled.div`
 
 function ButtonGroup() {
   const [priceDetails, setPriceDetails] = useState(false);
+  const [typeDetails, setTypeDetails] = useState(true);
 
   return (
     <>
@@ -74,6 +82,13 @@ function ButtonGroup() {
           </PricePopUp>
         )}
         <Button>Property type</Button>
+        {typeDetails && (
+          <TypePopUp>
+            <PopUpCard>
+              <h1>hola</h1>
+            </PopUpCard>
+          </TypePopUp>
+        )}
         <Button>Beds and baths</Button>
         <Button hasIcon Icon={BsChevronDown}>
           More

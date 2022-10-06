@@ -4,6 +4,7 @@ import PaginationBar from "../components/PaginationBar";
 import styled from "@emotion/styled";
 import { getProperties } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import { useProperties } from "../context/properties-context";
 
 const StyledContainer = styled.div`
   max-width: 1200px;
@@ -20,22 +21,25 @@ const PropertiesContainer = styled.div`
 
 function PropertiesPage() {
   const [data, setData] = useState([]);
+  const { properties } = useProperties();
+  console.log(useProperties());
+  console.log(properties);
 
-  useEffect(() => {
-    getProperties()
-      .then((res) => {
-        console.log(res);
-        setData(res);
-        console.log(data);
-      })
-      .catch(console.log);
-  }, []);
+  // useEffect(() => {
+  //   getProperties()
+  //     .then((res) => {
+  //       console.log(res);
+  //       setData(res);
+  //       console.log(data);
+  //     })
+  //     .catch(console.log);
+  // }, []);
 
   return (
     <StyledContainer>
       <SorteableBar />
       <PropertiesContainer>
-        <PropertyList properties={data} />
+        <PropertyList properties={properties} />
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
