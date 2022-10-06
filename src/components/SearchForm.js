@@ -125,7 +125,12 @@ function SearchForm() {
           onChange={handleChange}
           onFocus={() => setIsResultBarOpen(true)}
         />
-        {isResultBarOpen && <AddressResult />}
+        {isResultBarOpen && (
+          <AddressResult
+            currentFormData={formData}
+            onAddressChange={setFormData}
+          />
+        )}
       </Looking>
       <Line />
       <Search type='submit'>Search</Search>

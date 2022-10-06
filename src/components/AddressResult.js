@@ -32,14 +32,26 @@ const StyledItem = styled.li`
   }
 `;
 
-function AddressResult() {
+function AddressResult({ currentFormData, onAddressChange }) {
+  function handleChangeAddress(address) {
+    onAddressChange({ ...currentFormData, location: address });
+  }
+
   return (
     <StyledResults>
       {/* <span>Start typing...</span> */}
       <StyledResultsList>
-        <StyledItem>Mount Sinai</StyledItem>
-        <StyledItem>Mount Beatifull Vallley</StyledItem>
-        <StyledItem>Mount Okinawa</StyledItem>
+        <StyledItem onClick={() => handleChangeAddress('Mount Sinai')}>
+          Mount Sinai
+        </StyledItem>
+        <StyledItem
+          onClick={() => handleChangeAddress('Mount Beatifull Vallley')}
+        >
+          Mount Beatifull Vallley
+        </StyledItem>
+        <StyledItem onClick={() => handleChangeAddress('Mount Okinawa')}>
+          Mount Okinawa
+        </StyledItem>
       </StyledResultsList>
     </StyledResults>
   );
