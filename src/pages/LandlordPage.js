@@ -5,8 +5,9 @@ import { colors, typography } from "../styles";
 import styled from "@emotion/styled";
 
 const StyledContainer = styled.div`
+  margin-top: 2rem;
   min-height: inherit;
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
 `;
 
@@ -16,6 +17,7 @@ const StyledTabs = styled.div`
   gap: 1.25rem;
   width: fit-content;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   ${typography.button}
 `;
 
@@ -31,7 +33,16 @@ const StyledTab = styled.button`
   cursor: pointer;
 `;
 
-const StyledSection = styled.section``;
+const StyledSection = styled.section`
+  height: 100vh;
+`;
+
+const StyledSectionInner = styled.section`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
 const StyledHeading = styled.h2`
   ${typography.headline[6]}
@@ -39,28 +50,32 @@ const StyledHeading = styled.h2`
 
 function ActiveLandlordProperties() {
   return (
-    <StyledSection>
-      <StyledHeading>4 Properties found</StyledHeading>
-      <PropertyList length={4} />
+    <StyledSectionInner>
+      <div>
+        <StyledHeading>4 Properties found</StyledHeading>
+        <PropertyList length={4} />
+      </div>
       <PaginationBar />
-    </StyledSection>
+    </StyledSectionInner>
   );
 }
 
 function ClosedLandlordProperties() {
   return (
-    <StyledSection>
-      <StyledHeading>2 Properties found</StyledHeading>
-      <PropertyList length={2} />
+    <StyledSectionInner>
+      <div>
+        <StyledHeading>2 Properties found</StyledHeading>
+        <PropertyList length={2} />
+      </div>
       <PaginationBar />
-    </StyledSection>
+    </StyledSectionInner>
   );
 }
 
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
   return (
-    <StyledContainer>
+    <StyledContainer id="styledcontainer">
       <StyledTabs>
         <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
           Active

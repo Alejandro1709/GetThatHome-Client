@@ -38,25 +38,38 @@ const ContainerHeading = styled.h2`
   ${typography.headline[6]}
 `;
 
-const ContainerSection = styled.section``;
+const ContainerSection = styled.section`
+  height: 100vh;
+`;
+
+const ContainerSectionInner = styled.section`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
 function ActiveHomeseekerPage() {
   return (
-    <ContainerSection>
-      <ContainerHeading>7 Properties found</ContainerHeading>
-      <PropertyList length={7} />
+    <ContainerSectionInner>
+      <div>
+        <ContainerHeading>7 Properties found</ContainerHeading>
+        <PropertyList length={7} />
+      </div>
       <PaginationBar />
-    </ContainerSection>
+    </ContainerSectionInner>
   );
 }
 
 function ClosedHomeseekerPage() {
   return (
-    <ContainerSection>
-      <ContainerHeading>5 Properties found</ContainerHeading>
-      <PropertyList length={5} />
+    <ContainerSectionInner>
+      <div>
+        <ContainerHeading>5 Properties found</ContainerHeading>
+        <PropertyList length={5} />
+      </div>
       <PaginationBar />
-    </ContainerSection>
+    </ContainerSectionInner>
   );
 }
 
@@ -70,13 +83,13 @@ function HomeseekerPage() {
             isActive={activeTab === 0}
             onClick={() => setActiveTab(0)}
           >
-            FAVORITES
+            Favorites
           </OptionsTab>
           <OptionsTab
             isActive={activeTab === 1}
             onClick={() => setActiveTab(1)}
           >
-            CONTACTED
+            Contacted
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
