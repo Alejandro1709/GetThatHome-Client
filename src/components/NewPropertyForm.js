@@ -137,6 +137,36 @@ const Type = styled.div`
   }
 `;
 
+const ImgBox = styled.div`
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImgDeleteBtn = styled.button`
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 0.25rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background-color: ${colors.primary[300]};
+  color: ${colors.secondary[200]};
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${colors.primary[400]};
+  }
+`;
+
 export default function NewPropertyForm() {
   const [images, setimages] = useState([]);
 
@@ -288,15 +318,18 @@ export default function NewPropertyForm() {
       <UploadedBoxContainer>
         {images.map((imagen) => (
           <UploadedBox key={imagen.index}>
-            <div className="content_img">
-              <button onClick={deleteImg.bind(this, imagen.index)}> X </button>
+            <ImgBox>
+              <ImgDeleteBtn onClick={deleteImg.bind(this, imagen.index)}>
+                X
+              </ImgDeleteBtn>
               <img
                 alt="algo"
                 src={imagen.url}
                 data-toggle="modal"
                 data-target="#ModalPreViewImg"
+                style={{ height: "80%" }}
               />
-            </div>
+            </ImgBox>
           </UploadedBox>
         ))}
       </UploadedBoxContainer>
