@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
-import { typography } from '../styles/typography';
-import { FiSearch } from 'react-icons/fi';
-import { RiUserReceivedLine } from 'react-icons/ri';
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { colors } from '../styles/colors';
-import { NavLink } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { typography } from "../styles/typography";
+import { FiSearch } from "react-icons/fi";
+import { RiUserReceivedLine } from "react-icons/ri";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { colors } from "../styles/colors";
+import { NavLink } from "react-router-dom";
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const ButtonLogin = styled.button`
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: ${colors.secondary[200]};
+  color: ${colors.secondary[600]};
 `;
 
 function UnAuthLayout({ onLoginClick }) {
@@ -58,7 +58,7 @@ function UnAuthLayout({ onLoginClick }) {
         FIND A HOME
       </FindHome>
       <ButtonJoin>
-        <StyledNavLink to='/signup'>
+        <StyledNavLink to="/signup">
           <AiOutlineUserAdd />
           JOIN
         </StyledNavLink>
