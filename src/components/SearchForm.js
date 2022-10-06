@@ -4,9 +4,11 @@ import { colors, typography } from '../styles';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
 import Input from './Input';
+import AddressResult from './AddressResult';
 
 const Form = styled.form`
   display: flex;
+  position: relative;
   background: ${colors.secondary[200]};
   border-radius: 8px;
 
@@ -75,6 +77,8 @@ function SearchForm() {
     location: '',
   });
 
+  const [isResultBarOpen, setIsResultBarOpen] = useState(false);
+
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -119,7 +123,9 @@ function SearchForm() {
           placeholder='Favorite district'
           value={formData.location}
           onChange={handleChange}
+          onFocus={() => setIsResultBarOpen(true)}
         />
+        {isResultBarOpen && <AddressResult />}
       </Looking>
       <Line />
       <Search type='submit'>Search</Search>
