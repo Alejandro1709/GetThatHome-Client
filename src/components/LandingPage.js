@@ -1,11 +1,11 @@
-import Home from '../assets/images/home.png';
-import { fonts, typography } from '../styles/typography';
-import { colors } from '../styles/colors';
-import SearchForm from './SearchForm';
-import LayoutCase from './LayoutCase';
-import SignUpHero from './SignUpHero';
-import TeamSection from './TeamSection';
-import styled from '@emotion/styled';
+import Home from "../assets/images/home.png";
+import { fonts, typography } from "../styles/typography";
+import { colors } from "../styles/colors";
+import SearchForm from "./SearchForm";
+import LayoutCase from "./LayoutCase";
+import SignUpHero from "./SignUpHero";
+import TeamSection from "./TeamSection";
+import styled from "@emotion/styled";
 
 const SectionOne = styled.div`
   position: relative;
@@ -41,7 +41,7 @@ function LandingPage() {
   return (
     <>
       <SectionOne>
-        <SectionBackground src={Home} alt='Home' />
+        <SectionBackground src={Home} alt="Home" />
         <TitleSection>
           Meet your new Home
           <SubTitleSection>
@@ -50,7 +50,7 @@ function LandingPage() {
           <SearchForm />
         </TitleSection>
       </SectionOne>
-      <LayoutCase />
+      {/* <LayoutCase /> */}
       <SignUpHero />
       <TeamSection />
     </>
