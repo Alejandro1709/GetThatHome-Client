@@ -97,7 +97,7 @@ function App() {
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
-              <LoginForm />
+              <LoginForm handleCloseModal={() => setIsModalOpen(false)} />
             </Modal>
           )}
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
