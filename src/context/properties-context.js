@@ -5,13 +5,10 @@ const PropertiesContext = createContext();
 
 function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
-  console.log("hola");
 
   useEffect(() => {
-    console.log("useeffect");
     getProperties()
       .then((data) => {
-        console.log(data);
         setProperties(data);
       })
       .catch(console.log);

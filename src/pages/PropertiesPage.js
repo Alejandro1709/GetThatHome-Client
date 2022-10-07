@@ -20,26 +20,20 @@ const PropertiesContainer = styled.div`
 `;
 
 function PropertiesPage() {
-  const [data, setData] = useState([]);
   const { properties } = useProperties();
-  console.log(useProperties());
   console.log(properties);
+  const [filtered, setFiltered] = useState(properties);
+  console.log(filtered);
 
-  // useEffect(() => {
-  //   getProperties()
-  //     .then((res) => {
-  //       console.log(res);
-  //       setData(res);
-  //       console.log(data);
-  //     })
-  //     .catch(console.log);
-  // }, []);
+  useEffect(() => {
+    setFiltered(properties);
+  }, []);
 
   return (
     <StyledContainer>
-      <SorteableBar />
+      <SorteableBar setFiltered={setFiltered} />
       <PropertiesContainer>
-        <PropertyList properties={properties} />
+        <PropertyList properties={filtered} />
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>

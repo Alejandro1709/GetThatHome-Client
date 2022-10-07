@@ -14,7 +14,7 @@ function PropertyList({ properties, length = 9 }) {
   const items = Array.from({ length: length }, (_, i) => i + 1);
   return (
     <div>
-      <p>24 Properties found</p>
+      <p>{properties.length} Properties found</p>
       <StyledList>
         {properties.map((item) => (
           <PropertyCardDetail property={item} key={item.id} />

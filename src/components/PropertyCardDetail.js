@@ -119,15 +119,16 @@ export const DataIcons = styled.div`
 `;
 
 function PropertyCardDetail({ property }) {
-  console.log(property);
-  const { address, area, bathrooms, bedrooms, property_type } = property;
+  const { address, area, bathrooms, bedrooms, property_type, operation_type } =
+    property;
 
   return (
     <ShowCaseBox>
       <CardImg>
         <Deal>
           <RiCoinsLine />
-          <Rental>For Rental</Rental>
+          {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
+          {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
         </Deal>
         <ShowCaseImg src={casa1} alt="casa1" />
       </CardImg>
@@ -135,7 +136,7 @@ function PropertyCardDetail({ property }) {
         <CostProperty>
           <Rent>
             <RiMoneyDollarCircleLine />
-            <Cost>3000</Cost>
+            <Cost>{operation_type.monthly_rent || operation_type.price}</Cost>
           </Rent>
           <Type>
             <BiBuildingHouse />
@@ -155,9 +156,7 @@ function PropertyCardDetail({ property }) {
           <DataIcons>
             <BiArea size="1.5rem" /> {area} m2
           </DataIcons>
-          <DataIcons>
-            <FaPaw />
-          </DataIcons>
+          <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
         </Additionals>
         <Options />
       </ShowCaseData>
