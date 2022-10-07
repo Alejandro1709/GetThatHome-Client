@@ -1,6 +1,8 @@
-import styled from "@emotion/styled";
-import { colors, typography } from "../styles";
-import { boxShadow } from "../styles/utils";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { colors, typography } from '../styles';
+import { boxShadow } from '../styles/utils';
+import styled from '@emotion/styled';
 
 const Form = styled.form`
   display: flex;
@@ -56,37 +58,56 @@ const Line = styled.div`
 `;
 
 function SearchForm() {
+  const [looking, setLooking] = useState('apartment');
+  const [wanting, setWanting] = useState('rent');
+  const [whereing, setWhereing] = useState('New York');
+
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    navigate('/properties', { state: { looking, wanting, whereing } });
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
+        <LookingTipe
+          name='looking'
+          value={looking}
+          onChange={(e) => setLooking(e.target.value)}
+        >
+          <option value='apartment'>An Apartment</option>
+          <option value='house'>A House</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
-        <LookingTipe name="select">
-          <option value="rent">Rent</option>
-          <option value="sell">Sell</option>
+        <LookingTipe
+          name='wanting'
+          value={wanting}
+          onChange={(e) => setWanting(e.target.value)}
+        >
+          <option value='rent'>Rent</option>
+          <option value='sell'>Sell</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
+        <LookingTipe name='select'>
           <option selected disabled hidden>
-            {" "}
+            {' '}
             Favorite district
           </option>
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
+          <option value='apartment'>An Apartment</option>
+          <option value='house'>A House</option>
         </LookingTipe>
       </Looking>
       <Line />
-      <Search type="submit">Search</Search>
+      <Search type='submit'>Search</Search>
     </Form>
   );
 }
