@@ -7,6 +7,7 @@ import HomeSeekerLayout from "./HomeSeekerLayout";
 import LandLordLayout from "./LandLordLayout";
 import UnAuthLayout from "./UnAuthLayout";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/auth-context";
 
 const NavBarContainer = styled.div`
   position: relative;
@@ -26,21 +27,22 @@ const ContainerNavBar = styled.div`
 `;
 
 function NavBar({ onLoginClick }) {
-  const dummyUser = {
-    id: 1,
-    name: "John Doe",
-    email: "johndoe@gmail.com",
-    avatar: "https://randomuser.me/api/portraits/m/1.jpg",
-    role: "home-seeker",
-  };
+  // const dummyUser = {
+  //   id: 1,
+  //   name: "John Doe",
+  //   email: "johndoe@gmail.com",
+  //   avatar: "https://randomuser.me/api/portraits/m/1.jpg",
+  //   role: "Homeseeker",
+  // };
 
-  const [user, setUser] = useState(dummyUser);
+  const { user } = useAuth();
+  console.log(user);
 
   function deciderFunction() {
     if (user) {
-      if (user.role === "home-seeker") {
+      if (user.role_name === "Homeseeker") {
         return <HomeSeekerLayout />;
-      } else if (user.role === "landlord") {
+      } else if (user.role_name === "Landlord") {
         return <LandLordLayout />;
       }
     } else {

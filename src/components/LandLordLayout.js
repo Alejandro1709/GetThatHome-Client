@@ -1,10 +1,11 @@
-import { typography } from '../styles/typography';
-import { FiSearch } from 'react-icons/fi';
-import { RiHome8Line } from 'react-icons/ri';
-import { AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { typography } from "../styles/typography";
+import { FiSearch } from "react-icons/fi";
+import { RiHome8Line } from "react-icons/ri";
+import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/auth-context";
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -51,24 +52,26 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function LandLordLayout() {
+  const { logout } = useAuth();
+
   return (
     <ButtonsNavBar>
       <FindHome>
         <FiSearch />
         FIND A HOME
       </FindHome>
-      <ButtonJoin>
+      <ButtonJoin onClick={logout}>
         <AiOutlineLogout />
         LOGOUT
       </ButtonJoin>
       <ButtonLogin>
-        <StyledNavLink to='/myproperties'>
+        <StyledNavLink to="/myproperties">
           <RiHome8Line />
           MY PROPERTIES
         </StyledNavLink>
       </ButtonLogin>
       <ButtonLogin>
-        <StyledNavLink to='/profile'>
+        <StyledNavLink to="/profile">
           <AiOutlineUser />
           PROFILE
         </StyledNavLink>

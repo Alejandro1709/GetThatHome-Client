@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { typography } from '../styles';
-import Credit from '../assets/images/credit_card.svg';
-import HouseSeeking from '../assets/images/house_seeking.svg';
-import SignUpCard from './SignUpCard';
-import styled from '@emotion/styled';
+import { Fragment } from "react";
+import { useSearchParams } from "react-router-dom";
+import { typography } from "../styles";
+import Credit from "../assets/images/credit_card.svg";
+import HouseSeeking from "../assets/images/house_seeking.svg";
+import SignUpCard from "./SignUpCard";
+import styled from "@emotion/styled";
 
 const StyledHeaderTop = styled.div`
   display: flex;
@@ -49,16 +49,16 @@ function SignUpWelcome({ onClick }) {
       </StyledHeaderTop>
       <StyledHeaderBottom>
         <SignUpCard
-          title='Landlord'
-          desc='You want to rent or sell a home'
+          title="Landlord"
+          desc="You want to rent or sell a home"
           Image={Credit}
-          onClick={() => handleClick('landlord')}
+          onClick={() => handleClick("Landlord")}
         />
         <SignUpCard
-          title='Home seeker'
-          desc='You want to find a home'
+          title="Home seeker"
+          desc="You want to find a home"
           Image={HouseSeeking}
-          onClick={() => handleClick('home-seeker')}
+          onClick={() => handleClick("Homeseeker")}
         />
       </StyledHeaderBottom>
     </Fragment>
