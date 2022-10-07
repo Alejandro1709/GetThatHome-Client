@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/components/LandingPage.js
 import Home from "../assets/images/home.png";
 import { fonts, typography } from "../styles/typography";
 import { colors } from "../styles/colors";
@@ -6,6 +7,16 @@ import LayoutCase from "./LayoutCase";
 import SignUpHero from "./SignUpHero";
 import TeamSection from "./TeamSection";
 import styled from "@emotion/styled";
+=======
+import Home from '../assets/images/home.png';
+import { fonts, typography } from '../styles/typography';
+import { colors } from '../styles/colors';
+import SearchForm from '../components/SearchForm';
+import LayoutCase from '../components/LayoutCase';
+import SignUpHero from '../components/SignUpHero';
+import TeamSection from '../components/TeamSection';
+import styled from '@emotion/styled';
+>>>>>>> develop:src/pages/LandingPage.js
 
 const SectionOne = styled.div`
   position: relative;
@@ -37,7 +48,7 @@ const SubTitleSection = styled.span`
   margin-bottom: 4rem;
 `;
 
-function LandingPage() {
+function LandingPage({ isMapReady }) {
   return (
     <>
       <SectionOne>
@@ -47,7 +58,7 @@ function LandingPage() {
           <SubTitleSection>
             The easiest way to find where you belong
           </SubTitleSection>
-          <SearchForm />
+          <SearchForm isMapReady={isMapReady} />
         </TitleSection>
       </SectionOne>
       {/* <LayoutCase /> */}

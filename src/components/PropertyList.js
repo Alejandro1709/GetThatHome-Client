@@ -1,5 +1,5 @@
-import PropertyCardDetail from "./PropertyCardDetail";
-import styled from "@emotion/styled";
+import PropertyCardDetail from './PropertyCardDetail';
+import styled from '@emotion/styled';
 
 const StyledList = styled.div`
   display: grid;
@@ -10,11 +10,10 @@ const StyledList = styled.div`
   row-gap: 2rem;
 `;
 
-function PropertyList({ properties, length = 9 }) {
-  const items = Array.from({ length: length }, (_, i) => i + 1);
+function PropertyList({ properties }) {
   return (
     <div>
-      <p>24 Properties found</p>
+      <p>{properties.length} Properties found</p>
       <StyledList>
         {properties.map((item) => (
           <PropertyCardDetail property={item} key={item.id} />
