@@ -1,10 +1,10 @@
 import Home from "../assets/images/home.png";
 import { fonts, typography } from "../styles/typography";
 import { colors } from "../styles/colors";
-import SearchForm from "./SearchForm";
-import LayoutCase from "./LayoutCase";
-import SignUpHero from "./SignUpHero";
-import TeamSection from "./TeamSection";
+import SearchForm from "../components/SearchForm";
+import LayoutCase from "../components/LayoutCase";
+import SignUpHero from "../components/SignUpHero";
+import TeamSection from "../components/TeamSection";
 import styled from "@emotion/styled";
 
 const SectionOne = styled.div`
