@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import PropertyList from '../components/PropertyList';
 import SorteableBar from '../components/SorteableBar';
 import PaginationBar from '../components/PaginationBar';
@@ -22,27 +21,25 @@ const PropertiesContainer = styled.div`
 function PropertiesPage() {
   const { properties } = useProperties();
 
-  const [filtered, setFiltered] = useState(properties);
-
-  const location = useLocation();
-
-  function handleFilterProperties() {
-    const locationState = location.state;
-
-    if (locationState) {
-      const filteredProperties = properties.filter((property) => {
-        return (
-          property.operation_type.type === locationState.wanting &&
-          property.property_type.name === locationState.looking
-        );
-      });
-      setFiltered(filteredProperties);
-    }
-  }
+  const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
-    handleFilterProperties();
-  }, []);
+    const searchPreferences = JSON.parse(localStorage.getItem('preferences'));
+    console.log(searchPreferences);
+    console.log(properties);
+    const filteredProperties = properties.filter(
+      (property) =>
+        property.operation_type.type === `for ${searchPreferences.wanting}` &&
+        property.property_type.name.toLowerCase() ===
+          searchPreferences.looking &&
+        +property.address.latitude ===
+          searchPreferences.location.coordinates.lat &&
+        +property.address.longitude ===
+          searchPreferences.location.coordinates.lng
+    );
+    console.log(filteredProperties);
+    setFiltered(filteredProperties);
+  }, [properties]);
 
   return (
     <StyledContainer>

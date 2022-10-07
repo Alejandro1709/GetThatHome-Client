@@ -1,10 +1,9 @@
-import FilterInput from "./FilterInput";
-import SelectInput from "./SelectInput";
-import { colors } from "../styles/colors";
-import { typography } from "../styles/typography";
-import styled from "@emotion/styled";
-import { AiOutlineSearch } from "react-icons/ai";
-import { ButtonGroup } from "./button-group/ButtonGroup";
+import FilterInput from './FilterInput';
+import SelectInput from './SelectInput';
+import { colors } from '../styles/colors';
+import styled from '@emotion/styled';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { ButtonGroup } from './button-group/ButtonGroup';
 
 const StyledSorteableBarTop = styled.div`
   margin: 2rem 0;
@@ -24,7 +23,7 @@ function SorteableBar({ setFiltered }) {
   return (
     <StyledSorteableBarTop>
       <FilterInput
-        placeholder="Search by address..."
+        placeholder='Search by address...'
         hasLeftIcon={<MagnifyingGlass />}
       />
       <ButtonGroup setFiltered={setFiltered} />
