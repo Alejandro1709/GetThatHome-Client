@@ -8,7 +8,7 @@ import LoginForm from './components/LoginForm';
 import PropertiesPage from './pages/PropertiesPage';
 import PropertyDetailPage from './pages/property-detail-page';
 import SignupPage from './pages/SignupPage';
-import NewPropertyForm from './components/NewPropertyForm';
+import NewPropertyForm from './pages/NewPropertyPage';
 import LandlordPage from './pages/LandlordPage';
 import HomeseekerPage from './pages/HomeSeekerPage';
 import NavBar from './components/NavBar';

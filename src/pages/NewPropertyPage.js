@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import Input from "./Input";
+import Input from "../components/Input";
 import { BiSearch } from "react-icons/bi";
 import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
-import Button from "./Button";
+import Button from "../components/Button";
 import { useState } from "react";
 
 const MainContainer = styled.div`
