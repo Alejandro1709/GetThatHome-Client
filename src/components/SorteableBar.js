@@ -20,14 +20,19 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
   font-size: 1.2rem;
 `;
 
-function SorteableBar({ setFiltered }) {
+function SorteableBar({ setFiltered, properties, filters, setFilters }) {
   return (
     <StyledSorteableBarTop>
       <FilterInput
         placeholder="Search by address..."
         hasLeftIcon={<MagnifyingGlass />}
       />
-      <ButtonGroup setFiltered={setFiltered} />
+      <ButtonGroup
+        setFiltered={setFiltered}
+        properties={properties}
+        filters={filters}
+        setFilters={setFilters}
+      />
       <SelectInput setFiltered={setFiltered} />
     </StyledSorteableBarTop>
   );
