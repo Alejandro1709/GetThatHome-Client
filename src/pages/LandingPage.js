@@ -37,7 +37,7 @@ const SubTitleSection = styled.span`
   margin-bottom: 4rem;
 `;
 
-function LandingPage() {
+function LandingPage({ isMapReady }) {
   return (
     <>
       <SectionOne>
@@ -47,7 +47,7 @@ function LandingPage() {
           <SubTitleSection>
             The easiest way to find where you belong
           </SubTitleSection>
-          <SearchForm />
+          <SearchForm isMapReady={isMapReady} />
         </TitleSection>
       </SectionOne>
       <LayoutCase />

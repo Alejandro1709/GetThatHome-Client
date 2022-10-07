@@ -24,18 +24,54 @@ const FooterWrapper = styled.div`
   bottom: 0;
 `;
 
+const GOOGLE_API_TOKEN = process.env.REACT_APP_GCP_API_KEY;
+
+const addScript = ({ src, id, onLoad }) => {
+  const existing = document.getElementById(id);
+  if (existing) {
+    return existing;
+  } else {
+    const script = document.createElement('script');
+    script.src = src;
+    script.id = id;
+    script.async = true;
+    script.onload = () => {
+      if (onLoad) {
+        onLoad();
+      }
+    };
+    document.body.appendChild(script);
+    return script;
+  }
+};
+
+const removeScript = ({ id }) => {
+  const script = document.getElementById(id);
+  if (script) {
+    document.body.removeChild(script);
+  }
+};
+
+removeScript({
+  id: 'maps-script',
+});
+
 function App() {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  // useEffect(() => {
-  //   getProperties()
-  //     .then((res) => {
-  //       console.log(res);
-  //       setData(res);
-  //     })
-  //     .catch(console.log);
-  // }, []);
+  useEffect(() => {
+    const script = addScript({
+      src: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_TOKEN}&libraries=places`,
+      id: 'maps-script',
+      onLoad: () => {
+        setIsMapLoaded(true);
+        console.log('Google Maps script loaded!');
+      },
+    });
+    return () => removeScript({ id: script.id });
+  }, []);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === 'modal') {
@@ -69,7 +105,10 @@ function App() {
             <Route
               path='/'
               element={
-                <LandingPage onLoginClick={() => setIsModalOpen(true)} />
+                <LandingPage
+                  onLoginClick={() => setIsModalOpen(true)}
+                  isMapReady={isMapLoaded}
+                />
               }
             />
             <Route path='/properties' element={<PropertiesPage />} />

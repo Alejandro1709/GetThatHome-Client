@@ -1,6 +1,6 @@
-import { colors } from "../styles/colors";
-import styled from "@emotion/styled";
-import { fonts, typography } from "../styles/typography";
+import { colors } from '../styles/colors';
+import styled from '@emotion/styled';
+import { fonts } from '../styles/typography';
 
 const StyledInputWrapper = styled.div`
   border: 1px solid ${colors.primary[400]};
@@ -28,7 +28,7 @@ const StyledInput = styled.input`
 function FilterInput({
   id,
   name,
-  type = "text",
+  type = 'text',
   placeholder,
   value,
   onChange,
