@@ -1,9 +1,10 @@
-import { typography } from '../styles/typography';
-import { FiSearch } from 'react-icons/fi';
-import { AiOutlineLogout, AiFillHeart, AiOutlineUser } from 'react-icons/ai';
-import { colors } from '../styles';
-import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { typography } from "../styles/typography";
+import { FiSearch } from "react-icons/fi";
+import { AiOutlineLogout, AiFillHeart, AiOutlineUser } from "react-icons/ai";
+import { colors } from "../styles";
+import styled from "@emotion/styled";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/auth-context";
 
 const ButtonsNavBar = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ const ButtonJoin = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 const ButtonLogin = styled.button`
@@ -50,24 +52,26 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function HomeSeekerLayout() {
+  const { logout } = useAuth();
+
   return (
     <ButtonsNavBar>
       <FindHome>
         <FiSearch />
         FIND A HOME
       </FindHome>
-      <ButtonJoin>
+      <ButtonJoin onClick={logout}>
         <AiOutlineLogout />
         LOGOUT
       </ButtonJoin>
       <ButtonLogin>
-        <StyledNavLink to='/saved'>
+        <StyledNavLink to="/saved">
           <AiFillHeart />
           SAVED PROPERTIES
         </StyledNavLink>
       </ButtonLogin>
       <ButtonLogin>
-        <StyledNavLink to='/profile'>
+        <StyledNavLink to="/profile">
           <AiOutlineUser />
           PROFILE
         </StyledNavLink>
