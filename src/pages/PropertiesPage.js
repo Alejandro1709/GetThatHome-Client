@@ -1,10 +1,10 @@
-import PropertyList from "../components/PropertyList";
-import SorteableBar from "../components/SorteableBar";
-import PaginationBar from "../components/PaginationBar";
-import styled from "@emotion/styled";
-import { getProperties } from "../services/properties-service";
-import { useEffect, useState } from "react";
-import { useProperties } from "../context/properties-context";
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import PropertyList from '../components/PropertyList';
+import SorteableBar from '../components/SorteableBar';
+import PaginationBar from '../components/PaginationBar';
+import { useProperties } from '../context/properties-context';
+import styled from '@emotion/styled';
 
 const StyledContainer = styled.div`
   max-width: 1200px;
@@ -21,12 +21,27 @@ const PropertiesContainer = styled.div`
 
 function PropertiesPage() {
   const { properties } = useProperties();
-  console.log(properties);
+
   const [filtered, setFiltered] = useState(properties);
-  console.log(filtered);
+
+  const location = useLocation();
+
+  function handleFilterProperties() {
+    const locationState = location.state;
+
+    if (locationState) {
+      const filteredProperties = properties.filter((property) => {
+        return (
+          property.operation_type.type === locationState.wanting &&
+          property.property_type.name === locationState.looking
+        );
+      });
+      setFiltered(filteredProperties);
+    }
+  }
 
   useEffect(() => {
-    setFiltered(properties);
+    handleFilterProperties();
   }, []);
 
   return (
