@@ -37,14 +37,14 @@ const ContainerBestPrices = styled.div`
 `;
 
 function LayoutCase() {
-  const { properties } = useProperties();
+  const { bestProps } = useProperties();
   return (
     <Container>
       <ContainerCase>
         <SubTitleSection>Find an Apartment you Love</SubTitleSection>
         <TitleSection>Homes for rent at the best prices</TitleSection>
         <ContainerBestPrices>
-          {properties.map((property) => (
+          {bestProps.map((property) => (
             <PropertyCardDetail key={property.id} property={property} />
           ))}
           {/* <PropertyCardDetail /> */}

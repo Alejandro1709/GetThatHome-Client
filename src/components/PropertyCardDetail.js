@@ -134,10 +134,12 @@ function PropertyCardDetail({ property }) {
 
   useEffect(() => {
     fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${latitude},${longitude}.json?access_token=pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig`
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=country,region&access_token=pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig`
     )
       .then((res) => res.json())
-      .then((data) => setGeocoded(data.features[0].place_name))
+      .then((data) => {
+        setGeocoded(data.features[0]?.place_name)
+      })
       .catch((err) => console.log(err));
   }, [latitude, longitude, property]);
 
