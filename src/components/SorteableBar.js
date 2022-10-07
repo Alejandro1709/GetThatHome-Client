@@ -12,6 +12,7 @@ const StyledSorteableBarTop = styled.div`
   justify-content: space-between;
   align-items: center;
   max-height: 2.5rem;
+  position: relative;
 `;
 
 const MagnifyingGlass = styled(AiOutlineSearch)`
@@ -27,7 +28,7 @@ function SorteableBar({ setFiltered }) {
         hasLeftIcon={<MagnifyingGlass />}
       />
       <ButtonGroup setFiltered={setFiltered} />
-      <SelectInput />
+      <SelectInput setFiltered={setFiltered} />
     </StyledSorteableBarTop>
   );
 }

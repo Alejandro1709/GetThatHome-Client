@@ -8,7 +8,6 @@ import { colors } from "../../styles";
 import { useProperties } from "../../context/properties-context";
 
 export function ButtonGroup({ setFiltered }) {
-  const [opened, setOpened] = useState(false);
   const [price, setPrice] = useState(null || "price");
   const [type, setType] = useState(null || "property type");
   const [pricePopup, setPricePopup] = useState(false);
@@ -20,15 +19,28 @@ export function ButtonGroup({ setFiltered }) {
 
   const submitPrice = (e) => {
     e.preventDefault();
-    const { min_price, max_price } = e.target.elements;
-    console.log(min_price.value, max_price.value);
+    const { min_price, max_price } = e.target.elements,
+      minPrice = min_price.value,
+      maxPrice = max_price.value;
+    setFiltered(
+      properties.filter((prop) => {
+        const rent = prop.operation_type.monthly_rent;
+        const price = prop.operation_type.price;
+        if (rent) {
+          return rent >= minPrice && rent <= maxPrice;
+        }
+        if (price) {
+          return price >= minPrice && price <= maxPrice;
+        }
+      })
+    );
   };
 
   const submitType = (e) => {
     e.preventDefault();
-    const { prop_type } = e.target.elements;
-    const showHouses = prop_type[0].checked;
-    const showApartments = prop_type[1].checked;
+    const elements = e.target.elements,
+      showHouses = elements[0].checked,
+      showApartments = elements[1].checked;
     if (showHouses) {
       setFiltered(
         properties.filter((prop) => prop.property_type.name === "House")
@@ -46,8 +58,8 @@ export function ButtonGroup({ setFiltered }) {
 
   const submitBedBaths = (e) => {
     e.preventDefault();
-    let beds = document.querySelector(".activeTypeBed").getAttribute("value");
-    let baths = document.querySelector(".activeTypeBath").getAttribute("value");
+    let beds = document.querySelector(".activeTypeBed").getAttribute("value"),
+      baths = document.querySelector(".activeTypeBath").getAttribute("value");
     if (beds === "any") beds = 0;
     if (baths === "any") baths = 0;
     setFiltered(
@@ -58,8 +70,8 @@ export function ButtonGroup({ setFiltered }) {
   };
 
   const changeTypeBed = (e) => {
-    const selected = e.target;
-    const active = document.querySelector(".activeTypeBed");
+    const selected = e.target,
+      active = document.querySelector(".activeTypeBed");
     selected.classList.add("activeTypeBed");
     if (!active) return;
     if (selected !== active) {
@@ -69,13 +81,42 @@ export function ButtonGroup({ setFiltered }) {
   };
 
   const changeTypeBath = (e) => {
-    const selected = e.target;
-    const active = document.querySelector(".activeTypeBath");
+    const selected = e.target,
+      active = document.querySelector(".activeTypeBath");
     selected.classList.add("activeTypeBath");
     if (!active) return;
     if (selected !== active) {
       active.classList.remove("activeTypeBath");
       selected.classList.add("activeTypeBath");
+    }
+  };
+
+  const submitMore = (e) => {
+    e.preventDefault();
+    const elements = e.target.elements,
+      showPets = elements[0].checked,
+      minArea = elements[1].value,
+      maxArea = elements[2].value;
+    if (showPets) {
+      setFiltered(
+        properties.filter((prop) => {
+          if (minArea === "" && maxArea === "") {
+            return prop.operation_type.pets_allowed === true;
+          } else {
+            return (
+              prop.operation_type.pets_allowed === true &&
+              prop.area >= minArea &&
+              prop.area <= maxArea
+            );
+          }
+        })
+      );
+    } else {
+      setFiltered(
+        properties.filter(
+          (prop) => prop.area >= minArea && prop.area <= maxArea
+        )
+      );
     }
   };
 
@@ -132,21 +173,11 @@ export function ButtonGroup({ setFiltered }) {
             <p>property type</p>
             <styled.InputsWrapper>
               <styled.CheckboxWrapper>
-                <input
-                  type="checkbox"
-                  value="houses"
-                  id="houses"
-                  name="prop_type"
-                />
+                <input type="checkbox" value="houses" id="houses" />
                 <label htmlFor="houses">Houses</label>
               </styled.CheckboxWrapper>
               <styled.CheckboxWrapper>
-                <input
-                  type="checkbox"
-                  value="apartments"
-                  id="apartments"
-                  name="prop_type"
-                />
+                <input type="checkbox" value="apartments" id="apartments" />
                 <label htmlFor="apartments">Apartment</label>
               </styled.CheckboxWrapper>
             </styled.InputsWrapper>
@@ -213,13 +244,12 @@ export function ButtonGroup({ setFiltered }) {
       </Button>
       {morePopUp && (
         <styled.MorePopUp>
-          <styled.PopUpCard>
+          <styled.PopUpCard onSubmit={submitMore}>
             <p>pets allowed</p>
             <styled.CheckboxWrapper style={{ alignSelf: "flex-start" }}>
               <input type="checkbox" value="pets_allowed" id="pets_allowed" />
               <label htmlFor="pets_allowed">Pets Allowed</label>
             </styled.CheckboxWrapper>
-            <styled.InputsWrapper></styled.InputsWrapper>
             <p>area in m2</p>
             <styled.InputsWrapper>
               <FilterInput placeholder="min" width="100px" />
