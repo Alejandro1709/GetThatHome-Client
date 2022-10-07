@@ -1,17 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getProperties } from "../services/properties-service";
+import { getPropertyTypes } from "../services/property-types-service";
 
 const PropertiesContext = createContext();
 
 function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
-
+  const [types, setTypes] = useState([]);
   useEffect(() => {
     getProperties()
       .then((data) => {
         setProperties(data);
       })
       .catch(console.log);
+    getPropertyTypes()
+    .then((data) => {
+      setTypes(data);
+    })
+    .catch(console.log);
   }, []);
 
   function propertiesWithBestPrices() {
@@ -28,6 +34,7 @@ function PropertiesProvider({ children }) {
       value={{
         properties,
         bestProps: propertiesWithBestPrices(),
+        propertyTypes: types,
       }}
     >
       {children}
