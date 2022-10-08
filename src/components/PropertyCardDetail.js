@@ -35,7 +35,7 @@ export const ShowCaseImg = styled.img`
 
 export const ShowCaseData = styled.div`
   width: 100%;
-  height: 10rem;
+  height: 8rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 `;
@@ -124,11 +124,19 @@ export const DataIcons = styled.div`
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: black;
+  cursor: pointer;
 `;
 
 function PropertyCardDetail({ property }) {
-  const { address, area, bathrooms, bedrooms, property_type, operation_type, photo_urls } =
-    property;
+  const {
+    address,
+    area,
+    bathrooms,
+    bedrooms,
+    property_type,
+    operation_type,
+    photo_urls,
+  } = property;
   const [geocoded, setGeocoded] = useState(null);
 
   useEffect(() => {
@@ -144,7 +152,7 @@ function PropertyCardDetail({ property }) {
             {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
             {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
           </Deal>
-          <ShowCaseImg src={photo_urls[0]||casa1} alt="home-thumbnail" />
+          <ShowCaseImg src={photo_urls[0] || casa1} alt="home-thumbnail" />
         </CardImg>
         <ShowCaseData>
           <CostProperty>

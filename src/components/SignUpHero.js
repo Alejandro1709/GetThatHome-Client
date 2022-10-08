@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { colors } from "../styles";
 import { fonts, typography } from "../styles/typography";
+import { StyledNavLink } from "./PropertyCardDetail";
 
 const ContainerHero = styled.div`
   display: flex;
@@ -47,7 +48,9 @@ function SignUpHero() {
         <Spam>
           Getting someone to rent your apartment has never been this easy
         </Spam>
-        <CreateAccount>Create an account now</CreateAccount>
+        <StyledNavLink to={`/signup`}>
+          <CreateAccount>Create an account now</CreateAccount>
+        </StyledNavLink>
       </CreateAccountContainer>
     </ContainerHero>
   );
