@@ -2,7 +2,6 @@ import PropertyList from "../components/PropertyList";
 import SorteableBar from "../components/SorteableBar";
 import PaginationBar from "../components/PaginationBar";
 import styled from "@emotion/styled";
-import { getProperties } from "../services/properties-service";
 import { useEffect, useState } from "react";
 import { useProperties } from "../context/properties-context";
 import { filterProperties } from "../components/button-group/utils";
@@ -26,6 +25,7 @@ const initialFilters = {
   ambients: { beds: 0, baths: 0 },
   pets: null,
   area: { min: 0, max: Infinity },
+  op_type: { rent: null, sale: null },
 };
 
 function PropertiesPage() {
@@ -33,22 +33,14 @@ function PropertiesPage() {
   const [filters, setFilters] = useState(initialFilters);
   const [filtered, setFiltered] = useState(properties);
   const filteredProperties = filterProperties(properties, filters);
-  console.log(properties);
-  console.log(filtered);
-  console.log("TOSHOWFILTERED:", filteredProperties);
 
-  useEffect(() => {
-    setFiltered(properties);
-  }, []);
+  // useEffect(() => {
+  //   setFiltered(properties);
+  // }, []);
 
   return (
     <StyledContainer>
-      <SorteableBar
-        setFiltered={setFiltered}
-        properties={[]}
-        filters={filters}
-        setFilters={setFilters}
-      />
+      <SorteableBar filters={filters} setFilters={setFilters} />
       <PropertiesContainer>
         <PropertyList properties={filteredProperties} />
         <PaginationBar />

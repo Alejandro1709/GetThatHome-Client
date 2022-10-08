@@ -1,7 +1,6 @@
 import FilterInput from "./FilterInput";
 import SelectInput from "./SelectInput";
 import { colors } from "../styles/colors";
-import { typography } from "../styles/typography";
 import styled from "@emotion/styled";
 import { AiOutlineSearch } from "react-icons/ai";
 import { ButtonGroup } from "./button-group/ButtonGroup";
@@ -20,20 +19,15 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
   font-size: 1.2rem;
 `;
 
-function SorteableBar({ setFiltered, properties, filters, setFilters }) {
+function SorteableBar({ filters, setFilters }) {
   return (
     <StyledSorteableBarTop>
       <FilterInput
         placeholder="Search by address..."
         hasLeftIcon={<MagnifyingGlass />}
       />
-      <ButtonGroup
-        setFiltered={setFiltered}
-        properties={properties}
-        filters={filters}
-        setFilters={setFilters}
-      />
-      <SelectInput setFiltered={setFiltered} />
+      <ButtonGroup filters={filters} setFilters={setFilters} />
+      <SelectInput filters={filters} setFilters={setFilters} />
     </StyledSorteableBarTop>
   );
 }

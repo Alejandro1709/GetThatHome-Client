@@ -5,7 +5,6 @@ import FilterInput from "../FilterInput";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import * as styled from "./ui";
 import { colors } from "../../styles";
-import { useProperties } from "../../context/properties-context";
 
 export function ButtonGroup({ filters, setFilters }) {
   const [price, setPrice] = useState(null || "price");
@@ -14,8 +13,6 @@ export function ButtonGroup({ filters, setFilters }) {
   const [TypePopup, setTypePopUp] = useState(false);
   const [bedbathPopUp, setBedBathPopUp] = useState(false);
   const [morePopUp, setMorePopUp] = useState(false);
-
-  const { properties } = useProperties();
 
   const submitPrice = (e) => {
     e.preventDefault();

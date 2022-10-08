@@ -38,23 +38,23 @@ export function filterPetsAllowed(properties) {
   return properties.filter((prop) => prop.operation_type.pets_allowed === true);
 }
 
+export function filterByOpType(properties, { rent, sale }) {
+  if ((!rent && !sale) || (rent && sale)) return properties;
+  return properties.filter((prop) => {
+    if (rent) return prop.operation_type.type === "for rent";
+    if (sale) return prop.operation_type.type === "for sale";
+  });
+}
+
 export function filterProperties(properties, filter) {
-  const { price, type, ambients, pets, area } = filter;
-  console.log("initpropertes:", properties);
-  console.log("FILTER:", filter);
+  const { price, type, ambients, pets, area, op_type } = filter;
   const filter1 = filteredByPrice(properties, price);
-  console.log("FILTER PRICE", filter1);
   const filter2 = filteredByType(filter1, type);
-  console.log("FILTER TYPE", filter2);
   const filter3 = filteredByAmbients(filter2, ambients);
-  console.log("FILTER AMBIENTS", filter3);
   let filter4 = filter3;
   if (pets) {
     filter4 = filterPetsAllowed(filter4);
   }
-  console.log("FILTER PETS", filter4);
   const filter5 = filteredByArea(filter4, area);
-  console.log("FILTER AREA", filter5);
-  console.log("FILTER--RESULT", filter5);
-  return filter5;
+  return filterByOpType(filter5, op_type);
 }
