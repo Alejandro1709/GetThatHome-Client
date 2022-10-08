@@ -31,18 +31,13 @@ const initialFilters = {
 function PropertiesPage() {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
-
-  const [filtered, setFiltered] = useState(propsByPreferences);
-
-  // const filteredProps = filterProperties(properties, filters);
+  const filteredProps = filterProperties(propsByPreferences, filters);
 
   return (
     <StyledContainer>
       <SorteableBar filters={filters} setFilters={setFilters} />
-      {/* <SorteableBar setFiltered={setFiltered} /> */}
       <PropertiesContainer>
-        <PropertyList properties={filtered} />
-        {/* <PropertyList properties={filteredProps} /> */}
+        <PropertyList properties={filteredProps} />
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
