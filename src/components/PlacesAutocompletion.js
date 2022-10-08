@@ -12,6 +12,7 @@ const SearchInput = styled.div`
   padding: 0.5rem;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
+  width: inherit;
 `;
 
 const LookingTypeSearch = styled.input`
@@ -21,14 +22,15 @@ const LookingTypeSearch = styled.input`
   outline: none;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
+  width: inherit;
 `;
 const ResultBox = styled.div`
   position: absolute;
-  top: 40px;
-  max-width: 280px;
-  height: 164px;
+  top: 15%;
+  max-width: 17.5rem;
+  height: 10rem;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   text-align: left;
   cursor: pointer;
   overflow: scroll;
@@ -42,17 +44,19 @@ const ResultItem = styled.div`
     background-color: ${colors.primary[100]};
   }
 `;
-export function PlacesAutocompletion({location,changeLocation}) {
+export function PlacesAutocompletion({ location, changeLocation }) {
   async function handleSelect(value) {
+    console.log("selecting a place");
     const result = (await geocodeByAddress(value))[0];
     const coordinates = await getLatLng(result);
-    const whereing = result.formatted_address
-    changeLocation({coordinates,whereing})
+    const whereing = result.formatted_address;
+    changeLocation({ coordinates, whereing });
   }
 
-  function handleChange(value){
-    const whereing = value
-    changeLocation({whereing})
+  function handleChange(value) {
+    const whereing = value;
+    const coordinates = location.coordinates;
+    changeLocation({ coordinates, whereing });
   }
 
   return (
@@ -67,17 +71,21 @@ export function PlacesAutocompletion({location,changeLocation}) {
             {...getInputProps({ placeholder: "Type address..." })}
           />
 
-          <ResultBox>
-            {loading ? <div>...loading</div> : null}
-
-            {suggestions.map((suggestion, index) => {
-              return (
-                <ResultItem key={index} {...getSuggestionItemProps(suggestion)}>
-                  {suggestion.description}
-                </ResultItem>
-              );
-            })}
-          </ResultBox>
+          {(suggestions.length > 0 || loading) && (
+            <ResultBox>
+              {loading ? <div>...loading</div> : null}
+              {suggestions.map((suggestion, index) => {
+                return (
+                  <ResultItem
+                    key={index}
+                    {...getSuggestionItemProps(suggestion)}
+                  >
+                    {suggestion.description}
+                  </ResultItem>
+                );
+              })}
+            </ResultBox>
+          )}
         </SearchInput>
       )}
     </PlacesAutocomplete>

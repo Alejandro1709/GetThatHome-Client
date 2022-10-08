@@ -10,6 +10,8 @@ import { useProperties } from "../context/properties-context";
 import uploadImages from "../services/cloudinary-service";
 import { createProperty } from "../services/properties-service";
 import { useNavigate } from "react-router-dom";
+import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
+import InputContainer from "../components/InputPlaceAutocomplete";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -268,16 +270,26 @@ const default_data = {
     price: "",
   },
   address: {
-    latitude: "45.4",
-    longitude: "-34.2",
+    latitude: "",
+    longitude: "",
     name: "",
   },
 };
+
 export default function NewPropertyForm() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [propertyData, setPropertyData] = useState(default_data);
   const { propertyTypes } = useProperties();
+
+  const location = {
+    whereing: propertyData.address.name,
+    coordinates: {
+      lat: propertyData.address.latitude,
+      lng: propertyData.address.longitude,
+    },
+  };
+
   const range = Array.from({ length: 10 }, (_, i) => i + 1);
   useEffect(() => {
     console.log(propertyData);
@@ -370,13 +382,6 @@ export default function NewPropertyForm() {
     const input = e.target;
     const operation_type = propertyData.operation_type;
     switch (input.name) {
-      case "address":
-        const address = {
-          name: input.value,
-          latitude: -12.3,
-          longitude: -77.01,
-        };
-        return setPropertyData({ ...propertyData, address });
       case "price":
       case "monthly_rent":
       case "maintenance":
@@ -385,13 +390,20 @@ export default function NewPropertyForm() {
         return setPropertyData({ ...propertyData, operation_type });
       case "pets_allowed":
         operation_type[input.name] = input.checked;
-        return setPropertyData({ ...propertyData, operation_type }); 
+        return setPropertyData({ ...propertyData, operation_type });
       default:
         return setPropertyData({
           ...propertyData,
           [input.name]: input.value,
         });
     }
+  }
+
+  function changeLocation({ whereing, coordinates }) {
+    const name = whereing;
+    const { latitude, longitude } = coordinates;
+    const address = { name, latitude, longitude };
+    setPropertyData({ ...propertyData, address });
   }
 
   return (
@@ -407,16 +419,14 @@ export default function NewPropertyForm() {
           </Type>
         </TypePicker>
         <div>
-          <Input
-            name="address"
-            placeholder="start typing to autocomplete"
+          <InputContainer
             width="100%"
             leftIcon={
               <BiSearch size="1.25rem" color={`${colors.secondary[500]}`} />
             }
-            value={propertyData.address.name}
-            onChange={handleChange}
-          />
+          >
+            <PlacesAutocompletion {...{ location, changeLocation }} />
+          </InputContainer>
         </div>
         {propertyData.operation_type.type === "for rent" && (
           <>
