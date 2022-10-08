@@ -4,8 +4,8 @@ import { boxShadow } from "../styles/utils";
 import styled from "@emotion/styled";
 import { useProperties } from "../context/properties-context";
 import { PlacesAutocompletion } from "./PlacesAutocompletion";
-import { isVowel } from "./button-group/utils";
 import { useEffect } from "react";
+import { isVowel } from "../utils";
 
 const Form = styled.form`
   display: flex;
