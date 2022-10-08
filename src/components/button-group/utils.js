@@ -17,7 +17,7 @@ export function filteredByType(properties, { apartments, houses }) {
   if (!apartments && !houses) return properties;
   if (apartments && houses) return properties;
   return properties.filter((prop) => {
-    if (apartments) return prop.property_type.name === "Aparment";
+    if (apartments) return prop.property_type.name === "Apartment";
     if (houses) return prop.property_type.name === "House";
   });
 }
@@ -58,3 +58,5 @@ export function filterProperties(properties, filter) {
   const filter5 = filteredByArea(filter4, area);
   return filterByOpType(filter5, op_type);
 }
+
+export function isVowel(x) {  return /[aeiouAEIOU]/.test(x); }

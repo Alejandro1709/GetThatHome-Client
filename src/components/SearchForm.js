@@ -1,14 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
-import { colors, typography } from '../styles';
-import { boxShadow } from '../styles/utils';
-import styled from '@emotion/styled';
-import { useProperties } from '../context/properties-context';
-import { PlacesAutocompletion } from './PlacesAutocompletion';
+import { useNavigate } from "react-router-dom";
+import { colors, typography } from "../styles";
+import { boxShadow } from "../styles/utils";
+import styled from "@emotion/styled";
+import { useProperties } from "../context/properties-context";
+import { PlacesAutocompletion } from "./PlacesAutocompletion";
+import { isVowel } from "./button-group/utils";
+import { useEffect } from "react";
 
 const Form = styled.form`
   display: flex;
@@ -68,28 +65,26 @@ const Line = styled.div`
 `;
 
 function SearchForm({ isMapReady }) {
-  const [looking, setLooking] = useState("aparment");
-  const [wanting, setWanting] = useState("rent");
-  const [whereing, setWhereing] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
-
   const navigate = useNavigate();
-  const {changePreferences}= useProperties()
-  
-  async function handleSelect(value) {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    setWhereing(value);
-    setCoordinates(latLng);
-  }
+  const { propertyTypes, preferences, changePreferences } = useProperties();
 
+  function changeLocation({
+    whereing = preferences.location.whereing,
+    coordinates = preferences.location.coordinates,
+  }) {
+    changePreferences({
+      ...preferences,
+      location: {
+        whereing,
+        coordinates,
+      },
+    });
+  }
+  useEffect(()=>{console.log(propertyTypes)},[propertyTypes])
   function handleSubmit(e) {
     e.preventDefault();
-    changePreferences({ looking, wanting, location: { whereing, coordinates } })
-    navigate('/properties');
+    console.log(preferences);
+    navigate("/properties");
   }
 
   return (
@@ -98,34 +93,49 @@ function SearchForm({ isMapReady }) {
         <Frase>I’m Looking for</Frase>
 
         <LookingType
-          name='looking'
-          value={looking}
-          onChange={(e) => setLooking(e.target.value)}
+          name="looking"
+          value={preferences.looking}
+          onChange={(e) =>
+            changePreferences({ ...preferences, looking: e.target.value })
+          }
         >
-          <option value='aparment'>An Apartment</option>
-          <option value='house'>A House</option>
+          {propertyTypes.map((type) => {
+            const article = isVowel(type.name[0]) ? "An " : "A ";
+            return (
+              <option key={type.id} value={type.name}>
+                {article + type.name}
+              </option>
+            );
+          })}
+          <option value="all">All</option>
         </LookingType>
-
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
 
         <LookingType
-          name='wanting'
-          value={wanting}
-          onChange={(e) => setWanting(e.target.value)}
+          name="wanting"
+          value={preferences.wanting}
+          onChange={(e) =>
+            changePreferences({ ...preferences, wanting: e.target.value })
+          }
         >
-          <option value='rent'>Rent</option>
-          <option value='sale'>Buy</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Buy</option>
+          <option value="all">I don´t know yet</option>
         </LookingType>
-
       </Looking>
       <Line />
       <Looking>
         <Frase>WHERE</Frase>
         {isMapReady && (
-          <PlacesAutocompletion {...{whereing, setWhereing, handleSelect}}/>
+          <PlacesAutocompletion
+            {...{
+              location: preferences.location,
+              changeLocation,
+            }}
+          />
         )}
       </Looking>
       <Line />

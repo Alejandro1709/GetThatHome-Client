@@ -3,21 +3,21 @@ import { getProperties } from "../services/properties-service";
 import { getPropertyTypes } from "../services/property-types-service";
 
 const PropertiesContext = createContext();
-
+const defaultPreferences = {
+  looking: "apartment",
+  wanting: "rent",
+  location: {
+    whereing: "",
+    coordinates: {
+      lat: null,
+      lng: null,
+    },
+  },
+};
 function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
-  const [preferences, setPreferences] = useState({
-    looking: "",
-    wanting: "",
-    location: {
-      whereing: "",
-      coordinates: {
-        lat: null,
-        lng: null,
-      },
-    },
-  });
   const [types, setTypes] = useState([]);
+  const [preferences, setPreferences] = useState(defaultPreferences);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -27,6 +27,7 @@ function PropertiesProvider({ children }) {
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
+        setPreferences({ ...defaultPreferences, looking: data[0].name });
       })
       .catch(console.log);
   }, []);
@@ -46,9 +47,12 @@ function PropertiesProvider({ children }) {
 
   const propsByPreferences = properties.filter((property) => {
     const { lat, lng } = preferences.location.coordinates;
-    const cond1 = property.operation_type.type === `for ${preferences.wanting}`;
+    const cond1 =
+      property.operation_type.type === `for ${preferences.wanting}` ||
+      preferences.wanting === "all";
     const cond2 =
-      property.property_type.name.toLowerCase() === preferences.looking;
+      property.property_type.name === preferences.looking ||
+      preferences.looking === "all";
     const cond3 = lat
       ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
       : true;
@@ -66,6 +70,7 @@ function PropertiesProvider({ children }) {
         propertyTypes: types,
         propsByPreferences,
         changePreferences,
+        preferences,
       }}
     >
       {children}
