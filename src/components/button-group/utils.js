@@ -58,5 +58,3 @@ export function filterProperties(properties, filter) {
   const filter5 = filteredByArea(filter4, area);
   return filterByOpType(filter5, op_type);
 }
-
-export function isVowel(x) {  return /[aeiouAEIOU]/.test(x); }
