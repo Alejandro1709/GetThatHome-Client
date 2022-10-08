@@ -12,13 +12,7 @@ import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useLocation } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
-import { useState } from "react";
-
-const myImgs = [imagen1, imagen2, imagen3];
-const testCoords = {
-  latitude: -12.025,
-  longitude: -77.065,
-};
+import { useEffect, useState } from "react";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -115,28 +109,74 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
-  const sampleLocation = useLocation().pathname;
-
-  const id = sampleLocation.split("/")[2];
-
   const [propertyByID, setPropertyByID] = useState("");
-
-  showProperty(id).then((data) => setPropertyByID(data));
-
   const {
-    bedrooms,
     bathrooms,
+    bedrooms,
     area,
     description,
     photo_urls,
     operation_type,
-    monthly_rent,
-    maintenance,
-    pet_allowed,
-    latitude,
-    longitude,
     address,
   } = propertyByID;
+
+  /* operation_type  */
+  const [type, setType] = useState("");
+  const [price, setPrice] = useState("");
+  const [monthly_rent, setMonthlyRent] = useState("");
+  const [maintenance, setMaintenance] = useState("");
+  const [pets_allowed, setPetsAllowed] = useState("");
+
+  /* address  */
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [name, setName] = useState("");
+
+  const myImgs = photo_urls;
+
+  const testCoords = {
+    latitude: latitude,
+    longitude: longitude,
+  };
+
+  const sampleLocation = useLocation().pathname;
+  const id = sampleLocation.split("/")[2];
+  useEffect(() => {
+    showProperty(id)
+      .then((data) => setPropertyByID(data))
+      .catch(console.log);
+  }, [id]);
+
+  /* operation_type  */
+
+  useEffect(() => {
+    setType(operation_type?.type);
+  }, [operation_type]);
+
+  useEffect(() => {
+    setPrice(operation_type?.price);
+  }, [operation_type]);
+
+  useEffect(() => {
+    setMonthlyRent(operation_type?.monthly_rent);
+  }, [operation_type]);
+  useEffect(() => {
+    setMaintenance(operation_type?.maintenance);
+  }, [operation_type]);
+  useEffect(() => {
+    setPetsAllowed(operation_type?.pets_allowed);
+  }, [operation_type]);
+
+  /* address  */
+  useEffect(() => {
+    setLatitude(address?.latitude);
+  }, [address]);
+  useEffect(() => {
+    setLongitude(address?.longitude);
+  }, [address]);
+  useEffect(() => {
+    setName(address?.name);
+  }, [address]);
 
   return (
     <TotalContainer>
@@ -148,15 +188,15 @@ export default function PropertyDetailPage() {
           <AboutSection>
             <DescHeader>
               <DescHeaderLeft>
-                <h2>{address}</h2>
-                <h4>{(longitude, latitude)}</h4>
+                <h2>{name}</h2>
+                <h4>{description}</h4>
               </DescHeaderLeft>
               <DescHeaderRight>
                 <DescMoney>
                   <MoneyIcon />
-                  <h4>{monthly_rent}</h4>
+                  <h4>{type === "for rent" ? monthly_rent : price}</h4>
                 </DescMoney>
-                <h5>{maintenance}</h5>
+                <h5>{type === "for rent" ? maintenance : ""}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
@@ -172,21 +212,17 @@ export default function PropertyDetailPage() {
                 <BiArea />
                 <h4>{area} area</h4>
               </DescSingleOpt>
-              <DescSingleOpt>{pet_allowed ? <MdPets /> : ""}</DescSingleOpt>
+              <DescSingleOpt>{pets_allowed ? <MdPets /> : ""}</DescSingleOpt>
             </DescOptions>
             <AboutDesc>
               <h3>{description}</h3>
               <p>
-                3 Bedroom/2 Bathroom apartment available for ASAP move-in!
-                Apartment features hardwood floors throughout, virtual doorman,
-                Central AC/heat, dishwasher and a microwave. The kitchen has
-                custom cabinetry and the living room is big enough to fit a
-                dinner table, a couch and a tv set up.
+                {bedrooms} Bedroom/ {bathrooms} Bathroom.
               </p>
             </AboutDesc>
             <AboutDesc>
               <h3>Location</h3>
-              <p>{address}</p>
+              <p>{name}</p>
             </AboutDesc>
           </AboutSection>
           <MapBox coordValues={testCoords} />
