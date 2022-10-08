@@ -17,3 +17,15 @@ export function createProperty(propertyData) {
     return data;
   });
 }
+
+export function updateProperty(propertyData,id) {
+  return apiFetch("/properties/"+id, { method:"PATCH",body: propertyData }).then((data) => {
+    return data;
+  });
+}
+
+export function deleteProperty(id) {
+  return apiFetch("/properties/"+id, { method:"DELETE"}).then((data) => {
+    return data;
+  });
+}
