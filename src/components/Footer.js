@@ -19,6 +19,7 @@ const ContainerFooter = styled.div`
   font-family: ${fonts.secondary};
   ${typography.body[2]};
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: 1rem 2rem;
   gap: 0.625rem;
@@ -62,7 +63,7 @@ function Footer() {
           <span>
             <img src={IconHome} alt="Logo Home" />
           </span>
-          <span>© 202X - Get That Job</span>
+          <span>© 2022 - Get That Job</span>
           <span>Codeable - Cohort 7 Final Project</span>
         </Section>
         <SectionTeam>

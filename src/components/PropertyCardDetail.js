@@ -9,9 +9,9 @@ import { FaPaw } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 import PropertyDetailPage from "../pages/property-detail-page";
-import { FiEdit } from 'react-icons/fi';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import getGeocode from '../services/mapbox-service';
+import { FiEdit } from "react-icons/fi";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import getGeocode from "../services/mapbox-service";
 
 
 export const ShowCaseBox = styled.div`
@@ -39,6 +39,7 @@ export const ShowCaseImg = styled.img`
 
 export const ShowCaseData = styled.div`
   width: 100%;
+  height: 8rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 `;
@@ -139,6 +140,17 @@ export const DataIcons = styled.div`
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: black;
+  cursor: pointer;
+`;
+export const StyledOption = styled.button`
+  border: none;
+  color: white;
+  background: none;
+  display: flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 `;
 
 export const StyledOption = styled.button`
@@ -177,7 +189,7 @@ function PropertyCardDetail({ property, belongsToMe }) {
             {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
             {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
           </Deal>
-          <ShowCaseImg src={photo_urls[0] || casa1} alt='home-thumbnail' />
+          <ShowCaseImg src={photo_urls[0] || casa1} alt="home-thumbnail" />
         </CardImg>
         <ShowCaseData>
           <CostProperty>
