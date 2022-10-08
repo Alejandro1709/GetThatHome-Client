@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import PaginationBar from "../components/PaginationBar";
-import PropertyList from "../components/PropertyList";
-import { colors, typography } from "../styles";
-import styled from "@emotion/styled";
-import { useProperties } from "../context/properties-context";
-import { getMyProperties } from "../services/my-properties-service";
+import { useEffect, useState } from 'react';
+import PaginationBar from '../components/PaginationBar';
+import PropertyList from '../components/PropertyList';
+import { colors, typography } from '../styles';
+import styled from '@emotion/styled';
+import { useProperties } from '../context/properties-context';
+import { getMyProperties } from '../services/my-properties-service';
 
 const StyledContainer = styled.div`
   margin-top: 2rem;
@@ -71,18 +71,19 @@ function ClosedLandlordProperties({ properties }) {
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
   const { properties } = useProperties();
-  const [savedProperties, setSavedProperties] = useState([])
-  useEffect(()=>{
-    getMyProperties().then(
-      (data)=>{
-        console.log(data)
-        setSavedProperties(data)
-      }
-    ).catch(console.log)
-  },[])
+  const [savedProperties, setSavedProperties] = useState([]);
+
+  useEffect(() => {
+    getMyProperties()
+      .then((data) => {
+        console.log(data);
+        setSavedProperties(data);
+      })
+      .catch(console.log);
+  }, []);
 
   return (
-    <StyledContainer id="styledcontainer">
+    <StyledContainer id='styledcontainer'>
       <StyledTabs>
         <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
           Active
