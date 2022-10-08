@@ -83,17 +83,11 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
     email: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState("");
-
-  const [errorsSignup, setErrorsSignup] = useState({
-    email: "",
-    password: "",
-  });
+  const [error, setError] = useState("");
+  const { login } = useAuth();
 
   useEffect(() => {
-    setErrors("");
-    setErrorsSignup({ email: "", password: "" });
+    setError("");
   }, [onLoginClick]);
 
   function handleChange(e) {
@@ -101,15 +95,11 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
     setFormData({ ...formData, [name]: value });
   }
 
-  const { login } = useAuth();
-  console.log("Auth aca");
-  console.log(useAuth());
-  // console.log(signup);
-  // setErrors("");
   function handleSubmit(e) {
     e.preventDefault();
-    login(formData).catch((error) => setErrors(JSON.parse(error.message)));
-    handleCloseModal();
+    login(formData)
+      .then(()=>handleCloseModal())
+      .catch((error) => setError(JSON.parse(error.message)));
   }
 
   return (
@@ -125,9 +115,7 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
             label="Email"
             onChange={handleChange}
             value={formData.email}
-            error={errorsSignup.email}
           />
-          {/* <StyledFormError>Error will be shown here</StyledFormError> */}
         </StyledFormGroup>
         <StyledFormGroup>
           <Input
@@ -138,11 +126,9 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
             label="Password"
             onChange={handleChange}
             value={formData.password}
-            error={errorsSignup.password}
           />
-          {/* <StyledFormError>Error will be shown here</StyledFormError> */}
         </StyledFormGroup>
-        <span style={{ color: "red" }}>{errors}</span>
+        <span style={{ color: "red" }}>{error}</span>
         <StyledFormButton type="submit">
           <RiUserShared2Line />
           Login
