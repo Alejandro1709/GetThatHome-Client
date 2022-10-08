@@ -1,6 +1,12 @@
-import styled from "@emotion/styled";
-import { colors, typography } from "../styles";
-import { boxShadow } from "../styles/utils";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
+import { colors, typography } from '../styles';
+import { boxShadow } from '../styles/utils';
+import styled from '@emotion/styled';
 
 const Form = styled.form`
   display: flex;
@@ -23,6 +29,14 @@ const LookingTipe = styled.select`
   display: flex;
   align-items: center;
   padding: 0.5rem;
+  ${typography.body[1]};
+  color: ${colors.secondary[700]};
+`;
+const LookingTipeSearch = styled.input`
+  border: none;
+  display: flex;
+  align-items: center;
+  outline: none;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
 `;
@@ -55,38 +69,127 @@ const Line = styled.div`
   margin: 2rem 0;
 `;
 
-function SearchForm() {
+const SearchInput = styled.div`
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  ${typography.body[1]};
+  color: ${colors.secondary[700]};
+`;
+
+const ResultBox = styled.div`
+  position: absolute;
+  top: 40px;
+  max-width: 280px;
+  height: 164px;
+  background-color: white;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  overflow: scroll;
+  ${boxShadow[1]};
+`;
+
+const ResultItem = styled.div`
+  padding: 8px;
+
+  &:hover {
+    background-color: ${colors.primary[100]};
+  }
+`;
+
+function SearchForm({ isMapReady }) {
+  const [looking, setLooking] = useState('aparment');
+  const [wanting, setWanting] = useState('rent');
+  const [whereing, setWhereing] = useState('');
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+
+  const navigate = useNavigate();
+
+  async function handleSelect(value) {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setWhereing(value);
+    setCoordinates(latLng);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    localStorage.setItem(
+      'preferences',
+      JSON.stringify({ looking, wanting, location: { whereing, coordinates } })
+    );
+    navigate('/properties');
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
+        <LookingTipe
+          name='looking'
+          value={looking}
+          onChange={(e) => setLooking(e.target.value)}
+        >
+          <option value='aparment'>An Apartment</option>
+          <option value='house'>A House</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
-        <LookingTipe name="select">
-          <option value="rent">Rent</option>
-          <option value="sell">Sell</option>
+        <LookingTipe
+          name='wanting'
+          value={wanting}
+          onChange={(e) => setWanting(e.target.value)}
+        >
+          <option value='rent'>Rent</option>
+          <option value='sale'>Buy</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
-        <Frase>I’m Looking for</Frase>
-        <LookingTipe name="select">
-          <option selected disabled hidden>
-            {" "}
-            Favorite district
-          </option>
-          <option value="apartment">An Apartment</option>
-          <option value="house">A House</option>
-        </LookingTipe>
+        <Frase>WHERE</Frase>
+        {isMapReady && (
+          <PlacesAutocomplete
+            value={whereing}
+            onChange={setWhereing}
+            onSelect={handleSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <SearchInput>
+                <LookingTipeSearch
+                  {...getInputProps({ placeholder: 'Type address...' })}
+                />
+
+                <ResultBox>
+                  {loading ? <div>...loading</div> : null}
+
+                  {suggestions.map((suggestion) => {
+                    return (
+                      <ResultItem {...getSuggestionItemProps(suggestion)}>
+                        {suggestion.description}
+                      </ResultItem>
+                    );
+                  })}
+                </ResultBox>
+              </SearchInput>
+            )}
+          </PlacesAutocomplete>
+        )}
       </Looking>
       <Line />
-      <Search type="submit">Search</Search>
+      <Search type='submit'>Search</Search>
     </Form>
   );
 }

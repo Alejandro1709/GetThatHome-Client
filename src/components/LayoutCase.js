@@ -1,7 +1,8 @@
-import styled from "@emotion/styled";
-import { colors } from "../styles";
-import { typography } from "../styles/typography";
-import PropertyCardDetail from "./PropertyCardDetail";
+import { useProperties } from '../context/properties-context';
+import { colors } from '../styles';
+import { typography } from '../styles/typography';
+import PropertyCardDetail from './PropertyCardDetail';
+import styled from '@emotion/styled';
 
 const Container = styled.div`
   height: 37.75rem;
@@ -36,15 +37,17 @@ const ContainerBestPrices = styled.div`
 `;
 
 function LayoutCase() {
+  const { bestProps } = useProperties();
   return (
     <Container>
       <ContainerCase>
         <SubTitleSection>Find an Apartment you Love</SubTitleSection>
         <TitleSection>Homes for rent at the best prices</TitleSection>
         <ContainerBestPrices>
-          <PropertyCardDetail />
-          <PropertyCardDetail />
-          <PropertyCardDetail />
+          {bestProps.map((property) => (
+            <PropertyCardDetail key={property.id} property={property} />
+          ))}
+          {/* <PropertyCardDetail /> */}
         </ContainerBestPrices>
       </ContainerCase>
     </Container>

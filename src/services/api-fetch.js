@@ -4,7 +4,6 @@ export default async function apiFetch(
   { method, headers, body } = {}
 ) {
   const token = JSON.parse(sessionStorage.getItem(tokenKey));
-  console.log(token);
   if (token) {
     headers = {
       ...token,

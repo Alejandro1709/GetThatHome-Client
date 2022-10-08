@@ -1,11 +1,13 @@
-import { boxShadow } from "../styles/utils";
-import casa1 from "../assets/images/casa1.jpg";
-import { colors } from "../styles/colors";
-import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
-import { fonts, typography } from "../styles/typography";
-import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
-import { FaPaw } from "react-icons/fa";
-import styled from "@emotion/styled";
+import { useEffect, useState } from 'react';
+import { boxShadow } from '../styles/utils';
+import casa1 from '../assets/images/casa1.jpg';
+import { colors } from '../styles/colors';
+import { RiCoinsLine, RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { fonts, typography } from '../styles/typography';
+import { BiBed, BiBuildingHouse, BiBath, BiArea } from 'react-icons/bi';
+import { FaPaw } from 'react-icons/fa';
+import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
@@ -118,49 +120,70 @@ export const DataIcons = styled.div`
   font-family: ${fonts.secondary};
 `;
 
+export const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: black;
+`;
+
 function PropertyCardDetail({ property }) {
   const { address, area, bathrooms, bedrooms, property_type, operation_type } =
     property;
+  const [geocoded, setGeocoded] = useState(null);
+
+  const { latitude, longitude } = address;
+
+  useEffect(() => {
+    fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=country,region&access_token=pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setGeocoded(data.features[0]?.place_name)
+      })
+      .catch((err) => console.log(err));
+  }, [latitude, longitude, property]);
 
   return (
-    <ShowCaseBox>
-      <CardImg>
-        <Deal>
-          <RiCoinsLine />
-          {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
-          {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
-        </Deal>
-        <ShowCaseImg src={casa1} alt="casa1" />
-      </CardImg>
-      <ShowCaseData>
-        <CostProperty>
-          <Rent>
-            <RiMoneyDollarCircleLine />
-            <Cost>{operation_type.monthly_rent || operation_type.price}</Cost>
-          </Rent>
-          <Type>
-            <BiBuildingHouse />
-            <TypeName>{property_type.name}</TypeName>
-          </Type>
-        </CostProperty>
-        <ContactDetails>
-          86872 Jacob Gateway, Durganport, WV 48044
-        </ContactDetails>
-        <Additionals>
-          <DataIcons>
-            <BiBed size="1.5rem" /> {bedrooms}
-          </DataIcons>
-          <DataIcons>
-            <BiBath size="1.5rem" /> {bathrooms}
-          </DataIcons>
-          <DataIcons>
-            <BiArea size="1.5rem" /> {area} m2
-          </DataIcons>
-          <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
-        </Additionals>
-        <Options />
-      </ShowCaseData>
-    </ShowCaseBox>
+    <StyledNavLink to={`/properties/${property.id}`}>
+      <ShowCaseBox>
+        <CardImg>
+          <Deal>
+            <RiCoinsLine />
+            {operation_type.type === 'for rent' && <Rental>For Rental</Rental>}
+            {operation_type.type === 'for sale' && <Rental>For Sale</Rental>}
+          </Deal>
+          <ShowCaseImg src={casa1} alt='casa1' />
+        </CardImg>
+        <ShowCaseData>
+          <CostProperty>
+            <Rent>
+              <RiMoneyDollarCircleLine />
+              <Cost>{operation_type.monthly_rent || operation_type.price}</Cost>
+            </Rent>
+            <Type>
+              <BiBuildingHouse />
+              <TypeName>{property_type.name}</TypeName>
+            </Type>
+          </CostProperty>
+          <ContactDetails>
+            {geocoded ? geocoded : 'Not an actual address...'}
+          </ContactDetails>
+          <Additionals>
+            <DataIcons>
+              <BiBed size='1.5rem' /> {bedrooms}
+            </DataIcons>
+            <DataIcons>
+              <BiBath size='1.5rem' /> {bathrooms}
+            </DataIcons>
+            <DataIcons>
+              <BiArea size='1.5rem' /> {area} m2
+            </DataIcons>
+            <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
+          </Additionals>
+          <Options />
+        </ShowCaseData>
+      </ShowCaseBox>
+    </StyledNavLink>
   );
 }
 

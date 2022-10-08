@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
-import Input from "./Input";
+import Input from "../components/Input";
 import { BiSearch } from "react-icons/bi";
 import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
-import Button from "./Button";
+import Button from "../components/Button";
 import { useState } from "react";
+import { useProperties } from "../context/properties-context";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -254,7 +255,10 @@ const ImgDeleteBtn = styled.button`
 `;
 
 export default function NewPropertyForm() {
-  const [images, setimages] = useState([]);
+  const [images, setImages] = useState([]);
+  const [type, setType] = useState("sale");
+  const { propertyTypes } = useProperties();
+  const range = Array.from({length: 10}, (_, i) => i + 1)
 
   const changeInput = (e) => {
     //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
@@ -266,14 +270,14 @@ export default function NewPropertyForm() {
       indexImg = 0;
     }
 
-    let newImgsToState = readmultifiles(e, indexImg);
+    let newImgsToState = readMultiFiles(e, indexImg);
     let newImgsState = [...images, ...newImgsToState];
-    setimages(newImgsState);
+    setImages(newImgsState);
 
     console.log(newImgsState);
   };
 
-  function readmultifiles(e, indexInicial) {
+  function readMultiFiles(e, indexInicial) {
     const files = e.currentTarget.files;
     //el array con las imagenes nuevas
     const arrayImages = [];
@@ -299,10 +303,8 @@ export default function NewPropertyForm() {
       return element.index !== indice;
     });
     console.log(newImgs);
-    setimages(newImgs);
+    setImages(newImgs);
   }
-
-  const [type, setType] = useState("sale");
 
   const changeType = (e) => {
     setType(e.target.id);
@@ -314,9 +316,14 @@ export default function NewPropertyForm() {
     }
   };
 
+  function handleSubmit(e){
+    e.preventDefault()
+    console.log(e.target)
+  }
+
   return (
     <MainContainer>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit}>
         <h2>Create a property listing</h2>
         <TypePicker>
           <Type left={true} id="rent" onClick={changeType}>
@@ -386,19 +393,19 @@ export default function NewPropertyForm() {
         <InputWrapper>
           <h4>property type</h4>
           <div style={{ display: "flex", gap: "1rem" }}>
-            <CheckboxWrapper>
-              <input
-                type="radio"
-                value="apartment"
-                id="apartment"
-                name="prop_type"
-              />
-              <label htmlFor="apartment">Apartment</label>
-            </CheckboxWrapper>
-            <CheckboxWrapper>
-              <input type="radio" value="house" id="house" name="prop_type" />
-              <label htmlFor="house">House</label>
-            </CheckboxWrapper>
+            {propertyTypes.map((type) => {
+              return (
+                <CheckboxWrapper key={type.id}>
+                  <input
+                    type="radio"
+                    value={type.id}
+                    id={type.name}
+                    name="prop_type"
+                  />
+                  <label htmlFor={type.name}>{type.name}</label>
+                </CheckboxWrapper>
+              );
+            })}
           </div>
         </InputWrapper>
         <SelectWrapper>
@@ -408,7 +415,9 @@ export default function NewPropertyForm() {
               <option selected disabled hidden>
                 Select...
               </option>
-              <option value="1">1</option>
+              {range.map((n=>{
+                return <option key={n} value={n}>{n}</option>
+              }))}
             </StyledSelect>
           </InputWrapper>
           <InputWrapper>
@@ -417,7 +426,9 @@ export default function NewPropertyForm() {
               <option selected disabled hidden>
                 Select...
               </option>
-              <option value="1">1</option>
+              {range.map((n=>{
+                return <option key={n} value={n}>{n}</option>
+              }))}
             </StyledSelect>
           </InputWrapper>
           <InputWrapper>
@@ -462,15 +473,15 @@ export default function NewPropertyForm() {
           {images.length === 0 ? (
             <UploadedBox>No photos yet</UploadedBox>
           ) : (
-            images.map((imagen) => (
-              <UploadedBox key={imagen.index}>
+            images.map((image) => (
+              <UploadedBox key={image.index}>
                 <ImgBox>
-                  <ImgDeleteBtn onClick={deleteImg.bind(this, imagen.index)}>
+                  <ImgDeleteBtn onClick={deleteImg.bind(this, image.index)}>
                     X
                   </ImgDeleteBtn>
                   <img
                     alt="algo"
-                    src={imagen.url}
+                    src={image.url}
                     data-toggle="modal"
                     data-target="#ModalPreViewImg"
                     style={{ height: "80%" }}
