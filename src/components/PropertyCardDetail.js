@@ -127,7 +127,7 @@ export const StyledNavLink = styled(NavLink)`
 `;
 
 function PropertyCardDetail({ property }) {
-  const { address, area, bathrooms, bedrooms, property_type, operation_type } =
+  const { address, area, bathrooms, bedrooms, property_type, operation_type, photo_urls } =
     property;
   const [geocoded, setGeocoded] = useState(null);
 
@@ -144,7 +144,7 @@ function PropertyCardDetail({ property }) {
             {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
             {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
           </Deal>
-          <ShowCaseImg src={casa1} alt="casa1" />
+          <ShowCaseImg src={photo_urls[0]||casa1} alt="home-thumbnail" />
         </CardImg>
         <ShowCaseData>
           <CostProperty>
