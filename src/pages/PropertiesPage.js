@@ -31,38 +31,34 @@ const initialFilters = {
 function PropertiesPage() {
   const { properties } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
-  // const [filtered, setFiltered] = useState(properties);
-  const filteredProperties = filterProperties(properties, filters);
-
-  // useEffect(() => {
-  //   setFiltered(properties);
-  // }, []);
+  const filteredProps = filterProperties(properties, filters);
 
   const [filtered, setFiltered] = useState([]);
 
-  useEffect(() => {
-    const searchPreferences = JSON.parse(localStorage.getItem("preferences"));
-    console.log(searchPreferences);
-    console.log(properties);
-    const filteredProperties = properties.filter(
-      (property) =>
-        property.operation_type.type === `for ${searchPreferences.wanting}` &&
-        property.property_type.name.toLowerCase() ===
-          searchPreferences.looking &&
-        +property.address.latitude ===
-          searchPreferences.location.coordinates.lat &&
-        +property.address.longitude ===
-          searchPreferences.location.coordinates.lng
-    );
-    console.log(filteredProperties);
-    setFiltered(filteredProperties);
-  }, [properties]);
+  // useEffect(() => {
+  //   const searchPreferences = JSON.parse(localStorage.getItem("preferences"));
+  //   console.log(searchPreferences);
+  //   console.log(properties);
+  //   const filteredProperties = properties.filter(
+  //     (property) =>
+  //       property.operation_type.type === `for ${searchPreferences.wanting}` &&
+  //       property.property_type.name.toLowerCase() ===
+  //         searchPreferences.looking &&
+  //       +property.address.latitude ===
+  //         searchPreferences.location.coordinates.lat &&
+  //       +property.address.longitude ===
+  //         searchPreferences.location.coordinates.lng
+  //   );
+  //   console.log(filteredProperties);
+  //   setFiltered(filteredProperties);
+  // }, [properties]);
 
   return (
     <StyledContainer>
       <SorteableBar filters={filters} setFilters={setFilters} />
       <PropertiesContainer>
-        <PropertyList properties={filteredProperties} />
+        {/* <PropertyList properties={filtered} /> */}
+        <PropertyList properties={filteredProps} />
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>

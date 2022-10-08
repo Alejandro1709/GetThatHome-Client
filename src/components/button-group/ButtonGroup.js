@@ -10,9 +10,23 @@ export function ButtonGroup({ filters, setFilters }) {
   const [price, setPrice] = useState(null || "price");
   const [type, setType] = useState(null || "property type");
   const [pricePopup, setPricePopup] = useState(false);
-  const [TypePopup, setTypePopUp] = useState(false);
+  const [typePopUp, setTypePopUp] = useState(false);
   const [bedbathPopUp, setBedBathPopUp] = useState(false);
   const [morePopUp, setMorePopUp] = useState(false);
+
+  const allModals = [
+    [pricePopup, setPricePopup],
+    [typePopUp, setTypePopUp],
+    [bedbathPopUp, setBedBathPopUp],
+    [morePopUp, setMorePopUp],
+  ];
+
+  const onlyOneModal = () => {
+    for (const modal of allModals) {
+      const fn = modal[1];
+      if (modal[0]) fn(false);
+    }
+  };
 
   const submitPrice = (e) => {
     e.preventDefault();
@@ -83,9 +97,10 @@ export function ButtonGroup({ filters, setFilters }) {
   return (
     <styled.StyledButtonGroup>
       <Button
-        onClick={() =>
-          !pricePopup ? setPricePopup(true) : setPricePopup(false)
-        }
+        onClick={() => {
+          !pricePopup ? setPricePopup(true) : setPricePopup(false);
+          onlyOneModal();
+        }}
       >
         {price}
       </Button>
@@ -123,11 +138,14 @@ export function ButtonGroup({ filters, setFilters }) {
         </styled.PricePopUp>
       )}
       <Button
-        onClick={() => (!TypePopup ? setTypePopUp(true) : setTypePopUp(false))}
+        onClick={() => {
+          !typePopUp ? setTypePopUp(true) : setTypePopUp(false);
+          onlyOneModal();
+        }}
       >
         {type}
       </Button>
-      {TypePopup && (
+      {typePopUp && (
         <styled.TypePopUp>
           <styled.PopUpCard onSubmit={submitType}>
             <p>property type</p>
@@ -146,9 +164,10 @@ export function ButtonGroup({ filters, setFilters }) {
         </styled.TypePopUp>
       )}
       <Button
-        onClick={() =>
-          !bedbathPopUp ? setBedBathPopUp(true) : setBedBathPopUp(false)
-        }
+        onClick={() => {
+          !bedbathPopUp ? setBedBathPopUp(true) : setBedBathPopUp(false);
+          onlyOneModal();
+        }}
       >
         Beds and baths
       </Button>
@@ -198,7 +217,10 @@ export function ButtonGroup({ filters, setFilters }) {
       <Button
         hasIcon
         Icon={BsChevronDown}
-        onClick={() => (!morePopUp ? setMorePopUp(true) : setMorePopUp(false))}
+        onClick={() => {
+          !morePopUp ? setMorePopUp(true) : setMorePopUp(false);
+          onlyOneModal();
+        }}
       >
         More
       </Button>
