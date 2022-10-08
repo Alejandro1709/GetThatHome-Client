@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { colors, typography } from "../styles";
 import { boxShadow } from "../styles/utils";
 
@@ -41,11 +42,23 @@ const ResultItem = styled.div`
     background-color: ${colors.primary[100]};
   }
 `;
-export function PlacesAutocompletion({whereing,setWhereing,handleSelect}) {
+export function PlacesAutocompletion({location,changeLocation}) {
+  async function handleSelect(value) {
+    const result = (await geocodeByAddress(value))[0];
+    const coordinates = await getLatLng(result);
+    const whereing = result.formatted_address
+    changeLocation({coordinates,whereing})
+  }
+
+  function handleChange(value){
+    const whereing = value
+    changeLocation({whereing})
+  }
+
   return (
     <PlacesAutocomplete
-      value={whereing}
-      onChange={setWhereing}
+      value={location.whereing}
+      onChange={handleChange}
       onSelect={handleSelect}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
