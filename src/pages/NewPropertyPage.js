@@ -5,8 +5,13 @@ import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
 import Button from "../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProperties } from "../context/properties-context";
+import uploadImages from "../services/cloudinary-service";
+import { createProperty } from "../services/properties-service";
+import { useNavigate } from "react-router-dom";
+import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
+import InputContainer from "../components/InputPlaceAutocomplete";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -253,13 +258,42 @@ const ImgDeleteBtn = styled.button`
     background-color: ${colors.primary[400]};
   }
 `;
+const default_data = {
+  bedrooms: "",
+  bathrooms: "",
+  area: "",
+  photo_urls: [],
+  active: true,
+  description: "",
+  operation_type: {
+    type: "for sale",
+    price: "",
+  },
+  address: {
+    latitude: "",
+    longitude: "",
+    name: "",
+  },
+};
 
 export default function NewPropertyForm() {
+  const navigate = useNavigate();
   const [images, setImages] = useState([]);
-  const [type, setType] = useState("sale");
+  const [propertyData, setPropertyData] = useState(default_data);
   const { propertyTypes } = useProperties();
-  const range = Array.from({length: 10}, (_, i) => i + 1)
 
+  const location = {
+    whereing: propertyData.address.name,
+    coordinates: {
+      lat: propertyData.address.latitude,
+      lng: propertyData.address.longitude,
+    },
+  };
+
+  const range = Array.from({ length: 10 }, (_, i) => i + 1);
+  useEffect(() => {
+    console.log(propertyData);
+  }, [propertyData]);
   const changeInput = (e) => {
     //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
     let indexImg;
@@ -307,18 +341,69 @@ export default function NewPropertyForm() {
   }
 
   const changeType = (e) => {
-    setType(e.target.id);
+    const newType = e.target.id;
     const selected = e.target;
     const active = document.querySelector(".activeType");
     if (selected !== active) {
       active.classList.remove("activeType");
       selected.classList.add("activeType");
     }
+    // const otherFields = newType === "for sale" ? {price:""} : {monthly_rent:"",maintenance:"",pets_allowed:""}
+    const operation_type = {
+      type: newType,
+    };
+    setPropertyData({ ...propertyData, operation_type });
   };
 
-  function handleSubmit(e){
-    e.preventDefault()
-    console.log(e.target)
+  function handleSubmit(e) {
+    e.preventDefault();
+    images.forEach((img) => {
+      const formData = new FormData();
+      formData.append("file", img?.file);
+      formData.append("upload_preset", "hackf1hx");
+      uploadImages(formData)
+        .then((data) => {
+          const newPhotoUrls = [...propertyData.photo_urls, data.url];
+          setPropertyData({
+            ...propertyData,
+            photo_urls: newPhotoUrls,
+          });
+        })
+        .catch(console.log);
+    });
+    createProperty(propertyData)
+      .then(() => {
+        navigate("/myproperties");
+      })
+      .catch(console.log);
+  }
+
+  function handleChange(e) {
+    const input = e.target;
+    const operation_type = propertyData.operation_type;
+    switch (input.name) {
+      case "price":
+      case "monthly_rent":
+      case "maintenance":
+        if (input.value < 0) return;
+        operation_type[input.name] = input.value;
+        return setPropertyData({ ...propertyData, operation_type });
+      case "pets_allowed":
+        operation_type[input.name] = input.checked;
+        return setPropertyData({ ...propertyData, operation_type });
+      default:
+        return setPropertyData({
+          ...propertyData,
+          [input.name]: input.value,
+        });
+    }
+  }
+
+  function changeLocation({ whereing, coordinates }) {
+    const name = whereing;
+    const { latitude, longitude } = coordinates;
+    const address = { name, latitude, longitude };
+    setPropertyData({ ...propertyData, address });
   }
 
   return (
@@ -326,28 +411,29 @@ export default function NewPropertyForm() {
       <FormContainer onSubmit={handleSubmit}>
         <h2>Create a property listing</h2>
         <TypePicker>
-          <Type left={true} id="rent" onClick={changeType}>
+          <Type left={true} id="for rent" onClick={changeType}>
             Rent
           </Type>
-          <Type className="activeType" id="sale" onClick={changeType}>
+          <Type className="activeType" id="for sale" onClick={changeType}>
             Sale
           </Type>
         </TypePicker>
         <div>
-          <Input
-            label="adress"
-            placeholder="start typing to autocomplete"
+          <InputContainer
             width="100%"
             leftIcon={
               <BiSearch size="1.25rem" color={`${colors.secondary[500]}`} />
             }
-          />
+          >
+            <PlacesAutocompletion {...{ location, changeLocation }} />
+          </InputContainer>
         </div>
-        {type === "rent" && (
+        {propertyData.operation_type.type === "for rent" && (
           <>
             <div>
               <Input
-                label="montly rent"
+                type="Number"
+                name="monthly_rent"
                 leftIcon={
                   <RiMoneyDollarCircleLine
                     size="1.25rem"
@@ -356,11 +442,14 @@ export default function NewPropertyForm() {
                 }
                 placeholder="200"
                 width="50%"
+                onChange={handleChange}
+                value={propertyData.operation_type.monthly_rent}
               />
             </div>
             <div>
               <Input
-                label="maintanance"
+                type="Number"
+                name="maintenance"
                 leftIcon={
                   <RiMoneyDollarCircleLine
                     size="1.25rem"
@@ -369,15 +458,18 @@ export default function NewPropertyForm() {
                 }
                 placeholder="100"
                 width="50%"
+                onChange={handleChange}
+                value={propertyData.operation_type.maintenance}
               />
             </div>
           </>
         )}
-        {type === "sale" && (
+        {propertyData.operation_type.type === "for sale" && (
           <>
             <div>
               <Input
-                label="price"
+                type="Number"
+                name="price"
                 leftIcon={
                   <RiMoneyDollarCircleLine
                     size="1.25rem"
@@ -386,6 +478,7 @@ export default function NewPropertyForm() {
                 }
                 placeholder="100"
                 width="50%"
+                onChange={handleChange}
               />
             </div>
           </>
@@ -400,7 +493,8 @@ export default function NewPropertyForm() {
                     type="radio"
                     value={type.id}
                     id={type.name}
-                    name="prop_type"
+                    name="property_type_id"
+                    onChange={handleChange}
                   />
                   <label htmlFor={type.name}>{type.name}</label>
                 </CheckboxWrapper>
@@ -411,35 +505,63 @@ export default function NewPropertyForm() {
         <SelectWrapper>
           <InputWrapper>
             <h5>bedrooms</h5>
-            <StyledSelect>
-              <option selected disabled hidden>
+            <StyledSelect
+              name="bedrooms"
+              onChange={handleChange}
+              value={propertyData.bedrooms}
+            >
+              <option value="" disabled hidden>
                 Select...
               </option>
-              {range.map((n=>{
-                return <option key={n} value={n}>{n}</option>
-              }))}
+              {range.map((n) => {
+                return (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                );
+              })}
             </StyledSelect>
           </InputWrapper>
           <InputWrapper>
             <h5>bathrooms</h5>
-            <StyledSelect>
-              <option selected disabled hidden>
+            <StyledSelect
+              name="bathrooms"
+              onChange={handleChange}
+              value={propertyData.bathrooms}
+            >
+              <option value="" disabled hidden>
                 Select...
               </option>
-              {range.map((n=>{
-                return <option key={n} value={n}>{n}</option>
-              }))}
+              {range.map((n) => {
+                return (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                );
+              })}
             </StyledSelect>
           </InputWrapper>
           <InputWrapper>
             <h5>area</h5>
-            <Input placeholder="##" width="50%" />
+            <Input
+              name="area"
+              value={propertyData.area}
+              onChange={handleChange}
+              placeholder="##"
+              width="50%"
+            />
           </InputWrapper>
         </SelectWrapper>
-        {type === "rent" && (
+        {propertyData.operation_type.type === "for rent" && (
           <>
             <CheckboxWrapper>
-              <input type="checkbox" value="pets_allowed" id="pets_allowed" />
+              <input
+                type="checkbox"
+                value="pets_allowed"
+                id="pets_allowed"
+                name="pets_allowed"
+                onChange={handleChange}
+              />
               <label htmlFor="pets_allowed">Pets Allowed</label>
             </CheckboxWrapper>
             <p>
@@ -450,7 +572,12 @@ export default function NewPropertyForm() {
         )}
         <InputWrapper>
           <h4>about this property</h4>
-          <StyledTextArea placeholder="My apartment is great because..." />
+          <StyledTextArea
+            name="description"
+            onChange={handleChange}
+            value={propertyData.description}
+            placeholder="My apartment is great because..."
+          />
           <p>
             Renters will read this first, so highlight any features or important
             information the apartment has.
@@ -480,7 +607,7 @@ export default function NewPropertyForm() {
                     X
                   </ImgDeleteBtn>
                   <img
-                    alt="algo"
+                    alt="new_pic"
                     src={image.url}
                     data-toggle="modal"
                     data-target="#ModalPreViewImg"

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { useEffect, useState, Fragment } from "react";
-import { getProperties } from "./services/properties-service";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Modal from "./components/Modal";
@@ -14,6 +13,7 @@ import HomeseekerPage from "./pages/HomeSeekerPage";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { PropertiesProvider } from "./context/properties-context";
+import { useAuth } from "./context/auth-context";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -57,10 +57,9 @@ removeScript({
 });
 
 function App() {
-  const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
+  const { user } = useAuth();
   useEffect(() => {
     const script = addScript({
       src: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_TOKEN}&libraries=places`,
@@ -79,25 +78,13 @@ function App() {
     }
   }
 
-  // return (
-  //   <div>
-  //     {data.map((prop) => (
-  //       <div key={prop.id}>
-  //         <p>{prop.description}</p>
-  //         <p>{prop.area}</p>
-  //         <img src={prop.photo_urls[0]} alt="house"></img>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
   return (
     <PropertiesProvider>
       <MainContainer id="maincontainer">
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
-              <LoginForm />
+              <LoginForm handleCloseModal={() => setIsModalOpen(false)} />
             </Modal>
           )}
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
@@ -115,9 +102,15 @@ function App() {
             {/* For the route property detail page add the id of the property */}
             <Route path="/properties/:id" element={<PropertyDetailPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/myproperties" element={<LandlordPage />} />
-            <Route path="/saved" element={<HomeseekerPage />} />
-            <Route path="/create" element={<NewPropertyForm />} />
+            {user?.role_name === "Landlord" && (
+              <Route path="/myproperties" element={<LandlordPage />} />
+            )}
+            {user?.role_name === "Homeseeker" && (
+              <Route path="/saved" element={<HomeseekerPage />} />
+            )}
+            {user?.role_name === "Landlord" && (
+              <Route path="/create" element={<NewPropertyForm />} />
+            )}
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
           <FooterWrapper>

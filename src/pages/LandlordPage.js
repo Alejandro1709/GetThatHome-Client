@@ -1,8 +1,10 @@
-import { useState } from "react";
-import PaginationBar from "../components/PaginationBar";
-import PropertyList from "../components/PropertyList";
-import { colors, typography } from "../styles";
-import styled from "@emotion/styled";
+import { useEffect, useState } from 'react';
+import PaginationBar from '../components/PaginationBar';
+import PropertyList from '../components/PropertyList';
+import { colors, typography } from '../styles';
+import styled from '@emotion/styled';
+import { useProperties } from '../context/properties-context';
+import { getMyProperties } from '../services/my-properties-service';
 
 const StyledContainer = styled.div`
   margin-top: 2rem;
@@ -44,28 +46,22 @@ const StyledSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-const StyledHeading = styled.h2`
-  ${typography.headline[6]}
-`;
-
-function ActiveLandlordProperties() {
+function ActiveLandlordProperties({ properties }) {
   return (
     <StyledSectionInner>
       <div>
-        <StyledHeading>4 Properties found</StyledHeading>
-        <PropertyList length={4} />
+        <PropertyList properties={properties} isLandlord={true} />
       </div>
       <PaginationBar />
     </StyledSectionInner>
   );
 }
 
-function ClosedLandlordProperties() {
+function ClosedLandlordProperties({ properties }) {
   return (
     <StyledSectionInner>
       <div>
-        <StyledHeading>2 Properties found</StyledHeading>
-        <PropertyList length={2} />
+        <PropertyList properties={properties} />
       </div>
       <PaginationBar />
     </StyledSectionInner>
@@ -74,8 +70,20 @@ function ClosedLandlordProperties() {
 
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
+  const { properties } = useProperties();
+  const [savedProperties, setSavedProperties] = useState([]);
+
+  useEffect(() => {
+    getMyProperties()
+      .then((data) => {
+        console.log(data);
+        setSavedProperties(data);
+      })
+      .catch(console.log);
+  }, []);
+
   return (
-    <StyledContainer id="styledcontainer">
+    <StyledContainer id='styledcontainer'>
       <StyledTabs>
         <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
           Active
@@ -86,9 +94,9 @@ function LandlordPage() {
       </StyledTabs>
       <StyledSection>
         {activeTab ? (
-          <ClosedLandlordProperties />
+          <ClosedLandlordProperties {...{ properties }} />
         ) : (
-          <ActiveLandlordProperties />
+          <ActiveLandlordProperties {...{ properties }} />
         )}
       </StyledSection>
     </StyledContainer>

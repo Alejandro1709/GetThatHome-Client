@@ -1,8 +1,11 @@
-import { RiUserShared2Line } from 'react-icons/ri';
-import { typography } from '../styles/typography';
-import { colors } from '../styles/colors';
-import { boxShadow } from '../styles/utils';
-import styled from '@emotion/styled';
+import { RiUserReceivedLine } from "react-icons/ri";
+import { typography } from "../styles/typography";
+import { colors } from "../styles/colors";
+import { boxShadow } from "../styles/utils";
+import styled from "@emotion/styled";
+import Input from "./Input";
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/auth-context";
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -36,20 +39,20 @@ const StyledFormGroup = styled.div`
   width: 100%;
 `;
 
-const StyledFormLabel = styled.label`
-  ${typography.overline}
-`;
+// const StyledFormLabel = styled.label`
+//   ${typography.overline}
+// `;
 
-const StyledFormInput = styled.input`
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid ${colors.primary[300]};
+// const StyledFormInput = styled.input`
+//   border: none;
+//   padding: 8px;
+//   border-radius: 8px;
+//   border: 1px solid ${colors.primary[300]};
 
-  &:focus {
-    outline: 1px solid ${colors.primary[500]};
-  }
-`;
+//   &:focus {
+//     outline: 1px solid ${colors.primary[500]};
+//   }
+// `;
 
 const StyledFormButton = styled.button`
   display: flex;
@@ -70,32 +73,72 @@ const StyledFormButton = styled.button`
   }
 `;
 
-const StyledFormError = styled.span`
-  ${typography.caption}
-  color: ${colors.error[500]};
-`;
+// const StyledFormError = styled.span`
+//   ${typography.caption}
+//   color: ${colors.error[500]};
+// `;
 
-function LoginForm() {
+function LoginForm({ onLoginClick, handleCloseModal }) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState("idle");
+  const { login } = useAuth();
+
+  useEffect(() => {
+    setError("");
+  }, [onLoginClick]);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("loading");
+    login(formData)
+      .then(() => {
+        setStatus("success");
+        handleCloseModal();
+      })
+      .catch((error) => setError(JSON.parse(error.message)));
+  }
+
   return (
     <StyledFormWrapper>
       <StyledTitle>Login</StyledTitle>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='email'>Email</StyledFormLabel>
-          <StyledFormInput
-            type='email'
-            id='email'
-            placeholder='user@mail.com'
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="user@mail.com"
+            label="Email"
+            onChange={handleChange}
+            value={formData.email}
           />
-          <StyledFormError>Error will be shown here</StyledFormError>
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='password'>Password</StyledFormLabel>
-          <StyledFormInput type='password' id='name' placeholder='******' />
-          <StyledFormError>Error will be shown here</StyledFormError>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="*********"
+            label="Password"
+            onChange={handleChange}
+            value={formData.password}
+          />
         </StyledFormGroup>
-        <StyledFormButton type='submit'>
-          <RiUserShared2Line />
+        <span style={{ color: "red" }}>{error}</span>
+        {status === "loading" && (
+          <span style={{ color: colors.primary[400] }}>Loading ...</span>
+        )}
+        <StyledFormButton type="submit">
+          <RiUserReceivedLine />
           Login
         </StyledFormButton>
       </StyledForm>
