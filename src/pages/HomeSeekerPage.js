@@ -3,6 +3,7 @@ import { colors, typography } from "../styles";
 import { useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
+import { useProperties } from "../context/properties-context";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -49,24 +50,24 @@ const ContainerSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-function ActiveHomeseekerPage() {
+function ActiveHomeseekerPage({ properties }) {
   return (
     <ContainerSectionInner>
       <div>
         <ContainerHeading>7 Properties found</ContainerHeading>
-        <PropertyList length={7} />
+        <PropertyList properties={properties} />
       </div>
       <PaginationBar />
     </ContainerSectionInner>
   );
 }
 
-function ClosedHomeseekerPage() {
+function ClosedHomeseekerPage({ properties }) {
   return (
     <ContainerSectionInner>
       <div>
         <ContainerHeading>5 Properties found</ContainerHeading>
-        <PropertyList length={5} />
+        <PropertyList properties={properties} />
       </div>
       <PaginationBar />
     </ContainerSectionInner>
@@ -74,6 +75,7 @@ function ClosedHomeseekerPage() {
 }
 
 function HomeseekerPage() {
+  const { properties } = useProperties();
   const [activeTab, setActiveTab] = useState(0);
   return (
     <ContainerPageHomeSeeker>
@@ -93,7 +95,11 @@ function HomeseekerPage() {
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
-          {activeTab ? <ClosedHomeseekerPage /> : <ActiveHomeseekerPage />}
+        {activeTab ? (
+          <ClosedHomeseekerPage {...{ properties }} />
+        ) : (
+          <ActiveHomeseekerPage {...{ properties }} />
+        )}
         </ContainerSection>
       </ContainerListHomeSeeker>
     </ContainerPageHomeSeeker>
