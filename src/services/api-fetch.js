@@ -32,7 +32,7 @@ export default async function apiFetch(
     } catch (error) {
       throw new Error(response.statusText);
     }
-    throw new Error(JSON.stringify(data.errors));
+    throw new Error(JSON.stringify(data.errors||data));
   }
   try {
     data = await response.json();

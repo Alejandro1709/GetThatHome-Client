@@ -7,6 +7,7 @@ import PlacesAutocomplete, {
 import { colors, typography } from '../styles';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
+import { useProperties } from '../context/properties-context';
 
 const Form = styled.form`
   display: flex;
@@ -24,7 +25,7 @@ const Looking = styled.div`
   min-width: fit-content;
 `;
 
-const LookingTipe = styled.select`
+const LookingType = styled.select`
   border: none;
   display: flex;
   align-items: center;
@@ -32,7 +33,7 @@ const LookingTipe = styled.select`
   ${typography.body[1]};
   color: ${colors.secondary[700]};
 `;
-const LookingTipeSearch = styled.input`
+const LookingTypeSearch = styled.input`
   border: none;
   display: flex;
   align-items: center;
@@ -110,7 +111,8 @@ function SearchForm({ isMapReady }) {
   });
 
   const navigate = useNavigate();
-
+  const {changePreferences}= useProperties()
+  
   async function handleSelect(value) {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
@@ -120,10 +122,7 @@ function SearchForm({ isMapReady }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    localStorage.setItem(
-      'preferences',
-      JSON.stringify({ looking, wanting, location: { whereing, coordinates } })
-    );
+    changePreferences({ looking, wanting, location: { whereing, coordinates } })
     navigate('/properties');
   }
 
@@ -131,26 +130,26 @@ function SearchForm({ isMapReady }) {
     <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
-        <LookingTipe
+        <LookingType
           name='looking'
           value={looking}
           onChange={(e) => setLooking(e.target.value)}
         >
           <option value='aparment'>An Apartment</option>
           <option value='house'>A House</option>
-        </LookingTipe>
+        </LookingType>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
-        <LookingTipe
+        <LookingType
           name='wanting'
           value={wanting}
           onChange={(e) => setWanting(e.target.value)}
         >
           <option value='rent'>Rent</option>
           <option value='sale'>Buy</option>
-        </LookingTipe>
+        </LookingType>
       </Looking>
       <Line />
       <Looking>
@@ -168,7 +167,7 @@ function SearchForm({ isMapReady }) {
               loading,
             }) => (
               <SearchInput>
-                <LookingTipeSearch
+                <LookingTypeSearch
                   {...getInputProps({ placeholder: 'Type address...' })}
                 />
 

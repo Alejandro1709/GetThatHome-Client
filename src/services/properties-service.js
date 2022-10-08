@@ -8,7 +8,12 @@ export function getProperties() {
 
 export function showProperty(id) {
   return apiFetch("/properties/"+id).then((data) => {
-    console.log("good!")
+    return data;
+  });
+}
+
+export function createProperty(propertyData) {
+  return apiFetch("/properties", { body: propertyData }).then((data) => {
     return data;
   });
 }

@@ -6,6 +6,7 @@ const PropertiesContext = createContext();
 
 function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
+  const [preferences, setPreferences] = useState([]);
   const [types, setTypes] = useState([]);
   useEffect(() => {
     getProperties()
@@ -20,6 +21,10 @@ function PropertiesProvider({ children }) {
     .catch(console.log);
   }, []);
 
+  function changePreferences(config){
+    setPreferences(config)
+  }
+
   function propertiesWithBestPrices() {
     const sort_by_cost = (a, b) => {
       const getCost = (prop) =>
@@ -29,12 +34,25 @@ function PropertiesProvider({ children }) {
     return properties.sort(sort_by_cost).slice(0, 3);
   }
 
+  const propsByPreferences = properties.filter(
+    (property) =>
+      property.operation_type.type === `for ${preferences.wanting}` &&
+      property.property_type.name.toLowerCase() ===
+        preferences.looking &&
+      +property.address.latitude ===
+        preferences.location.coordinates.lat &&
+      +property.address.longitude ===
+        preferences.location.coordinates.lng
+  );
+
   return (
     <PropertiesContext.Provider
       value={{
         properties,
         bestProps: propertiesWithBestPrices(),
         propertyTypes: types,
+        propsByPreferences,
+        changePreferences
       }}
     >
       {children}

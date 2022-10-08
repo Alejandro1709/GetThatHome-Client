@@ -19,33 +19,15 @@ const PropertiesContainer = styled.div`
 `;
 
 function PropertiesPage() {
-  const { properties } = useProperties();
+  const { propsByPreferences } = useProperties();
 
-  const [filtered, setFiltered] = useState([]);
-
-  useEffect(() => {
-    const searchPreferences = JSON.parse(localStorage.getItem('preferences'));
-    console.log(searchPreferences);
-    console.log(properties);
-    const filteredProperties = properties.filter(
-      (property) =>
-        property.operation_type.type === `for ${searchPreferences.wanting}` &&
-        property.property_type.name.toLowerCase() ===
-          searchPreferences.looking &&
-        +property.address.latitude ===
-          searchPreferences.location.coordinates.lat &&
-        +property.address.longitude ===
-          searchPreferences.location.coordinates.lng
-    );
-    console.log(filteredProperties);
-    setFiltered(filteredProperties);
-  }, [properties]);
+  const [filtered, setFiltered] = useState(propsByPreferences);
 
   return (
     <StyledContainer>
       <SorteableBar setFiltered={setFiltered} />
       <PropertiesContainer>
-        <PropertyList properties={filtered} />
+        <PropertyList properties={filtered}/>
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
