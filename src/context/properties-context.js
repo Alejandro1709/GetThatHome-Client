@@ -6,7 +6,17 @@ const PropertiesContext = createContext();
 
 function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
-  const [preferences, setPreferences] = useState([]);
+  const [preferences, setPreferences] = useState({
+    looking: "",
+    wanting: "",
+    location: {
+      whereing: "",
+      coordinates: {
+        lat: null,
+        lng: null,
+      },
+    },
+  });
   const [types, setTypes] = useState([]);
   useEffect(() => {
     getProperties()
