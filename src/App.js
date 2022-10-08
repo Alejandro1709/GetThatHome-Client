@@ -1,19 +1,20 @@
-import styled from '@emotion/styled';
-import { useEffect, useState, Fragment } from 'react';
-import { getProperties } from './services/properties-service';
-import { Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import Modal from './components/Modal';
-import LoginForm from './components/LoginForm';
-import PropertiesPage from './pages/PropertiesPage';
-import PropertyDetailPage from './pages/property-detail-page';
-import SignupPage from './pages/SignupPage';
-import NewPropertyForm from './pages/NewPropertyPage';
-import LandlordPage from './pages/LandlordPage';
-import HomeseekerPage from './pages/HomeSeekerPage';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import { PropertiesProvider } from './context/properties-context';
+import styled from "@emotion/styled";
+import { useEffect, useState, Fragment } from "react";
+import { getProperties } from "./services/properties-service";
+import { Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Modal from "./components/Modal";
+import LoginForm from "./components/LoginForm";
+import PropertiesPage from "./pages/PropertiesPage";
+import PropertyDetailPage from "./pages/property-detail-page";
+import SignupPage from "./pages/SignupPage";
+import NewPropertyForm from "./pages/NewPropertyPage";
+import LandlordPage from "./pages/LandlordPage";
+import HomeseekerPage from "./pages/HomeSeekerPage";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import { PropertiesProvider } from "./context/properties-context";
+import { useAuth } from "./context/auth-context";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -31,7 +32,7 @@ const addScript = ({ src, id, onLoad }) => {
   if (existing) {
     return existing;
   } else {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = src;
     script.id = id;
     script.async = true;
@@ -53,47 +54,34 @@ const removeScript = ({ id }) => {
 };
 
 removeScript({
-  id: 'maps-script',
+  id: "maps-script",
 });
 
 function App() {
-  const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
+  const { user } = useAuth();
   useEffect(() => {
     const script = addScript({
       src: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_TOKEN}&libraries=places`,
-      id: 'maps-script',
+      id: "maps-script",
       onLoad: () => {
         setIsMapLoaded(true);
-        console.log('Google Maps script loaded!');
+        console.log("Google Maps script loaded!");
       },
     });
     return () => removeScript({ id: script.id });
   }, []);
 
   function handleCloseModal(e) {
-    if (e.target.dataset.type === 'modal') {
+    if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
 
-  // return (
-  //   <div>
-  //     {data.map((prop) => (
-  //       <div key={prop.id}>
-  //         <p>{prop.description}</p>
-  //         <p>{prop.area}</p>
-  //         <img src={prop.photo_urls[0]} alt="house"></img>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-
   return (
     <PropertiesProvider>
-      <MainContainer id='maincontainer'>
+      <MainContainer id="maincontainer">
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
@@ -103,7 +91,7 @@ function App() {
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
           <Routes>
             <Route
-              path='/'
+              path="/"
               element={
                 <LandingPage
                   onLoginClick={() => setIsModalOpen(true)}
@@ -111,14 +99,20 @@ function App() {
                 />
               }
             />
-            <Route path='/properties' element={<PropertiesPage />} />
+            <Route path="/properties" element={<PropertiesPage />} />
             {/* For the route property detail page add the id of the property */}
-            <Route path='/properties/:id' element={<PropertyDetailPage />} />
-            <Route path='/signup' element={<SignupPage />} />
-            <Route path='/myproperties' element={<LandlordPage />} />
-            <Route path='/saved' element={<HomeseekerPage />} />
-            <Route path='/create' element={<NewPropertyForm />} />
-            <Route path='*' element={<h1>Not Found</h1>} />
+            <Route path="/properties/:id" element={<PropertyDetailPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            {user?.role_name === "Landlord" && (
+              <Route path="/myproperties" element={<LandlordPage />} />
+            )}
+            {user?.role_name === "Homeseeker" && (
+              <Route path="/saved" element={<HomeseekerPage />} />
+            )}
+            {user?.role_name === "Landlord" && (
+              <Route path="/create" element={<NewPropertyForm />} />
+            )}
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
           <FooterWrapper>
             <Footer />
