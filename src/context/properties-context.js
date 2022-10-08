@@ -15,14 +15,14 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
     getPropertyTypes()
-    .then((data) => {
-      setTypes(data);
-    })
-    .catch(console.log);
+      .then((data) => {
+        setTypes(data);
+      })
+      .catch(console.log);
   }, []);
 
-  function changePreferences(config){
-    setPreferences(config)
+  function changePreferences(config) {
+    setPreferences(config);
   }
 
   function propertiesWithBestPrices() {
@@ -34,16 +34,19 @@ function PropertiesProvider({ children }) {
     return properties.sort(sort_by_cost).slice(0, 3);
   }
 
-  const propsByPreferences = properties.filter(
-    (property) =>
-      property.operation_type.type === `for ${preferences.wanting}` &&
-      property.property_type.name.toLowerCase() ===
-        preferences.looking &&
-      +property.address.latitude ===
-        preferences.location.coordinates.lat &&
-      +property.address.longitude ===
-        preferences.location.coordinates.lng
-  );
+  const propsByPreferences = properties.filter((property) => {
+    const { lat, lng } = preferences.location.coordinates;
+    const cond1 = property.operation_type.type === `for ${preferences.wanting}`;
+    const cond2 =
+      property.property_type.name.toLowerCase() === preferences.looking;
+    const cond3 = lat
+      ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
+      : true;
+    const cond4 = lat
+      ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
+      : true;
+    return cond1 && cond2 && cond3 && cond4;
+  });
 
   return (
     <PropertiesContext.Provider
@@ -52,7 +55,7 @@ function PropertiesProvider({ children }) {
         bestProps: propertiesWithBestPrices(),
         propertyTypes: types,
         propsByPreferences,
-        changePreferences
+        changePreferences,
       }}
     >
       {children}
