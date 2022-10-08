@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PlacesAutocomplete, {
+import {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
@@ -8,6 +8,7 @@ import { colors, typography } from '../styles';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
 import { useProperties } from '../context/properties-context';
+import { PlacesAutocompletion } from './PlacesAutocompletion';
 
 const Form = styled.form`
   display: flex;
@@ -30,14 +31,6 @@ const LookingType = styled.select`
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  ${typography.body[1]};
-  color: ${colors.secondary[700]};
-`;
-const LookingTypeSearch = styled.input`
-  border: none;
-  display: flex;
-  align-items: center;
-  outline: none;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
 `;
@@ -68,37 +61,6 @@ const Line = styled.div`
   border: 1px solid #e1e2e1;
   transform: rotate(90deg);
   margin: 2rem 0;
-`;
-
-const SearchInput = styled.div`
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.5rem;
-  ${typography.body[1]};
-  color: ${colors.secondary[700]};
-`;
-
-const ResultBox = styled.div`
-  position: absolute;
-  top: 40px;
-  max-width: 280px;
-  height: 164px;
-  background-color: white;
-  border-radius: 8px;
-  text-align: left;
-  cursor: pointer;
-  overflow: scroll;
-  ${boxShadow[1]};
-`;
-
-const ResultItem = styled.div`
-  padding: 8px;
-
-  &:hover {
-    background-color: ${colors.primary[100]};
-  }
 `;
 
 function SearchForm({ isMapReady }) {
@@ -155,36 +117,7 @@ function SearchForm({ isMapReady }) {
       <Looking>
         <Frase>WHERE</Frase>
         {isMapReady && (
-          <PlacesAutocomplete
-            value={whereing}
-            onChange={setWhereing}
-            onSelect={handleSelect}
-          >
-            {({
-              getInputProps,
-              suggestions,
-              getSuggestionItemProps,
-              loading,
-            }) => (
-              <SearchInput>
-                <LookingTypeSearch
-                  {...getInputProps({ placeholder: 'Type address...' })}
-                />
-
-                <ResultBox>
-                  {loading ? <div>...loading</div> : null}
-
-                  {suggestions.map((suggestion) => {
-                    return (
-                      <ResultItem {...getSuggestionItemProps(suggestion)}>
-                        {suggestion.description}
-                      </ResultItem>
-                    );
-                  })}
-                </ResultBox>
-              </SearchInput>
-            )}
-          </PlacesAutocomplete>
+          <PlacesAutocompletion {...{whereing, setWhereing, handleSelect}}/>
         )}
       </Looking>
       <Line />
