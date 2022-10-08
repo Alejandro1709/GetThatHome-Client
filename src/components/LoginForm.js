@@ -1,4 +1,4 @@
-import { RiUserShared2Line } from "react-icons/ri";
+import { RiUserReceivedLine } from "react-icons/ri";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import { boxShadow } from "../styles/utils";
@@ -98,7 +98,7 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
   function handleSubmit(e) {
     e.preventDefault();
     login(formData)
-      .then(()=>handleCloseModal())
+      .then(() => handleCloseModal())
       .catch((error) => setError(JSON.parse(error.message)));
   }
 
@@ -130,7 +130,7 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
         </StyledFormGroup>
         <span style={{ color: "red" }}>{error}</span>
         <StyledFormButton type="submit">
-          <RiUserShared2Line />
+          <RiUserReceivedLine />
           Login
         </StyledFormButton>
       </StyledForm>

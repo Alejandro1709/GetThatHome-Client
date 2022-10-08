@@ -6,7 +6,10 @@ import Button from "./Button";
 import { RiUserReceivedLine } from "react-icons/ri";
 import { BiHeart } from "react-icons/bi";
 import { FaRegEdit } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Modal from "./Modal";
+import LoginForm from "./LoginForm";
+import { useAuth } from "../context/auth-context";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -67,28 +70,51 @@ const LoginAdText = styled.div`
 `;
 
 export default function PropertyCustomCard() {
-  // const [isLogged, setIsLogged] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isLogged, setIsLogged] = useState(false);
+
+  function handleCloseModal(e) {
+    if (e.target.dataset.type === "modal") {
+      setIsModalOpen(false);
+    }
+  }
   // const [userRole, setuserRole] = useState("landlord");
-  const isLogged = true;
-  const userRole = "homeseeker";
+  // const isLogged = true;
   const [showContactInfo, setShowContactInfo] = useState(false);
+
+  const { user } = useAuth();
+  console.log(user);
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    setUserRole(user?.role_name);
+  }, [user]);
 
   return (
     <>
       <>
-        {!isLogged && (
+        {!user && (
           <Wrapper>
             <LoginAdCard>
+              {isModalOpen && (
+                <Modal onModalClose={handleCloseModal}>
+                  <LoginForm handleCloseModal={() => setIsModalOpen(false)} />
+                </Modal>
+              )}
               <LoginAdText>
                 Log in or Join to contact the advertiser
               </LoginAdText>
-              <Button leftIcon={<RiUserReceivedLine size="1.5rem" />}>
+              <Button
+                leftIcon={<RiUserReceivedLine size="1.5rem" />}
+                onClick={() => setIsModalOpen(true)}
+              >
                 LOGIN
               </Button>
             </LoginAdCard>
           </Wrapper>
         )}
-        {isLogged && userRole === "homeseeker" && (
+
+        {user && userRole === "Homeseeker" && (
           <Wrapper>
             {!showContactInfo ? (
               <>
@@ -113,8 +139,8 @@ export default function PropertyCustomCard() {
             )}
           </Wrapper>
         )}
-        {isLogged && userRole === "landlord" && (
-          <Button leftIcon={<FaRegEdit size="1.5rem" />}>edit property</Button>
+        {user && userRole === "Landlord" && (
+          <Button leftIcon={<FaRegEdit size="1.5rem" />}>Edit Property</Button>
         )}
       </>
     </>
