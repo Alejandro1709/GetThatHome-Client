@@ -8,7 +8,11 @@ import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
 import { FaPaw } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
+import PropertyDetailPage from "../pages/property-detail-page";
+import { FiEdit } from "react-icons/fi";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
+
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
@@ -35,7 +39,7 @@ export const ShowCaseImg = styled.img`
 
 export const ShowCaseData = styled.div`
   width: 100%;
-  height: 10rem;
+  height: 8rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 `;
@@ -108,10 +112,22 @@ export const Additionals = styled.div`
 `;
 
 export const Options = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   background-color: ${colors.primary[400]};
+  /* height: 0.5rem; */
+  color: white;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+`;
+
+export const NoOptions = styled.div`
   height: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+  background-color: ${colors.primary[400]};
 `;
 
 export const DataIcons = styled.div`
@@ -124,11 +140,40 @@ export const DataIcons = styled.div`
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: black;
+  cursor: pointer;
+`;
+export const StyledOption = styled.button`
+  border: none;
+  color: white;
+  background: none;
+  display: flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 `;
 
-function PropertyCardDetail({ property }) {
-  const { address, area, bathrooms, bedrooms, property_type, operation_type, photo_urls } =
-    property;
+export const StyledOption = styled.button`
+  border: none;
+  color: white;
+  background: none;
+  display: flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+`;
+
+function PropertyCardDetail({ property, belongsToMe }) {
+  const {
+    address,
+    area,
+    bathrooms,
+    bedrooms,
+    property_type,
+    operation_type,
+    photo_urls,
+  } = property;
   const [geocoded, setGeocoded] = useState(null);
 
   useEffect(() => {
@@ -144,7 +189,7 @@ function PropertyCardDetail({ property }) {
             {operation_type.type === "for rent" && <Rental>For Rental</Rental>}
             {operation_type.type === "for sale" && <Rental>For Sale</Rental>}
           </Deal>
-          <ShowCaseImg src={photo_urls[0]||casa1} alt="home-thumbnail" />
+          <ShowCaseImg src={photo_urls[0] || casa1} alt="home-thumbnail" />
         </CardImg>
         <ShowCaseData>
           <CostProperty>
@@ -172,7 +217,20 @@ function PropertyCardDetail({ property }) {
             </DataIcons>
             <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
           </Additionals>
-          <Options />
+          {belongsToMe ? (
+            <Options>
+              <StyledOption>
+                <FiEdit />
+                Edit
+              </StyledOption>
+              <StyledOption>
+                <AiOutlineCloseCircle />
+                Close
+              </StyledOption>
+            </Options>
+          ) : (
+            <NoOptions />
+          )}
         </ShowCaseData>
       </ShowCaseBox>
     </StyledNavLink>

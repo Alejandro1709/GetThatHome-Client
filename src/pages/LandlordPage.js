@@ -50,7 +50,7 @@ function LandlordPage() {
   const { closed, active } = useProperties();
   
   return (
-    <StyledContainer id="styledcontainer">
+    <StyledContainer id='styledcontainer'>
       <StyledTabs>
         <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
           Active

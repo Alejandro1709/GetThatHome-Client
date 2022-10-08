@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { colors } from "../styles";
 import { fonts, typography } from "../styles/typography";
-import human from "../assets/images/human.png";
 import { AiOutlineLinkedin, AiFillGithub } from "react-icons/ai";
+import { GiPencilBrush } from "react-icons/gi";
+import { BsTools } from "react-icons/bs";
 
 const Container = styled.div`
   height: 30.3rem;
@@ -20,6 +21,8 @@ const TitleTeam = styled.span`
 const TeamContainer = styled.div`
   display: flex;
   justify-content: center;
+  gap: 5.8rem;
+  flex-wrap: wrap;
 `;
 
 const People = styled.div`
@@ -48,42 +51,187 @@ function TeamSection() {
       <TitleTeam>Meet the team</TitleTeam>
       <TeamContainer>
         <People>
-          <img src={human} alt="Human" />
+          <img
+            src="https://avatars.githubusercontent.com/u/64037397?v=4"
+            alt="Human"
+            style={{
+              width: "11.25rem",
+              height: "11.25rem",
+              borderRadius: "50%",
+            }}
+          />
           <InfoPerson>
-            Ruby Ramirez
+            Alejandro La Rosa
             <LinksPerson>
-              <AiFillGithub />
-              <AiOutlineLinkedin />
+              <GiPencilBrush
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+              <a
+                href="https://github.com/Alejandro1709"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/alejandro-la-rosa-4497a995"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiOutlineLinkedin />
+              </a>
             </LinksPerson>
           </InfoPerson>
         </People>
         <People>
-          <img src={human} alt="Human" />
+          <img
+            src="https://avatars.githubusercontent.com/u/97063552?v=4"
+            alt="Human"
+            style={{
+              width: "11.25rem",
+              height: "11.25rem",
+              borderRadius: "50%",
+            }}
+          />
           <InfoPerson>
-            Ruby Ramirez
+            Bryan Mendoza G.
             <LinksPerson>
-              <AiFillGithub />
-              <AiOutlineLinkedin />
+              <GiPencilBrush
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+              <a
+                href="https://github.com/mgbryan90"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/bryanmendozaguerreros"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiOutlineLinkedin />
+              </a>
             </LinksPerson>
           </InfoPerson>
         </People>
         <People>
-          <img src={human} alt="Human" />
+          <img
+            src="https://avatars.githubusercontent.com/u/101736772?v=4"
+            alt="Human"
+            style={{
+              width: "11.25rem",
+              height: "11.25rem",
+              borderRadius: "50%",
+            }}
+          />
           <InfoPerson>
-            Ruby Ramirez
+            David Montoya
             <LinksPerson>
-              <AiFillGithub />
-              <AiOutlineLinkedin />
+              <GiPencilBrush
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+              <a
+                href="https://github.com/DavidMontoya24"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/davidmontoya24"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiOutlineLinkedin />
+              </a>
             </LinksPerson>
           </InfoPerson>
         </People>
         <People>
-          <img src={human} alt="Human" />
+          <img
+            src="https://avatars.githubusercontent.com/u/1269801?v=4"
+            alt="Human"
+            style={{
+              width: "11.25rem",
+              height: "11.25rem",
+              borderRadius: "50%",
+            }}
+          />
           <InfoPerson>
-            Ruby Ramirez
+            Erik Cardenas
             <LinksPerson>
-              <AiFillGithub />
-              <AiOutlineLinkedin />
+              <BsTools
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+              <a
+                href="http://github.com/efdree"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/erikcardenasv"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiOutlineLinkedin />
+              </a>
+            </LinksPerson>
+          </InfoPerson>
+        </People>
+        <People>
+          <img
+            src="https://avatars.githubusercontent.com/u/91625172?v=4"
+            alt="Human"
+            style={{
+              width: "11.25rem",
+              height: "11.25rem",
+              borderRadius: "50%",
+            }}
+          />
+          <InfoPerson>
+            Stephanny Vargas
+            <LinksPerson>
+              <BsTools
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+              <a
+                href="https://github.com/stephv729"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/stephannyvargas"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiOutlineLinkedin />
+              </a>
             </LinksPerson>
           </InfoPerson>
         </People>

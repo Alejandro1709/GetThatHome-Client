@@ -6,6 +6,7 @@ import LayoutCase from "../components/LayoutCase";
 import SignUpHero from "../components/SignUpHero";
 import TeamSection from "../components/TeamSection";
 import styled from "@emotion/styled";
+import { useAuth } from "../context/auth-context";
 
 const SectionOne = styled.div`
   position: relative;
@@ -38,6 +39,8 @@ const SubTitleSection = styled.span`
 `;
 
 function LandingPage({ isMapReady }) {
+  const { user } = useAuth();
+
   return (
     <>
       <SectionOne>
@@ -51,7 +54,7 @@ function LandingPage({ isMapReady }) {
         </TitleSection>
       </SectionOne>
       <LayoutCase />
-      <SignUpHero />
+      {!user && <SignUpHero />}
       <TeamSection />
     </>
   );
