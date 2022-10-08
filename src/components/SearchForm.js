@@ -83,7 +83,6 @@ function SearchForm({ isMapReady }) {
   useEffect(()=>{console.log(propertyTypes)},[propertyTypes])
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(preferences);
     navigate("/properties");
   }
 
@@ -91,7 +90,6 @@ function SearchForm({ isMapReady }) {
     <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
-
         <LookingType
           name="looking"
           value={preferences.looking}
@@ -113,7 +111,6 @@ function SearchForm({ isMapReady }) {
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
-
         <LookingType
           name="wanting"
           value={preferences.wanting}
