@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropertyList from "../components/PropertyList";
 import SorteableBar from "../components/SorteableBar";
 import PaginationBar from "../components/PaginationBar";
@@ -31,17 +31,18 @@ const initialFilters = {
 function PropertiesPage() {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
-  const filteredProps = filterProperties(properties, filters);
 
   const [filtered, setFiltered] = useState(propsByPreferences);
+
+  // const filteredProps = filterProperties(properties, filters);
 
   return (
     <StyledContainer>
       <SorteableBar filters={filters} setFilters={setFilters} />
       {/* <SorteableBar setFiltered={setFiltered} /> */}
       <PropertiesContainer>
-        {/* <PropertyList properties={filtered} /> */}
-        <PropertyList properties={filteredProps} />
+        <PropertyList properties={filtered} />
+        {/* <PropertyList properties={filteredProps} /> */}
         <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
