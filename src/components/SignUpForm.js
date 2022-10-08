@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
@@ -76,6 +77,13 @@ const StyledFormError = styled.span`
   color: ${colors.error[500]};
 `;
 
+const StyledLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`;
+
 function SignUpForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -85,6 +93,7 @@ function SignUpForm() {
     passwordConfirm: '',
   });
 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
@@ -106,11 +115,17 @@ function SignUpForm() {
       return;
     }
 
+    setLoading(true);
+
     createUser({ ...user, role })
       .then((data) => {
+        setLoading(false);
         navigate('/', { replace: true });
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }
 
   return (
@@ -182,6 +197,11 @@ function SignUpForm() {
           />
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
+        {loading && (
+          <StyledLoading>
+            <DotWave size={47} speed={1} color='#F48FB1' />
+          </StyledLoading>
+        )}
         <StyledFormButton type='submit'>Create Account</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
