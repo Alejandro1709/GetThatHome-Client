@@ -76,25 +76,25 @@ const CheckboxWrapper = styled.div`
   }
 `;
 
-function SelectInput({ setFiltered }) {
+function SelectInput({ filters, setFilters }) {
   const [open, setOpen] = useState(false);
   const { properties } = useProperties();
 
   const sortType = (e) => {
     const value = e.target.getAttribute("value");
-    setFiltered(
-      properties.filter((prop) => {
-        if (value === "both") {
-          return prop;
-        }
-        if (value === "buy") {
-          return prop.operation_type.type === "for sale";
-        }
-        if (value === "rent") {
-          return prop.operation_type.type === "for rent";
-        }
-      })
-    );
+    let onlyRent = null,
+      onlySale = null;
+    if (value === "both") {
+      onlyRent = true;
+      onlySale = true;
+    }
+    if (value === "buy") {
+      onlySale = true;
+    }
+    if (value === "rent") {
+      onlyRent = true;
+    }
+    setFilters({ ...filters, op_type: { rent: onlyRent, sale: onlySale } });
   };
 
   return (
