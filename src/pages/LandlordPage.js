@@ -45,16 +45,11 @@ const StyledSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-const StyledHeading = styled.h2`
-  ${typography.headline[6]}
-`;
-
 function ActiveLandlordProperties({ properties }) {
   return (
     <StyledSectionInner>
       <div>
-        <StyledHeading>4 Properties found</StyledHeading>
-        <PropertyList properties={properties} />
+        <PropertyList properties={properties} isLandlord={true} />
       </div>
       <PaginationBar />
     </StyledSectionInner>
@@ -65,7 +60,6 @@ function ClosedLandlordProperties({ properties }) {
   return (
     <StyledSectionInner>
       <div>
-        <StyledHeading>2 Properties found</StyledHeading>
         <PropertyList properties={properties} />
       </div>
       <PaginationBar />
@@ -88,9 +82,9 @@ function LandlordPage() {
       </StyledTabs>
       <StyledSection>
         {activeTab ? (
-          <ClosedLandlordProperties {...{properties}}/>
+          <ClosedLandlordProperties {...{ properties }} />
         ) : (
-          <ActiveLandlordProperties {...{properties}}/>
+          <ActiveLandlordProperties {...{ properties }} />
         )}
       </StyledSection>
     </StyledContainer>
