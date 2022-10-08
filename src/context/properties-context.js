@@ -47,8 +47,13 @@ function PropertiesProvider({ children }) {
   const propsByPreferences = properties.filter((property) => {
     const { lat, lng } = preferences.location.coordinates;
     const cond1 = property.operation_type.type === `for ${preferences.wanting}`;
-    const cond2 =
+    let cond2 =
       property.property_type.name.toLowerCase() === preferences.looking;
+    if (preferences.looking === "all") {
+      cond2 =
+        property.property_type.name === "Aparment" ||
+        property.property_type.name === "House";
+    }
     const cond3 = lat
       ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
       : true;

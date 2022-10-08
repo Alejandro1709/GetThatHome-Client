@@ -1,14 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
-import { colors, typography } from '../styles';
-import { boxShadow } from '../styles/utils';
-import styled from '@emotion/styled';
-import { useProperties } from '../context/properties-context';
-import { PlacesAutocompletion } from './PlacesAutocompletion';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import { colors, typography } from "../styles";
+import { boxShadow } from "../styles/utils";
+import styled from "@emotion/styled";
+import { useProperties } from "../context/properties-context";
+import { PlacesAutocompletion } from "./PlacesAutocompletion";
 
 const Form = styled.form`
   display: flex;
@@ -77,8 +74,8 @@ function SearchForm({ isMapReady }) {
   });
 
   const navigate = useNavigate();
-  const {changePreferences}= useProperties()
-  
+  const { changePreferences } = useProperties();
+
   async function handleSelect(value) {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
@@ -88,8 +85,12 @@ function SearchForm({ isMapReady }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    changePreferences({ looking, wanting, location: { whereing, coordinates } })
-    navigate('/properties');
+    changePreferences({
+      looking,
+      wanting,
+      location: { whereing, coordinates },
+    });
+    navigate("/properties");
   }
 
   return (
@@ -98,34 +99,33 @@ function SearchForm({ isMapReady }) {
         <Frase>I’m Looking for</Frase>
 
         <LookingType
-          name='looking'
+          name="looking"
           value={looking}
           onChange={(e) => setLooking(e.target.value)}
         >
-          <option value='aparment'>An Apartment</option>
-          <option value='house'>A House</option>
+          <option value="all">All</option>
+          <option value="aparment">An Apartment</option>
+          <option value="house">A House</option>
         </LookingType>
-
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
 
         <LookingType
-          name='wanting'
+          name="wanting"
           value={wanting}
           onChange={(e) => setWanting(e.target.value)}
         >
-          <option value='rent'>Rent</option>
-          <option value='sale'>Buy</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Buy</option>
         </LookingType>
-
       </Looking>
       <Line />
       <Looking>
         <Frase>WHERE</Frase>
         {isMapReady && (
-          <PlacesAutocompletion {...{whereing, setWhereing, handleSelect}}/>
+          <PlacesAutocompletion {...{ whereing, setWhereing, handleSelect }} />
         )}
       </Looking>
       <Line />
