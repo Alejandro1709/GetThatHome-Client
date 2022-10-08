@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
-} from 'react-places-autocomplete';
-import { colors, typography } from '../styles';
-import { boxShadow } from '../styles/utils';
-import styled from '@emotion/styled';
+} from "react-places-autocomplete";
+import { colors, typography } from "../styles";
+import { boxShadow } from "../styles/utils";
+import styled from "@emotion/styled";
 
 const Form = styled.form`
   display: flex;
@@ -101,9 +101,9 @@ const ResultItem = styled.div`
 `;
 
 function SearchForm({ isMapReady }) {
-  const [looking, setLooking] = useState('aparment');
-  const [wanting, setWanting] = useState('rent');
-  const [whereing, setWhereing] = useState('');
+  const [looking, setLooking] = useState("aparment");
+  const [wanting, setWanting] = useState("rent");
+  const [whereing, setWhereing] = useState("");
   const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,
@@ -121,10 +121,10 @@ function SearchForm({ isMapReady }) {
   function handleSubmit(e) {
     e.preventDefault();
     localStorage.setItem(
-      'preferences',
+      "preferences",
       JSON.stringify({ looking, wanting, location: { whereing, coordinates } })
     );
-    navigate('/properties');
+    navigate("/properties");
   }
 
   return (
@@ -132,24 +132,24 @@ function SearchForm({ isMapReady }) {
       <Looking>
         <Frase>I’m Looking for</Frase>
         <LookingTipe
-          name='looking'
+          name="looking"
           value={looking}
           onChange={(e) => setLooking(e.target.value)}
         >
-          <option value='aparment'>An Apartment</option>
-          <option value='house'>A House</option>
+          <option value="aparment">An Apartment</option>
+          <option value="house">A House</option>
         </LookingTipe>
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
         <LookingTipe
-          name='wanting'
+          name="wanting"
           value={wanting}
           onChange={(e) => setWanting(e.target.value)}
         >
-          <option value='rent'>Rent</option>
-          <option value='sale'>Buy</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Buy</option>
         </LookingTipe>
       </Looking>
       <Line />
@@ -169,7 +169,7 @@ function SearchForm({ isMapReady }) {
             }) => (
               <SearchInput>
                 <LookingTipeSearch
-                  {...getInputProps({ placeholder: 'Type address...' })}
+                  {...getInputProps({ placeholder: "Type address..." })}
                 />
 
                 <ResultBox>
@@ -189,7 +189,7 @@ function SearchForm({ isMapReady }) {
         )}
       </Looking>
       <Line />
-      <Search type='submit'>Search</Search>
+      <Search type="submit">Search</Search>
     </Form>
   );
 }

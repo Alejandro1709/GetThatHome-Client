@@ -10,6 +10,9 @@ import imagen2 from "../assets/images/apartment2.jpg";
 import imagen3 from "../assets/images/apartment3.jpg";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
+import { useLocation } from "react-router-dom";
+import { showProperty } from "../services/properties-service";
+import { useState } from "react";
 
 const myImgs = [imagen1, imagen2, imagen3];
 const testCoords = {
@@ -112,6 +115,29 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
+  const sampleLocation = useLocation().pathname;
+
+  const id = sampleLocation.split("/")[2];
+
+  const [propertyByID, setPropertyByID] = useState("");
+
+  showProperty(id).then((data) => setPropertyByID(data));
+
+  const {
+    bedrooms,
+    bathrooms,
+    area,
+    description,
+    photo_urls,
+    operation_type,
+    monthly_rent,
+    maintenance,
+    pet_allowed,
+    latitude,
+    longitude,
+    address,
+  } = propertyByID;
+
   return (
     <TotalContainer>
       <Container>
@@ -122,37 +148,34 @@ export default function PropertyDetailPage() {
           <AboutSection>
             <DescHeader>
               <DescHeaderLeft>
-                <h2>Francisco de Paula Ugarriza 27</h2>
-                <h4>Miraflores, Lima</h4>
+                <h2>{address}</h2>
+                <h4>{(longitude, latitude)}</h4>
               </DescHeaderLeft>
               <DescHeaderRight>
                 <DescMoney>
                   <MoneyIcon />
-                  <h4>3,000</h4>
+                  <h4>{monthly_rent}</h4>
                 </DescMoney>
-                <h5>+100</h5>
+                <h5>{maintenance}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
               <DescSingleOpt>
                 <BiBed />
-                <h4>4 bedrooms</h4>
+                <h4>{bedrooms} bedrooms</h4>
               </DescSingleOpt>
               <DescSingleOpt>
                 <BiBath />
-                <h4>4 bedrooms</h4>
+                <h4>{bathrooms} bathrooms</h4>
               </DescSingleOpt>
               <DescSingleOpt>
                 <BiArea />
-                <h4>4 bedrooms</h4>
+                <h4>{area} area</h4>
               </DescSingleOpt>
-              <DescSingleOpt>
-                <MdPets />
-                <h4>4 bedrooms</h4>
-              </DescSingleOpt>
+              <DescSingleOpt>{pet_allowed ? <MdPets /> : ""}</DescSingleOpt>
             </DescOptions>
             <AboutDesc>
-              <h3>About this property</h3>
+              <h3>{description}</h3>
               <p>
                 3 Bedroom/2 Bathroom apartment available for ASAP move-in!
                 Apartment features hardwood floors throughout, virtual doorman,
@@ -163,7 +186,7 @@ export default function PropertyDetailPage() {
             </AboutDesc>
             <AboutDesc>
               <h3>Location</h3>
-              <p>Francisco de Paula Ugarriza 27, Miraflores, Lima</p>
+              <p>{address}</p>
             </AboutDesc>
           </AboutSection>
           <MapBox coordValues={testCoords} />
