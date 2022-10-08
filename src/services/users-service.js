@@ -1,19 +1,17 @@
-import { tokenKey } from "../config";
 import apiFetch from "./api-fetch";
+import { login } from "./auth-service";
 
 export function createUser(userData) {
-  return apiFetch("/users", { body: userData }).then((u) => {
-    const { token, ...user } = u;
-    sessionStorage.setItem(tokenKey, token);
-    return user;
+  return apiFetch("/auth/sign_up", { body: userData }).then((u) => {
+    const {email, password} = userData
+    login({email,password})
+    return u    
   });
 }
 
-export function updateUser(userData) {
-  return apiFetch("/profile", { method: "PATCH", body: userData }).then((u) => {
-    const { token, ...user } = u;
-    sessionStorage.setItem(tokenKey, token);
-    return user;
+export function showUser(id) {
+  return apiFetch("/users/"+id).then((data) => {
+    return data;
   });
 }
 
