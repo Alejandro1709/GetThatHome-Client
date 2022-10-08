@@ -1,7 +1,11 @@
+import { useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
+import { createUser } from '../services/users-service';
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -73,46 +77,131 @@ const StyledFormError = styled.span`
   color: ${colors.error[500]};
 `;
 
+const StyledLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`;
+
 function SignUpForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    passwordConfirm: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [searchParams] = useSearchParams();
+
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const role = searchParams.get('role');
+    const { passwordConfirm, ...user } = formData;
+
+    if (user.password !== passwordConfirm) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+
+    createUser({ ...user, role })
+      .then((data) => {
+        setLoading(false);
+        navigate('/', { replace: true });
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }
+
   return (
     <StyledFormWrapper>
       <StyledTitle>Create your account</StyledTitle>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='name'>Name</StyledFormLabel>
-          <StyledFormInput type='text' id='name' placeholder='John Doe' />
-          <StyledFormError>Error will be shown here</StyledFormError>
+          <StyledFormInput
+            name='name'
+            type='text'
+            id='name'
+            placeholder='John Doe'
+            required
+            value={formData.name}
+            onChange={handleChange}
+          />
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='email'>Email</StyledFormLabel>
           <StyledFormInput
+            name='email'
             type='email'
             id='email'
             placeholder='user@mail.com'
+            required
+            value={formData.email}
+            onChange={handleChange}
           />
-          <StyledFormError>Error will be shown here</StyledFormError>
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='phone'>Phone</StyledFormLabel>
-          <StyledFormInput type='text' id='phone' placeholder='999-999-999' />
-          <StyledFormError>Error will be shown here</StyledFormError>
+          <StyledFormInput
+            name='phone'
+            type='text'
+            id='phone'
+            placeholder='999-999-999'
+            required
+            value={formData.phone}
+            onChange={handleChange}
+          />
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='password'>Password</StyledFormLabel>
-          <StyledFormInput type='password' id='password' placeholder='******' />
-          <StyledFormError>At least 6 characters</StyledFormError>
+          <StyledFormInput
+            name='password'
+            type='password'
+            id='password'
+            placeholder='******'
+            minLength={6}
+            required
+            value={formData.password}
+            onChange={handleChange}
+          />
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='password-confirm'>
             Password Confirmation
           </StyledFormLabel>
           <StyledFormInput
-            type='text'
+            name='passwordConfirm'
+            type='password'
             id='password-confirm'
             placeholder='******'
+            required
+            minLength={6}
+            value={formData.passwordConfirm}
+            onChange={handleChange}
           />
-          <StyledFormError>Error will be shown here</StyledFormError>
+          {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
+        {loading && (
+          <StyledLoading>
+            <DotWave size={47} speed={1} color='#F48FB1' />
+          </StyledLoading>
+        )}
         <StyledFormButton type='submit'>Create Account</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
