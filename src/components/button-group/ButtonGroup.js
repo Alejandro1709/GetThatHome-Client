@@ -5,35 +5,37 @@ import FilterInput from "../FilterInput";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import * as styled from "./ui";
 import { colors } from "../../styles";
-import { useProperties } from "../../context/properties-context";
 
-export function ButtonGroup({ setFiltered }) {
+export function ButtonGroup({ filters, setFilters }) {
   const [price, setPrice] = useState(null || "price");
   const [type, setType] = useState(null || "property type");
   const [pricePopup, setPricePopup] = useState(false);
-  const [TypePopup, setTypePopUp] = useState(false);
+  const [typePopUp, setTypePopUp] = useState(false);
   const [bedbathPopUp, setBedBathPopUp] = useState(false);
   const [morePopUp, setMorePopUp] = useState(false);
 
-  const { properties } = useProperties();
+  const allModals = [
+    [pricePopup, setPricePopup],
+    [typePopUp, setTypePopUp],
+    [bedbathPopUp, setBedBathPopUp],
+    [morePopUp, setMorePopUp],
+  ];
+
+  const onlyOneModal = () => {
+    for (const modal of allModals) {
+      const fn = modal[1];
+      if (modal[0]) fn(false);
+    }
+  };
 
   const submitPrice = (e) => {
     e.preventDefault();
-    const { min_price, max_price } = e.target.elements,
-      minPrice = min_price.value,
-      maxPrice = max_price.value;
-    setFiltered(
-      properties.filter((prop) => {
-        const rent = prop.operation_type.monthly_rent;
-        const price = prop.operation_type.price;
-        if (rent) {
-          return rent >= minPrice && rent <= maxPrice;
-        }
-        if (price) {
-          return price >= minPrice && price <= maxPrice;
-        }
-      })
-    );
+    const { min_price, max_price } = e.target.elements;
+    setFilters({
+      ...filters,
+      price: { min: min_price.value, max: max_price.value },
+    });
+    setPrice(`${min_price.value} - ${max_price.value}`);
   };
 
   const submitType = (e) => {
@@ -41,19 +43,13 @@ export function ButtonGroup({ setFiltered }) {
     const elements = e.target.elements,
       showHouses = elements[0].checked,
       showApartments = elements[1].checked;
-    if (showHouses) {
-      setFiltered(
-        properties.filter((prop) => prop.property_type.name === "House")
-      );
-    }
-    if (showApartments) {
-      setFiltered(
-        properties.filter((prop) => prop.property_type.name === "Aparment")
-      );
-    }
-    if (showHouses && showApartments) {
-      setFiltered(properties);
-    }
+    setFilters({
+      ...filters,
+      type: { apartments: showApartments, houses: showHouses },
+    });
+    if (showHouses) setType("houses");
+    if (showApartments) setType("apartments");
+    if (showHouses && showApartments) setType("houses & apartments");
   };
 
   const submitBedBaths = (e) => {
@@ -62,11 +58,18 @@ export function ButtonGroup({ setFiltered }) {
       baths = document.querySelector(".activeTypeBath").getAttribute("value");
     if (beds === "any") beds = 0;
     if (baths === "any") baths = 0;
-    setFiltered(
-      properties.filter(
-        (prop) => prop.bedrooms >= beds && prop.bathrooms >= baths
-      )
-    );
+    setFilters({ ...filters, ambients: { beds: beds, baths: baths } });
+  };
+
+  const submitMore = (e) => {
+    e.preventDefault();
+    const elements = e.target.elements,
+      showPets = elements[0].checked;
+    setFilters({
+      ...filters,
+      pets: showPets,
+      area: { min: elements[1].value, max: elements[2].value },
+    });
   };
 
   const changeTypeBed = (e) => {
@@ -91,41 +94,13 @@ export function ButtonGroup({ setFiltered }) {
     }
   };
 
-  const submitMore = (e) => {
-    e.preventDefault();
-    const elements = e.target.elements,
-      showPets = elements[0].checked,
-      minArea = elements[1].value,
-      maxArea = elements[2].value;
-    if (showPets) {
-      setFiltered(
-        properties.filter((prop) => {
-          if (minArea === "" && maxArea === "") {
-            return prop.operation_type.pets_allowed === true;
-          } else {
-            return (
-              prop.operation_type.pets_allowed === true &&
-              prop.area >= minArea &&
-              prop.area <= maxArea
-            );
-          }
-        })
-      );
-    } else {
-      setFiltered(
-        properties.filter(
-          (prop) => prop.area >= minArea && prop.area <= maxArea
-        )
-      );
-    }
-  };
-
   return (
     <styled.StyledButtonGroup>
       <Button
-        onClick={() =>
-          !pricePopup ? setPricePopup(true) : setPricePopup(false)
-        }
+        onClick={() => {
+          !pricePopup ? setPricePopup(true) : setPricePopup(false);
+          onlyOneModal();
+        }}
       >
         {price}
       </Button>
@@ -163,11 +138,14 @@ export function ButtonGroup({ setFiltered }) {
         </styled.PricePopUp>
       )}
       <Button
-        onClick={() => (!TypePopup ? setTypePopUp(true) : setTypePopUp(false))}
+        onClick={() => {
+          !typePopUp ? setTypePopUp(true) : setTypePopUp(false);
+          onlyOneModal();
+        }}
       >
         {type}
       </Button>
-      {TypePopup && (
+      {typePopUp && (
         <styled.TypePopUp>
           <styled.PopUpCard onSubmit={submitType}>
             <p>property type</p>
@@ -178,7 +156,7 @@ export function ButtonGroup({ setFiltered }) {
               </styled.CheckboxWrapper>
               <styled.CheckboxWrapper>
                 <input type="checkbox" value="apartments" id="apartments" />
-                <label htmlFor="apartments">Apartment</label>
+                <label htmlFor="apartments">Apartments</label>
               </styled.CheckboxWrapper>
             </styled.InputsWrapper>
             <Button type="submit">done</Button>
@@ -186,9 +164,10 @@ export function ButtonGroup({ setFiltered }) {
         </styled.TypePopUp>
       )}
       <Button
-        onClick={() =>
-          !bedbathPopUp ? setBedBathPopUp(true) : setBedBathPopUp(false)
-        }
+        onClick={() => {
+          !bedbathPopUp ? setBedBathPopUp(true) : setBedBathPopUp(false);
+          onlyOneModal();
+        }}
       >
         Beds and baths
       </Button>
@@ -238,7 +217,10 @@ export function ButtonGroup({ setFiltered }) {
       <Button
         hasIcon
         Icon={BsChevronDown}
-        onClick={() => (!morePopUp ? setMorePopUp(true) : setMorePopUp(false))}
+        onClick={() => {
+          !morePopUp ? setMorePopUp(true) : setMorePopUp(false);
+          onlyOneModal();
+        }}
       >
         More
       </Button>

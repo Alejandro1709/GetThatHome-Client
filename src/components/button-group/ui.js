@@ -39,7 +39,7 @@ export const PricePopUp = styled.div`
 export const TypePopUp = styled.div`
   position: absolute;
   top: 50px;
-  left: 50px;
+  left: 65px;
   z-index: 1;
 `;
 

@@ -46,6 +46,10 @@ const Search = styled.button`
   align-items: center;
   padding: 0.5rem 1rem;
   margin: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: ${colors.primary[400]};
+  }
 `;
 
 const Frase = styled.span`
@@ -64,9 +68,9 @@ const Line = styled.div`
 `;
 
 function SearchForm({ isMapReady }) {
-  const [looking, setLooking] = useState('aparment');
-  const [wanting, setWanting] = useState('rent');
-  const [whereing, setWhereing] = useState('');
+  const [looking, setLooking] = useState("aparment");
+  const [wanting, setWanting] = useState("rent");
+  const [whereing, setWhereing] = useState("");
   const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,
@@ -92,6 +96,7 @@ function SearchForm({ isMapReady }) {
     <Form onSubmit={handleSubmit}>
       <Looking>
         <Frase>I’m Looking for</Frase>
+
         <LookingType
           name='looking'
           value={looking}
@@ -100,10 +105,12 @@ function SearchForm({ isMapReady }) {
           <option value='aparment'>An Apartment</option>
           <option value='house'>A House</option>
         </LookingType>
+
       </Looking>
       <Line />
       <Looking>
         <Frase>I’m Want to</Frase>
+
         <LookingType
           name='wanting'
           value={wanting}
@@ -112,6 +119,7 @@ function SearchForm({ isMapReady }) {
           <option value='rent'>Rent</option>
           <option value='sale'>Buy</option>
         </LookingType>
+
       </Looking>
       <Line />
       <Looking>
@@ -121,7 +129,7 @@ function SearchForm({ isMapReady }) {
         )}
       </Looking>
       <Line />
-      <Search type='submit'>Search</Search>
+      <Search type="submit">Search</Search>
     </Form>
   );
 }
