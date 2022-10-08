@@ -8,6 +8,9 @@ import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
 import { FaPaw } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
+import PropertyDetailPage from "../pages/property-detail-page";
+import { FiEdit } from "react-icons/fi";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
 
 export const ShowCaseBox = styled.div`
@@ -108,10 +111,22 @@ export const Additionals = styled.div`
 `;
 
 export const Options = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   background-color: ${colors.primary[400]};
+  /* height: 0.5rem; */
+  color: white;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+`;
+
+export const NoOptions = styled.div`
   height: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+  background-color: ${colors.primary[400]};
 `;
 
 export const DataIcons = styled.div`
@@ -126,8 +141,18 @@ export const StyledNavLink = styled(NavLink)`
   color: black;
   cursor: pointer;
 `;
+export const StyledOption = styled.button`
+  border: none;
+  color: white;
+  background: none;
+  display: flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+`;
 
-function PropertyCardDetail({ property }) {
+function PropertyCardDetail({ property, belongsToMe }) {
   const {
     address,
     area,
@@ -180,7 +205,20 @@ function PropertyCardDetail({ property }) {
             </DataIcons>
             <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
           </Additionals>
-          <Options />
+          {belongsToMe ? (
+            <Options>
+              <StyledOption>
+                <FiEdit />
+                Edit
+              </StyledOption>
+              <StyledOption>
+                <AiOutlineCloseCircle />
+                Close
+              </StyledOption>
+            </Options>
+          ) : (
+            <NoOptions />
+          )}
         </ShowCaseData>
       </ShowCaseBox>
     </StyledNavLink>
