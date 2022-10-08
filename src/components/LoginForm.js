@@ -84,6 +84,7 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
     password: "",
   });
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("idle");
   const { login } = useAuth();
 
   useEffect(() => {
@@ -97,8 +98,12 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setStatus("loading");
     login(formData)
-      .then(() => handleCloseModal())
+      .then(() => {
+        setStatus("success");
+        handleCloseModal();
+      })
       .catch((error) => setError(JSON.parse(error.message)));
   }
 
@@ -129,6 +134,9 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
           />
         </StyledFormGroup>
         <span style={{ color: "red" }}>{error}</span>
+        {status === "loading" && (
+          <span style={{ color: colors.primary[400] }}>Loading ...</span>
+        )}
         <StyledFormButton type="submit">
           <RiUserReceivedLine />
           Login

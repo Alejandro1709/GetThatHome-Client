@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { useEffect, useState, Fragment } from "react";
-import { getProperties } from "./services/properties-service";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Modal from "./components/Modal";
