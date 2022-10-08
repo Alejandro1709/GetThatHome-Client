@@ -21,19 +21,19 @@ function PropertiesProvider({ children }) {
   const [preferences, setPreferences] = useState(defaultPreferences);
   const [active, setActive] = useState(properties);
   const [closed, setClosed] = useState(properties);
-  
   useEffect(() => {
     getMyProperties()
       .then((data) => {
-        const props = data.map(p=>p.property_details)
-        setActive(props.filter((prop) => prop.active));
-        setClosed(props.filter((prop) => !prop.active));
+        console.log("get my properties");
+        const props = data.map((p) => p.property_details);
+        const newActive = props.filter((prop) => prop.active);
+        const newClosed = props.filter((prop) => !prop.active);
+        
+        setActive(newActive);
+        setClosed(newClosed);
       })
       .catch(console.log);
-    }, []);
-    
-    console.log(active);
-  
+  }, []);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -47,6 +47,8 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
   }, []);
+
+  
 
   function changePreferences(config) {
     setPreferences(config);

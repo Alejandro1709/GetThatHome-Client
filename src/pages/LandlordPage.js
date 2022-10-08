@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { colors, typography } from "../styles";
 import styled from "@emotion/styled";
 import { useProperties } from "../context/properties-context";
-import { getMyProperties } from "../services/my-properties-service";
 
 const StyledContainer = styled.div`
   margin-top: 2rem;
@@ -46,41 +45,10 @@ const StyledSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-function ActiveLandlordProperties({ properties }) {
-  return (
-    <StyledSectionInner>
-      <div>
-        <PropertyList properties={properties} isLandlord={true} />
-      </div>
-      <PaginationBar />
-    </StyledSectionInner>
-  );
-}
-
-function ClosedLandlordProperties({ properties }) {
-  return (
-    <StyledSectionInner>
-      <div>
-        <PropertyList properties={properties} />
-      </div>
-      <PaginationBar />
-    </StyledSectionInner>
-  );
-}
-
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const { properties } = useProperties();
-  const [savedProperties, setSavedProperties] = useState([])
-  useEffect(()=>{
-    getMyProperties().then(
-      (data)=>{
-        console.log(data)
-        setSavedProperties(data)
-      }
-    ).catch(console.log)
-  },[])
-
+  const { closed, active } = useProperties();
+  
   return (
     <StyledContainer id="styledcontainer">
       <StyledTabs>
@@ -92,11 +60,15 @@ function LandlordPage() {
         </StyledTab>
       </StyledTabs>
       <StyledSection>
-        {activeTab ? (
-          <ClosedLandlordProperties {...{ properties }} />
-        ) : (
-          <ActiveLandlordProperties {...{ properties }} />
-        )}
+        <StyledSectionInner>
+          <div>
+            <PropertyList
+              properties={!activeTab ? active : closed}
+              isLandlord={!activeTab}
+            />
+          </div>
+          <PaginationBar />
+        </StyledSectionInner>
       </StyledSection>
     </StyledContainer>
   );
