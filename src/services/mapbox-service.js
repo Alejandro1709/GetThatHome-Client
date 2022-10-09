@@ -18,11 +18,6 @@ export default async function getGeocode({longitude,latitude}){
     data = response.statusText;
   }
   return data;
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   return (data.features[0]?.place_name);
-    // })
-    // .catch((err) => console.log(err));
 }
 
 

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { colors, typography } from "../styles";
 import styled from "@emotion/styled";
 import { useProperties } from "../context/properties-context";
+import { getMyProperties } from "../services/my-properties-service";
 
 const StyledContainer = styled.div`
   margin-top: 2rem;
@@ -47,7 +48,23 @@ const StyledSectionInner = styled.section`
 
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const { closed, active } = useProperties();
+  const { properties } = useProperties();
+  const [active, setActive] = useState(properties);
+  const [closed, setClosed] = useState(properties);
+  const [reload, setReload] = useState(false);
+  useEffect(() => {
+    getMyProperties()
+      .then((data) => {
+        console.log("get my properties");
+        const props = data.map((p) => p.property_details);
+        const newActive = props.filter((prop) => prop.active);
+        const newClosed = props.filter((prop) => !prop.active);
+        
+        setActive(newActive);
+        setClosed(newClosed);
+      })
+      .catch(console.log);
+  }, [reload]);
   
   return (
     <StyledContainer id='styledcontainer'>
@@ -65,6 +82,7 @@ function LandlordPage() {
             <PropertyList
               properties={!activeTab ? active : closed}
               isLandlord={!activeTab}
+              onCloseProperty={setReload}
             />
           </div>
           <PaginationBar />

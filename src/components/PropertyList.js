@@ -1,9 +1,9 @@
-import PropertyCardDetail from './PropertyCardDetail';
-import styled from '@emotion/styled';
-import { colors, typography } from '../styles';
-import { TbMoodEmpty } from 'react-icons/tb';
-import { IoAddCircle } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom';
+import PropertyCardDetail from "./PropertyCardDetail";
+import styled from "@emotion/styled";
+import { colors, typography } from "../styles";
+import { TbMoodEmpty } from "react-icons/tb";
+import { IoAddCircle } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 const StyledList = styled.div`
   display: grid;
@@ -45,7 +45,8 @@ const StyledNewPropCard = styled.div`
   }
 `;
 
-function PropertyList({ properties, isLandlord }) {
+
+function PropertyList({ properties, isLandlord, isFavorite, onCloseProperty }) {
   return (
     <div>
       <p>{properties.length} Properties found</p>
@@ -55,12 +56,14 @@ function PropertyList({ properties, isLandlord }) {
             property={item}
             key={item.id}
             belongsToMe={isLandlord}
+            onCloseProperty={onCloseProperty}
+            isFavorite={isFavorite}
           />
         ))}
         {isLandlord && (
-          <NavLink to='/create' style={{ height: '100%' }}>
+          <NavLink to="/create" style={{ height: "100%" }}>
             <StyledNewPropCard>
-              <IoAddCircle size='5rem' />
+              <IoAddCircle size="5rem" />
             </StyledNewPropCard>
           </NavLink>
         )}
@@ -68,7 +71,7 @@ function PropertyList({ properties, isLandlord }) {
       {properties.length === 0 && (
         <StyledNotFound>
           No results found
-          <TbMoodEmpty size='4rem' />
+          <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
     </div>
