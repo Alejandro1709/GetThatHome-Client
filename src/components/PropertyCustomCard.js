@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -90,6 +91,9 @@ export default function PropertyCustomCard() {
     setUserRole(user?.role_name);
   }, [user]);
 
+  const sampleLocation = useLocation().pathname;
+  const id = sampleLocation.split("/")[2];
+
   return (
     <>
       <>
@@ -140,7 +144,11 @@ export default function PropertyCustomCard() {
           </Wrapper>
         )}
         {user && userRole === "Landlord" && (
-          <Button leftIcon={<FaRegEdit size="1.5rem" />}>Edit Property</Button>
+          <NavLink to={`/editproperty/${id}`}>
+            <Button leftIcon={<FaRegEdit size="1.5rem" />}>
+              Edit Property
+            </Button>
+          </NavLink>
         )}
       </>
     </>

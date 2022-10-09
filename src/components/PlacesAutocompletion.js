@@ -9,20 +9,22 @@ const SearchInput = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
   width: inherit;
+  border-radius: 0.5rem;
 `;
 
 const LookingTypeSearch = styled.input`
   border: none;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
+  padding: 0.4rem;
   outline: none;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
-  width: inherit;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 const ResultBox = styled.div`
   position: absolute;

@@ -228,7 +228,7 @@ function PropertyCardDetail({
           <Options>
             <StyledOption
               onClick={() => {
-                navigate("/");
+                navigate(`/editproperty/${id}`);
               }}
             >
               <FiEdit />
