@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import { colors, typography } from "../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
-import { useProperties } from "../context/properties-context";
+import { getSavedProperties } from "../services/saved-properties-service";
+import { showProperty } from "../services/properties-service";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -35,10 +36,6 @@ const OptionsTab = styled.button`
   cursor: pointer;
 `;
 
-const ContainerHeading = styled.h2`
-  ${typography.headline[6]}
-`;
-
 const ContainerSection = styled.section`
   height: 100vh;
 `;
@@ -50,23 +47,21 @@ const ContainerSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-function ActiveHomeseekerPage({ properties }) {
+function FavoriteHomeseekerPage({ properties }) {
   return (
     <ContainerSectionInner>
       <div>
-        <ContainerHeading>7 Properties found</ContainerHeading>
-        <PropertyList properties={properties} />
+        <PropertyList properties={properties} isFavorite={true} />
       </div>
       <PaginationBar />
     </ContainerSectionInner>
   );
 }
 
-function ClosedHomeseekerPage({ properties }) {
+function ContactedHomeseekerPage({ properties }) {
   return (
     <ContainerSectionInner>
       <div>
-        <ContainerHeading>5 Properties found</ContainerHeading>
         <PropertyList properties={properties} />
       </div>
       <PaginationBar />
@@ -75,8 +70,39 @@ function ClosedHomeseekerPage({ properties }) {
 }
 
 function HomeseekerPage() {
-  const { properties } = useProperties();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(false);
+  const [favoriteProps, setFavoriteProps] = useState([]);
+  const [contactedProps, setContactedProps] = useState([]);
+
+  function transformSavedList(saved) {
+    let arr = [];
+    saved.forEach((e) => {
+      showProperty(e.property.id)
+        .then((data) => {
+          arr.push(data);
+        })
+        .catch(console.log);
+    });
+    return arr;
+  }
+
+  useEffect(() => {
+    getSavedProperties()
+      .then((saved) => {
+        setFavoriteProps(transformSavedList(filterFavorite(saved)));
+        setContactedProps(transformSavedList(filterContacted(saved)));
+      })
+      .catch(console.log);
+  }, []);
+
+  const filterFavorite = (savedProps) => {
+    return savedProps.filter((prop) => prop.favorite === true);
+  };
+
+  const filterContacted = (savedProps) => {
+    return savedProps.filter((prop) => prop.contacted === true);
+  };
+
   return (
     <ContainerPageHomeSeeker>
       <ContainerListHomeSeeker>
@@ -95,11 +121,11 @@ function HomeseekerPage() {
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
-        {activeTab ? (
-          <ClosedHomeseekerPage {...{ properties }} />
-        ) : (
-          <ActiveHomeseekerPage {...{ properties }} />
-        )}
+          {!activeTab ? (
+            <FavoriteHomeseekerPage properties={favoriteProps} />
+          ) : (
+            <ContactedHomeseekerPage properties={contactedProps} />
+          )}
         </ContainerSection>
       </ContainerListHomeSeeker>
     </ContainerPageHomeSeeker>
