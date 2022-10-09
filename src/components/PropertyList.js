@@ -11,7 +11,7 @@ const StyledList = styled.div`
   margin-top: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 1rem;
-  row-gap: 2rem;
+  row-gap: 4rem;
 `;
 
 const StyledNotFound = styled.div`
@@ -44,7 +44,6 @@ const StyledNewPropCard = styled.div`
     }
   }
 `;
-
 
 function PropertyList({ properties, isLandlord, isFavorite, onCloseProperty }) {
   return (

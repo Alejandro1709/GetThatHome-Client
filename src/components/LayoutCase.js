@@ -1,8 +1,8 @@
-import { useProperties } from '../context/properties-context';
-import { colors } from '../styles';
-import { typography } from '../styles/typography';
-import PropertyCardDetail from './PropertyCardDetail';
-import styled from '@emotion/styled';
+import { useProperties } from "../context/properties-context";
+import { colors } from "../styles";
+import { typography } from "../styles/typography";
+import PropertyCardDetail from "./PropertyCardDetail";
+import styled from "@emotion/styled";
 
 const Container = styled.div`
   height: 37.75rem;
@@ -38,6 +38,7 @@ const ContainerBestPrices = styled.div`
 
 function LayoutCase() {
   const { bestProps } = useProperties();
+  console.log(bestProps);
   return (
     <Container>
       <ContainerCase>

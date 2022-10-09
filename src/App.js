@@ -19,21 +19,24 @@ import EditPropertyForm from "./pages/EditPropertyPage";
 
 const MainContainer = styled.div`
   min-height: 100vh;
+  position: relative;
 `;
 
 const FooterWrapper = styled.div`
   width: 100%;
   bottom: 0;
+  position: absolute;
+  bottom: -10rem;
 `;
 
 const NotFound = styled.div`
   text-align: center;
-  margin: 120px;
+  margin: 7.5rem;
 `;
 
 const NotFoundImage = styled.img`
-  max-width: 515px;
-  margin: 24px;
+  max-width: 32.2rem;
+  margin: 1.5rem;
 `;
 
 const GOOGLE_API_TOKEN = process.env.REACT_APP_GCP_API_KEY;

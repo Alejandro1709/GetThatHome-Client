@@ -291,7 +291,7 @@ export default function NewPropertyForm() {
   };
 
   const range = Array.from({ length: 10 }, (_, i) => i + 1);
-  
+
   const changeInput = (e) => {
     //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
     let indexImg;
@@ -369,6 +369,7 @@ export default function NewPropertyForm() {
         })
         .catch(console.log);
     });
+    console.log(propertyData);
     createProperty(propertyData)
       .then(() => {
         navigate("/myproperties");
