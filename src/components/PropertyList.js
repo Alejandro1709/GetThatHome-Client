@@ -45,7 +45,7 @@ const StyledNewPropCard = styled.div`
   }
 `;
 
-function PropertyList({ properties, isLandlord }) {
+function PropertyList({ properties, isLandlord, onCloseProperty }) {
   return (
     <div>
       <p>{properties.length} Properties found</p>
@@ -55,6 +55,7 @@ function PropertyList({ properties, isLandlord }) {
             property={item}
             key={item.id}
             belongsToMe={isLandlord}
+            onCloseProperty={onCloseProperty}
           />
         ))}
         {isLandlord && (

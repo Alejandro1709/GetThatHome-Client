@@ -13,7 +13,6 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
 import { updateProperty } from "../services/properties-service";
 
-
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
   display: flex;
@@ -153,7 +152,7 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({ property, belongsToMe }) {
+function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   const {
     id,
     address,
@@ -165,14 +164,14 @@ function PropertyCardDetail({ property, belongsToMe }) {
     photo_urls,
   } = property;
   const [geocoded, setGeocoded] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
 
   return (
-    <StyledNavLink to={`/properties/${id}`}>
-      <ShowCaseBox>
+    <ShowCaseBox>
+      <StyledNavLink to={`/properties/${id}`}>
         <CardImg>
           <Deal>
             <RiCoinsLine />
@@ -181,7 +180,9 @@ function PropertyCardDetail({ property, belongsToMe }) {
           </Deal>
           <ShowCaseImg src={photo_urls[0] || casa1} alt="home-thumbnail" />
         </CardImg>
-        <ShowCaseData>
+      </StyledNavLink>
+      <ShowCaseData>
+        <StyledNavLink to={`/properties/${id}`}>
           <CostProperty>
             <Rent>
               <RiMoneyDollarCircleLine />
@@ -207,27 +208,33 @@ function PropertyCardDetail({ property, belongsToMe }) {
             </DataIcons>
             <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
           </Additionals>
-          {belongsToMe ? (
-            <Options>
-              <StyledOption onClick={()=>{
-                navigate("/")
-                }}>
-                <FiEdit />
-                Edit
-              </StyledOption>
-              <StyledOption>
-                <AiOutlineCloseCircle onClick={
-                  ()=>updateProperty({active: false},id)
-                } />
-                Close
-              </StyledOption>
-            </Options>
-          ) : (
-            <NoOptions />
-          )}
-        </ShowCaseData>
-      </ShowCaseBox>
-    </StyledNavLink>
+        </StyledNavLink>
+        {belongsToMe ? (
+          <Options>
+            <StyledOption
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              <FiEdit />
+              Edit
+            </StyledOption>
+            <StyledOption
+              onClick={() =>
+                updateProperty({ active: false }, id)
+                  .then(()=>onCloseProperty(true))
+                  .catch(console.log)
+              }
+            >
+              <AiOutlineCloseCircle />
+              Close
+            </StyledOption>
+          </Options>
+        ) : (
+          <NoOptions />
+        )}
+      </ShowCaseData>
+    </ShowCaseBox>
   );
 }
 

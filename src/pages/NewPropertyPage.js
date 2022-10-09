@@ -291,9 +291,7 @@ export default function NewPropertyForm() {
   };
 
   const range = Array.from({ length: 10 }, (_, i) => i + 1);
-  useEffect(() => {
-    console.log(propertyData);
-  }, [propertyData]);
+  
   const changeInput = (e) => {
     //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
     let indexImg;
@@ -403,7 +401,6 @@ export default function NewPropertyForm() {
     const name = whereing;
     const { lat, lng } = coordinates;
     const address = { name, latitude: lat, longitude: lng };
-    console.log(address)
     setPropertyData({ ...propertyData, address });
   }
 
