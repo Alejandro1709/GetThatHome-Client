@@ -15,6 +15,7 @@ import { updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 
 export const ShowCaseBox = styled.div`
+  position: relative;
   width: 18.75rem;
   display: flex;
   flex-direction: column;

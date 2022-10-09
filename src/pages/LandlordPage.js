@@ -37,6 +37,7 @@ const StyledTab = styled.button`
 
 const StyledSection = styled.section`
   height: 100vh;
+  overflow: scroll;
 `;
 
 const StyledSectionInner = styled.section`
@@ -59,15 +60,15 @@ function LandlordPage() {
         const props = data.map((p) => p.property_details);
         const newActive = props.filter((prop) => prop.active);
         const newClosed = props.filter((prop) => !prop.active);
-        
+
         setActive(newActive);
         setClosed(newClosed);
       })
       .catch(console.log);
   }, [reload]);
-  
+
   return (
-    <StyledContainer id='styledcontainer'>
+    <StyledContainer>
       <StyledTabs>
         <StyledTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
           Active
