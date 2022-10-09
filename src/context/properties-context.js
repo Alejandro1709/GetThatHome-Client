@@ -28,7 +28,7 @@ function PropertiesProvider({ children }) {
         const props = data.map((p) => p.property_details);
         const newActive = props.filter((prop) => prop.active);
         const newClosed = props.filter((prop) => !prop.active);
-        
+
         setActive(newActive);
         setClosed(newClosed);
       })
@@ -47,8 +47,6 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
   }, []);
-
-  
 
   function changePreferences(config) {
     setPreferences(config);
@@ -77,7 +75,8 @@ function PropertiesProvider({ children }) {
     const cond4 = lat
       ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
       : true;
-    return cond1 && cond2 && cond3 && cond4;
+    const cond5 = property.active;
+    return cond1 && cond2 && cond3 && cond4 && cond5;
   });
 
   return (
@@ -90,7 +89,7 @@ function PropertiesProvider({ children }) {
         changePreferences,
         preferences,
         active,
-        closed
+        closed,
       }}
     >
       {children}

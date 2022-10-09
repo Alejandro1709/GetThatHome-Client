@@ -99,6 +99,8 @@ export const ContactDetails = styled.div`
   word-break: break-all;
   ${typography.subtitle[1]};
   color: ${colors.secondary[700]};
+  max-height: 20%;
+  overflow: hidden;
 `;
 
 export const Additionals = styled.div`
