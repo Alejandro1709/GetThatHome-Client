@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import {
   createSavedProperties,
   getSavedProperties,
+  updateSavedProperties,
 } from "../services/saved-properties-service";
 
 const TotalContainer = styled.div`
@@ -146,15 +147,17 @@ export default function PropertyDetailPage() {
   const id = sampleLocation.split("/")[2];
 
   useEffect(() => {
-    getSavedProperties().then((saved) => {
-      let isFav = saved.find((e) => {
-        return e.property.id == id;
-      });
-      isFav ? setIsFav(true) : setIsFav(false);
-    });
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
+    // getSavedProperties().then((saved) => {
+    //   let isFav = saved.find((e) => {
+    //     return e.property.id == id;
+    //   });
+    //   if (isFav) {
+    //     setIsFav(true);
+    //   }
+    // });
   }, [id]);
 
   /* operation_type  */
@@ -188,15 +191,24 @@ export default function PropertyDetailPage() {
     setName(address?.name);
   }, [address]);
 
-  const handleAddtoFav = (id) => {
-    const data = { property_id: id, favorite: true };
-    createSavedProperties(data)
-      .then((data) => {
-        console.log(data);
-        setIsFav(true);
-      })
-      .catch(console.log);
-  };
+  // function handleAddtoFav(id) {
+  //   console.log("emtre a la fucnion onclick");
+  //   console.log(isFav);
+  //   isFav
+  //     ? updateSavedProperties({ favorite: false }, id)
+  //         .then((data) => {
+  //           console.log("quitar fav");
+  //           setIsFav(false);
+  //         })
+  //         .catch(console.log)
+  //     : updateSavedProperties({ favorite: true }, id)
+  //         .then((data) => {
+  //           console.log(data);
+  //           console.log("crear fav");
+  //           setIsFav(true);
+  //         })
+  //         .catch(console.log);
+  // }
 
   return (
     <TotalContainer>
@@ -251,7 +263,7 @@ export default function PropertyDetailPage() {
           <CardContainer>
             <PropertyCustomCard
               isFav={isFav}
-              handleAddtoFav={handleAddtoFav(id)}
+              // handleAddtoFav={handleAddtoFav(id)}
             />
           </CardContainer>
         </aside>

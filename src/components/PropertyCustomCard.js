@@ -123,12 +123,17 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
                     <AiFillHeart
                       size="1.5rem"
                       color={`${colors.primary[300]}`}
+                      style={{ cursor: "pointer" }}
+                      // onClick={handleAddtoFav}
                     />
-                    <p>In your favorite</p>
+                    <p>Remove from your favorite</p>
                   </>
                 ) : (
                   <>
-                    <FavIcon size="1.5rem" onClick={handleAddtoFav} />
+                    <FavIcon
+                      size="1.5rem"
+                      // onClick={handleAddtoFav}
+                    />
                     <p>Add to favorites</p>
                   </>
                 )}
