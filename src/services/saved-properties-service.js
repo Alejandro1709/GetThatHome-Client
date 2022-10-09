@@ -6,8 +6,17 @@ export function getSavedProperties() {
   });
 }
 
-export function updateSavedProperties(data,id) {
-  return apiFetch("/saved_properties/"+id, { method:"PATCH",body: data }).then((data) => {
+export function createSavedProperties(data) {
+  return apiFetch("/saved_properties", { body: data }).then((data) => {
+    return data;
+  });
+}
+
+export function updateSavedProperties(data, id) {
+  return apiFetch("/saved_properties/" + id, {
+    method: "PATCH",
+    body: data,
+  }).then((data) => {
     return data;
   });
 }

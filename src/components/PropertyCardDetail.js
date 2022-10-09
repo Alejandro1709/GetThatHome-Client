@@ -12,6 +12,8 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
 import { updateProperty } from "../services/properties-service";
+import { AiFillHeart } from "react-icons/ai";
+
 
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
@@ -104,6 +106,7 @@ export const ContactDetails = styled.div`
 export const Additionals = styled.div`
   margin: 1rem;
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
   & svg {
     color: ${colors.secondary[600]};
@@ -116,7 +119,6 @@ export const Options = styled.div`
   align-items: center;
   gap: 2rem;
   background-color: ${colors.primary[400]};
-  /* height: 0.5rem; */
   color: white;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
@@ -132,7 +134,7 @@ export const NoOptions = styled.div`
 export const DataIcons = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.1rem;
   font-family: ${fonts.secondary};
 `;
 
@@ -152,7 +154,7 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
+function PropertyCardDetail({ property, belongsToMe, isFavorite, onCloseProperty }) {
   const {
     id,
     address,
@@ -206,7 +208,14 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
             <DataIcons>
               <BiArea size="1.5rem" /> {area} m2
             </DataIcons>
-            <DataIcons>{operation_type.pets_allowed && <FaPaw />}</DataIcons>
+            <DataIcons>
+              {operation_type.pets_allowed && <FaPaw size="1.5rem" />}
+            </DataIcons>
+            {isFavorite && (
+              <DataIcons>
+                <AiFillHeart size="1.5rem" color={`${colors.primary[300]}`} />
+              </DataIcons>
+            )}
           </Additionals>
         </StyledNavLink>
         {belongsToMe ? (
