@@ -13,7 +13,6 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
 
-
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
   display: flex;
@@ -142,17 +141,6 @@ export const StyledNavLink = styled(NavLink)`
   color: black;
   cursor: pointer;
 `;
-export const StyledOption = styled.button`
-  border: none;
-  color: white;
-  background: none;
-  display: flex;
-  padding: 4px 8px;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-`;
-
 export const StyledOption = styled.button`
   border: none;
   color: white;

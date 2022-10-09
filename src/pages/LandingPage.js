@@ -1,4 +1,5 @@
 import Home from "../assets/images/home.png";
+import ListHome from "../assets/videos/listHouses.mp4";
 import { fonts, typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import SearchForm from "../components/SearchForm";
@@ -14,7 +15,7 @@ const SectionOne = styled.div`
   width: 100%;
 `;
 
-const SectionBackground = styled.img`
+const SectionBackground = styled.video`
   width: 100%;
   height: 100%;
 `;
@@ -28,13 +29,13 @@ const TitleSection = styled.div`
   transform: translate(-50%, -50%);
   font-family: ${fonts.primary};
   ${typography.headline[2]};
-  color: ${colors.secondary[700]};
+  color: ${colors.secondary[200]};
   height: 88px;
 `;
 
 const SubTitleSection = styled.span`
   ${typography.headline[5]};
-  color: ${colors.secondary[600]};
+  color: ${colors.secondary[300]};
   margin-bottom: 4rem;
 `;
 
@@ -44,7 +45,7 @@ function LandingPage({ isMapReady }) {
   return (
     <>
       <SectionOne>
-        <SectionBackground src={Home} alt="Home" />
+        <SectionBackground src={ListHome} autoPlay loop muted />
         <TitleSection>
           Meet your new Home
           <SubTitleSection>
