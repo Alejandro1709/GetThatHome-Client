@@ -1,0 +1,1 @@
+export function isVowel(x) {  return /[aeiouAEIOU]/.test(x); }
