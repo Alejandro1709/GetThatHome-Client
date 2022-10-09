@@ -14,6 +14,8 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { PropertiesProvider } from "./context/properties-context";
 import { useAuth } from "./context/auth-context";
+import Building from "./assets/images/building.png";
+import EditPropertyForm from "./pages/EditPropertyPage";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -22,6 +24,16 @@ const MainContainer = styled.div`
 const FooterWrapper = styled.div`
   width: 100%;
   bottom: 0;
+`;
+
+const NotFound = styled.div`
+  text-align: center;
+  margin: 120px;
+`;
+
+const NotFoundImage = styled.img`
+  max-width: 515px;
+  margin: 24px;
 `;
 
 const GOOGLE_API_TOKEN = process.env.REACT_APP_GCP_API_KEY;
@@ -111,7 +123,18 @@ function App() {
             {user?.role_name === "Landlord" && (
               <Route path="/create" element={<NewPropertyForm />} />
             )}
-            <Route path="*" element={<h1>Not Found</h1>} />
+            {user?.role_name === "Landlord" && (
+              <Route path="/editproperty/:id" element={<EditPropertyForm />} />
+            )}
+            <Route
+              path="*"
+              element={
+                <NotFound>
+                  <h1>Building</h1>
+                  <NotFoundImage src={Building} alt="building" />
+                </NotFound>
+              }
+            />
           </Routes>
           <FooterWrapper>
             <Footer />

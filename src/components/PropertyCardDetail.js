@@ -7,10 +7,11 @@ import { fonts, typography } from "../styles/typography";
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
 import { FaPaw } from "react-icons/fa";
 import styled from "@emotion/styled";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
+import { updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 
 export const ShowCaseBox = styled.div`
@@ -99,6 +100,8 @@ export const ContactDetails = styled.div`
   word-break: break-all;
   ${typography.subtitle[1]};
   color: ${colors.secondary[700]};
+  max-height: 20%;
+  overflow: hidden;
 `;
 
 export const Additionals = styled.div`
@@ -141,7 +144,6 @@ export const StyledNavLink = styled(NavLink)`
   color: black;
   cursor: pointer;
 `;
-
 export const StyledOption = styled.button`
   border: none;
   color: white;
@@ -153,8 +155,14 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({ property, belongsToMe, isFavorite }) {
+function PropertyCardDetail({
+  property,
+  belongsToMe,
+  isFavorite,
+  onCloseProperty,
+}) {
   const {
+    id,
     address,
     area,
     bathrooms,
@@ -164,14 +172,14 @@ function PropertyCardDetail({ property, belongsToMe, isFavorite }) {
     photo_urls,
   } = property;
   const [geocoded, setGeocoded] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
 
   return (
-    <StyledNavLink to={`/properties/${property.id}`}>
-      <ShowCaseBox>
+    <ShowCaseBox>
+      <StyledNavLink to={`/properties/${id}`}>
         <CardImg>
           <Deal>
             <RiCoinsLine />
@@ -180,7 +188,9 @@ function PropertyCardDetail({ property, belongsToMe, isFavorite }) {
           </Deal>
           <ShowCaseImg src={photo_urls[0] || casa1} alt="home-thumbnail" />
         </CardImg>
-        <ShowCaseData>
+      </StyledNavLink>
+      <ShowCaseData>
+        <StyledNavLink to={`/properties/${id}`}>
           <CostProperty>
             <Rent>
               <RiMoneyDollarCircleLine />
@@ -213,23 +223,33 @@ function PropertyCardDetail({ property, belongsToMe, isFavorite }) {
               </DataIcons>
             )}
           </Additionals>
-          {belongsToMe ? (
-            <Options>
-              <StyledOption>
-                <FiEdit />
-                Edit
-              </StyledOption>
-              <StyledOption>
-                <AiOutlineCloseCircle />
-                Close
-              </StyledOption>
-            </Options>
-          ) : (
-            <NoOptions />
-          )}
-        </ShowCaseData>
-      </ShowCaseBox>
-    </StyledNavLink>
+        </StyledNavLink>
+        {belongsToMe ? (
+          <Options>
+            <StyledOption
+              onClick={() => {
+                navigate(`/editproperty/${id}`);
+              }}
+            >
+              <FiEdit />
+              Edit
+            </StyledOption>
+            <StyledOption
+              onClick={() =>
+                updateProperty({ active: false }, id)
+                  .then(() => onCloseProperty(true))
+                  .catch(console.log)
+              }
+            >
+              <AiOutlineCloseCircle />
+              Close
+            </StyledOption>
+          </Options>
+        ) : (
+          <NoOptions />
+        )}
+      </ShowCaseData>
+    </ShowCaseBox>
   );
 }
 

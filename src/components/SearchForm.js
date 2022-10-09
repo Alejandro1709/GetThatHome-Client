@@ -9,10 +9,10 @@ import { isVowel } from "../utils";
 
 const Form = styled.form`
   display: flex;
-  background: ${colors.secondary[200]};
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 8px;
-
   ${boxShadow[1]};
+  filter: blur(0.01rem);
 `;
 
 const Looking = styled.div`
@@ -25,11 +25,13 @@ const Looking = styled.div`
 
 const LookingType = styled.select`
   border: none;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   padding: 0.5rem;
   ${typography.body[1]};
   color: ${colors.secondary[700]};
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const Search = styled.button`
@@ -43,6 +45,7 @@ const Search = styled.button`
   align-items: center;
   padding: 0.5rem 1rem;
   margin: 1rem;
+  opacity: 1;
   cursor: pointer;
   &:hover {
     background-color: ${colors.primary[400]};
@@ -80,7 +83,9 @@ function SearchForm({ isMapReady }) {
       },
     });
   }
-  useEffect(()=>{console.log(propertyTypes)},[propertyTypes])
+  useEffect(() => {
+    console.log(propertyTypes);
+  }, [propertyTypes]);
   function handleSubmit(e) {
     e.preventDefault();
     navigate("/properties");
