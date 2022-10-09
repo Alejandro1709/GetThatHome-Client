@@ -1,12 +1,12 @@
 import { CLOUDINARY_BASE_URI } from "../config";
 
-export default async function uploadImages(body){
-  const endpoint = "/image/upload"
+export default async function uploadImages(body) {
+  const endpoint = "/image/upload";
   const config = {
     method: "POST",
-    body
+    body,
   };
-  
+
   const response = await fetch(CLOUDINARY_BASE_URI + endpoint, config);
 
   let data;
@@ -25,4 +25,3 @@ export default async function uploadImages(body){
   }
   return data;
 }
-

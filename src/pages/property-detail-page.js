@@ -10,6 +10,11 @@ import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useLocation } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import {
+  createSavedProperties,
+  getSavedProperties,
+  updateSavedProperties,
+} from "../services/saved-properties-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -129,6 +134,8 @@ export default function PropertyDetailPage() {
   const [longitude, setLongitude] = useState("");
   const [name, setName] = useState("");
 
+  /*  is favorite */
+  const [isFav, setIsFav] = useState(null);
   const myImgs = photo_urls;
 
   const testCoords = {
@@ -138,10 +145,19 @@ export default function PropertyDetailPage() {
 
   const sampleLocation = useLocation().pathname;
   const id = sampleLocation.split("/")[2];
+
   useEffect(() => {
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
+    // getSavedProperties().then((saved) => {
+    //   let isFav = saved.find((e) => {
+    //     return e.property.id == id;
+    //   });
+    //   if (isFav) {
+    //     setIsFav(true);
+    //   }
+    // });
   }, [id]);
 
   /* operation_type  */
@@ -174,6 +190,25 @@ export default function PropertyDetailPage() {
   useEffect(() => {
     setName(address?.name);
   }, [address]);
+
+  // function handleAddtoFav(id) {
+  //   console.log("emtre a la fucnion onclick");
+  //   console.log(isFav);
+  //   isFav
+  //     ? updateSavedProperties({ favorite: false }, id)
+  //         .then((data) => {
+  //           console.log("quitar fav");
+  //           setIsFav(false);
+  //         })
+  //         .catch(console.log)
+  //     : updateSavedProperties({ favorite: true }, id)
+  //         .then((data) => {
+  //           console.log(data);
+  //           console.log("crear fav");
+  //           setIsFav(true);
+  //         })
+  //         .catch(console.log);
+  // }
 
   return (
     <TotalContainer>
@@ -226,7 +261,10 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard />
+            <PropertyCustomCard
+              isFav={isFav}
+              // handleAddtoFav={handleAddtoFav(id)}
+            />
           </CardContainer>
         </aside>
       </Container>
