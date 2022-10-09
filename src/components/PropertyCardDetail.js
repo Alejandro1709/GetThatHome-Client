@@ -155,7 +155,12 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({ property, belongsToMe, isFavorite, onCloseProperty }) {
+function PropertyCardDetail({
+  property,
+  belongsToMe,
+  isFavorite,
+  onCloseProperty,
+}) {
   const {
     id,
     address,
@@ -232,7 +237,7 @@ function PropertyCardDetail({ property, belongsToMe, isFavorite, onCloseProperty
             <StyledOption
               onClick={() =>
                 updateProperty({ active: false }, id)
-                  .then(()=>onCloseProperty(true))
+                  .then(() => onCloseProperty(true))
                   .catch(console.log)
               }
             >
