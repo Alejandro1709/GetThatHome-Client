@@ -442,6 +442,7 @@ export default function NewPropertyForm() {
                 width="50%"
                 onChange={handleChange}
                 value={propertyData.operation_type.monthly_rent}
+                label="Monthly Rent"
               />
             </div>
             <div>
@@ -458,6 +459,7 @@ export default function NewPropertyForm() {
                 width="50%"
                 onChange={handleChange}
                 value={propertyData.operation_type.maintenance}
+                label="Maintenance"
               />
             </div>
           </>
@@ -477,6 +479,7 @@ export default function NewPropertyForm() {
                 placeholder="100"
                 width="50%"
                 onChange={handleChange}
+                label="Price"
               />
             </div>
           </>

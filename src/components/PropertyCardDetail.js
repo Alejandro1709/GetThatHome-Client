@@ -14,7 +14,6 @@ import getGeocode from "../services/mapbox-service";
 import { updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 
-
 export const ShowCaseBox = styled.div`
   width: 18.75rem;
   display: flex;
@@ -101,6 +100,8 @@ export const ContactDetails = styled.div`
   word-break: break-all;
   ${typography.subtitle[1]};
   color: ${colors.secondary[700]};
+  max-height: 20%;
+  overflow: hidden;
 `;
 
 export const Additionals = styled.div`

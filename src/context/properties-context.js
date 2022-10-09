@@ -18,7 +18,6 @@ function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-  
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -32,8 +31,6 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
   }, []);
-
-  
 
   function changePreferences(config) {
     setPreferences(config);
@@ -62,7 +59,8 @@ function PropertiesProvider({ children }) {
     const cond4 = lat
       ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
       : true;
-    return cond1 && cond2 && cond3 && cond4;
+    const cond5 = property.active;
+    return cond1 && cond2 && cond3 && cond4 && cond5;
   });
 
   return (
