@@ -5,7 +5,7 @@ import { colors, typography } from "../styles";
 import { RiMoneyDollarCircleLine, RiUploadLine } from "react-icons/ri";
 import { fonts } from "../styles/typography";
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useProperties } from "../context/properties-context";
 import uploadImages from "../services/cloudinary-service";
 import { createProperty } from "../services/properties-service";
