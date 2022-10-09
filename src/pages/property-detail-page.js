@@ -5,14 +5,15 @@ import { MdPets } from "react-icons/md";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
-import imagen1 from "../assets/images/apartment1.jpg";
-import imagen2 from "../assets/images/apartment2.jpg";
-import imagen3 from "../assets/images/apartment3.jpg";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useLocation } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import {
+  createSavedProperties,
+  getSavedProperties,
+} from "../services/saved-properties-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -132,6 +133,8 @@ export default function PropertyDetailPage() {
   const [longitude, setLongitude] = useState("");
   const [name, setName] = useState("");
 
+  /*  is favorite */
+  const [isFav, setIsFav] = useState(null);
   const myImgs = photo_urls;
 
   const testCoords = {
@@ -141,7 +144,14 @@ export default function PropertyDetailPage() {
 
   const sampleLocation = useLocation().pathname;
   const id = sampleLocation.split("/")[2];
+
   useEffect(() => {
+    getSavedProperties().then((saved) => {
+      let isFav = saved.find((e) => {
+        return e.property.id == id;
+      });
+      isFav ? setIsFav(true) : setIsFav(false);
+    });
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
@@ -177,6 +187,16 @@ export default function PropertyDetailPage() {
   useEffect(() => {
     setName(address?.name);
   }, [address]);
+
+  const handleAddtoFav = (id) => {
+    const data = { property_id: id, favorite: true };
+    createSavedProperties(data)
+      .then((data) => {
+        console.log(data);
+        setIsFav(true);
+      })
+      .catch(console.log);
+  };
 
   return (
     <TotalContainer>
@@ -229,7 +249,10 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard />
+            <PropertyCustomCard
+              isFav={isFav}
+              handleAddtoFav={handleAddtoFav(id)}
+            />
           </CardContainer>
         </aside>
       </Container>

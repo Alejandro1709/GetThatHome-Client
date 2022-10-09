@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
+import { AiFillHeart } from "react-icons/ai";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -69,21 +70,17 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard() {
+export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isLogged, setIsLogged] = useState(false);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
-  // const [userRole, setuserRole] = useState("landlord");
-  // const isLogged = true;
   const [showContactInfo, setShowContactInfo] = useState(false);
 
   const { user } = useAuth();
-  console.log(user);
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
@@ -121,8 +118,20 @@ export default function PropertyCustomCard() {
                 <Button onClick={() => setShowContactInfo(true)}>
                   Contact Advertiser
                 </Button>
-                <FavIcon size="1.5rem" />
-                <p>Add to favorites</p>
+                {isFav ? (
+                  <>
+                    <AiFillHeart
+                      size="1.5rem"
+                      color={`${colors.primary[300]}`}
+                    />
+                    <p>In your favorite</p>
+                  </>
+                ) : (
+                  <>
+                    <FavIcon size="1.5rem" onClick={handleAddtoFav} />
+                    <p>Add to favorites</p>
+                  </>
+                )}
               </>
             ) : (
               <>
