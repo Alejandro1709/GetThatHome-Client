@@ -22,7 +22,6 @@ const TeamContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 5.8rem;
-  flex-wrap: wrap;
 `;
 
 const People = styled.div`
