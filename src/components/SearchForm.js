@@ -25,6 +25,7 @@ const Looking = styled.div`
 
 const LookingType = styled.select`
   border: none;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   padding: 0.5rem;

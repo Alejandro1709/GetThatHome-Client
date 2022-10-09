@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import { PropertiesProvider } from "./context/properties-context";
 import { useAuth } from "./context/auth-context";
 import Building from "./assets/images/building.png";
+import EditPropertyForm from "./pages/EditPropertyPage";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -31,7 +32,7 @@ const NotFound = styled.div`
 `;
 
 const NotFoundImage = styled.img`
-  max-width: 400px;
+  max-width: 515px;
   margin: 24px;
 `;
 
@@ -121,6 +122,9 @@ function App() {
             )}
             {user?.role_name === "Landlord" && (
               <Route path="/create" element={<NewPropertyForm />} />
+            )}
+            {user?.role_name === "Landlord" && (
+              <Route path="/editproperty/:id" element={<EditPropertyForm />} />
             )}
             <Route
               path="*"

@@ -1,4 +1,3 @@
-import Home from "../assets/images/home.png";
 import ListHome from "../assets/videos/listHouses.mp4";
 import { fonts, typography } from "../styles/typography";
 import { colors } from "../styles/colors";
