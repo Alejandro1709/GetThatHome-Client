@@ -401,8 +401,9 @@ export default function NewPropertyForm() {
 
   function changeLocation({ whereing, coordinates }) {
     const name = whereing;
-    const { latitude, longitude } = coordinates;
-    const address = { name, latitude, longitude };
+    const { lat, lng } = coordinates;
+    const address = { name, latitude: lat, longitude: lng };
+    console.log(address)
     setPropertyData({ ...propertyData, address });
   }
 

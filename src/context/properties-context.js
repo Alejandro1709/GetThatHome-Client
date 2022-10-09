@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { getMyProperties } from "../services/my-properties-service";
 import { getProperties } from "../services/properties-service";
 import { getPropertyTypes } from "../services/property-types-service";
 
@@ -18,6 +19,21 @@ function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
+  const [active, setActive] = useState(properties);
+  const [closed, setClosed] = useState(properties);
+  useEffect(() => {
+    getMyProperties()
+      .then((data) => {
+        console.log("get my properties");
+        const props = data.map((p) => p.property_details);
+        const newActive = props.filter((prop) => prop.active);
+        const newClosed = props.filter((prop) => !prop.active);
+        
+        setActive(newActive);
+        setClosed(newClosed);
+      })
+      .catch(console.log);
+  }, []);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -31,6 +47,8 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
   }, []);
+
+  
 
   function changePreferences(config) {
     setPreferences(config);
@@ -71,6 +89,8 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
+        active,
+        closed
       }}
     >
       {children}

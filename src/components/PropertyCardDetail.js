@@ -38,6 +38,7 @@ export const ShowCaseImg = styled.img`
 
 export const ShowCaseData = styled.div`
   width: 100%;
+  height: 8rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 `;
@@ -138,6 +139,7 @@ export const DataIcons = styled.div`
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: black;
+  cursor: pointer;
 `;
 
 export const StyledOption = styled.button`
