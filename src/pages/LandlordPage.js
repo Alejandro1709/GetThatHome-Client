@@ -67,6 +67,9 @@ function LandlordPage() {
       .catch(console.log);
   }, [reload]);
 
+  function changeReload(){
+    setReload(!reload)
+  }
   return (
     <StyledContainer>
       <StyledTabs>
@@ -83,7 +86,7 @@ function LandlordPage() {
             <PropertyList
               properties={!activeTab ? active : closed}
               isLandlord={!activeTab}
-              onCloseProperty={setReload}
+              onCloseProperty={changeReload}
             />
           </div>
           <PaginationBar />

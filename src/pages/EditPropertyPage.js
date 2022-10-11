@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useProperties } from "../context/properties-context";
 import uploadImages from "../services/cloudinary-service";
 import { showProperty, updateProperty } from "../services/properties-service";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
 import InputContainer from "../components/InputPlaceAutocomplete";
 

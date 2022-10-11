@@ -238,7 +238,7 @@ function PropertyCardDetail({
             <StyledOption
               onClick={() =>
                 updateProperty({ active: false }, id)
-                  .then(() => onCloseProperty(true))
+                  .then(() => onCloseProperty())
                   .catch(console.log)
               }
             >

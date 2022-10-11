@@ -25,6 +25,7 @@ const LookingTypeSearch = styled.input`
   ${typography.body[1]};
   color: ${colors.secondary[700]};
   background-color: rgba(255, 255, 255, 0.5);
+  width: inherit;
 `;
 const ResultBox = styled.div`
   position: absolute;

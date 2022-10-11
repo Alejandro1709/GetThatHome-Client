@@ -10,11 +10,6 @@ import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useLocation } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
-import {
-  createSavedProperties,
-  getSavedProperties,
-  updateSavedProperties,
-} from "../services/saved-properties-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;

@@ -281,6 +281,7 @@ export default function NewPropertyForm() {
   const [images, setImages] = useState([]);
   const [propertyData, setPropertyData] = useState(default_data);
   const { propertyTypes } = useProperties();
+  const [error, setError] = useState("");
 
   const location = {
     whereing: propertyData.address.name,
@@ -355,6 +356,7 @@ export default function NewPropertyForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setError("")
     images.forEach((img) => {
       const formData = new FormData();
       formData.append("file", img?.file);
@@ -374,7 +376,7 @@ export default function NewPropertyForm() {
       .then(() => {
         navigate("/myproperties");
       })
-      .catch(console.log);
+      .catch(_e=>setError("Please, complete all the form. Only photos are optional."));
   }
 
   function handleChange(e) {
@@ -620,6 +622,7 @@ export default function NewPropertyForm() {
             ))
           )}
         </UploadedBoxContainer>
+        {error && <span style={{ color: "red" }}>{error}</span>}
         <Button
           type="submit"
           style={{ width: "fit-content", padding: "1rem 1.5rem" }}
