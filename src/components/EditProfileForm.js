@@ -5,6 +5,7 @@ import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
 import { createUser } from '../services/users-service';
+import { useAuth } from '../context/auth-context';
 import styled from '@emotion/styled';
 
 const StyledFormWrapper = styled.div`
@@ -84,7 +85,7 @@ const StyledLoading = styled.div`
   padding: 1rem;
 `;
 
-function SignUpForm() {
+function EditProfileForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -97,6 +98,8 @@ function SignUpForm() {
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
+
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
@@ -130,7 +133,7 @@ function SignUpForm() {
 
   return (
     <StyledFormWrapper>
-      <StyledTitle>Create your account</StyledTitle>
+      <StyledTitle>Update your Profile</StyledTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
           <StyledFormLabel htmlFor='name'>Name</StyledFormLabel>
@@ -140,7 +143,7 @@ function SignUpForm() {
             id='name'
             placeholder='John Doe'
             required
-            value={formData.name}
+            value={formData.name || user.name}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -152,7 +155,7 @@ function SignUpForm() {
             id='email'
             placeholder='user@mail.com'
             required
-            value={formData.email}
+            value={formData.email || user.email}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -164,7 +167,7 @@ function SignUpForm() {
             id='phone'
             placeholder='999-999-999'
             required
-            value={formData.phone}
+            value={formData.phone || user.phone}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -202,10 +205,10 @@ function SignUpForm() {
             <DotWave size={47} speed={1} color='#F48FB1' />
           </StyledLoading>
         )}
-        <StyledFormButton type='submit'>Create Account</StyledFormButton>
+        <StyledFormButton type='submit'>Update Profile</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
   );
 }
 
-export default SignUpForm;
+export default EditProfileForm;
