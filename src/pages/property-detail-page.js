@@ -7,7 +7,7 @@ import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
 import {
@@ -137,6 +137,7 @@ export default function PropertyDetailPage() {
 
   /*  is favorite */
   const { savedProps } = useProperties();
+  console.log(savedProps);
   // const [allSavedProps, setAllSavedProps] = useState(savedProps);
   const [isFav, setIsFav] = useState(false);
   const [favSavedProp, setFavSavedProp] = useState(null);
@@ -147,8 +148,8 @@ export default function PropertyDetailPage() {
     longitude: longitude,
   };
 
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
+  // const sampleLocation = useLocation().pathname;
+  const { id } = useParams();
 
   useEffect(() => {
     showProperty(id)
@@ -156,10 +157,16 @@ export default function PropertyDetailPage() {
         setPropertyByID(data);
       })
       .catch(console.log);
+    // function getsaved() {
+    // }
+    // getsaved();
+  }, [id]);
+
+  useEffect(() => {
     const savedProp = savedProps.find((e) => e.property.id == id);
     setFavSavedProp(savedProp);
     if (savedProp.favorite === true) setIsFav(true);
-  }, [id]);
+  }, [savedProps]);
 
   useEffect(() => {
     setType(operation_type?.type);
@@ -178,6 +185,7 @@ export default function PropertyDetailPage() {
   console.log(favSavedProp);
 
   const addFavorite = (id) => {
+    console.log("iddealaddfavorite", id);
     updateSavedProperties({ favorite: true }, id)
       .then((data) => {
         console.log(data);
@@ -188,6 +196,7 @@ export default function PropertyDetailPage() {
   };
 
   const removeFavorite = (id) => {
+    console.log("iddealremovefavorite", id);
     updateSavedProperties({ favorite: false }, id)
       .then((data) => {
         console.log("quitar fav");
@@ -249,8 +258,10 @@ export default function PropertyDetailPage() {
           <CardContainer>
             <PropertyCustomCard
               isFav={isFav}
-              // handleAddtoFav={addOrRemoveFav}
+              addFavorite={addFavorite}
+              removeFavorite={removeFavorite}
               savedProp={favSavedProp}
+              id={id}
             />
           </CardContainer>
         </aside>

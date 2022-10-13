@@ -11,7 +11,7 @@ import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
 import { AiFillHeart } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { useProperties } from "../context/properties-context";
 
 const Wrapper = styled.div`
@@ -74,27 +74,25 @@ const LoginAdText = styled.div`
 
 export default function PropertyCustomCard({
   isFav,
-  handleAddtoFav,
-  favProp,
+  addFavorite,
+  removeFavorite,
   savedProp,
+  id,
 }) {
-  const { savedProps } = useProperties();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(savedProp);
-  // console.log(savedProp.id);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
-  const [showContactInfo, setShowContactInfo] = useState(false);
 
+  const [showContactInfo, setShowContactInfo] = useState(false);
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
 
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
+  // const sampleLocation = useLocation().pathname;
+  // const { id } = useParams();
 
   useEffect(() => {
     setUserRole(user?.role_name);
@@ -137,7 +135,7 @@ export default function PropertyCustomCard({
                       size="1.5rem"
                       color={`${colors.primary[300]}`}
                       style={{ cursor: "pointer" }}
-                      // onClick={handleAddtoFav(savedProp?.id)}
+                      onClick={() => removeFavorite(savedProp.id)}
                     />
                     <p>Remove from favorites</p>
                   </>
@@ -145,7 +143,7 @@ export default function PropertyCustomCard({
                   <>
                     <FavIcon
                       size="1.5rem"
-                      // onClick={handleAddtoFav(savedProp?.id)}
+                      onClick={() => addFavorite(savedProp.id)}
                     />
                     <p>Add to favorites</p>
                   </>
