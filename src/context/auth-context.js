@@ -19,13 +19,14 @@ function AuthProvider({ children }) {
   function handleLogin(credentials) {
     return login(credentials).then((user) => {
       setUser(user);
-      navigate("/");
+      navigate("/",{replace: true});
     });
   }
 
   function handleSignup(userData) {
+    console.log(userData)
     return createUser(userData).then((user) => {
-      setUser(user);
+      // setUser(user);
       navigate("/");
     });
   }
