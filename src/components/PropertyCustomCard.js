@@ -12,6 +12,7 @@ import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
 import { AiFillHeart } from "react-icons/ai";
 import { NavLink, useLocation } from "react-router-dom";
+import { useProperties } from "../context/properties-context";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -71,8 +72,16 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
+export default function PropertyCustomCard({
+  isFav,
+  handleAddtoFav,
+  favProp,
+  savedProp,
+}) {
+  const { savedProps } = useProperties();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(savedProp);
+  // console.log(savedProp.id);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === "modal") {
@@ -84,12 +93,12 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
 
+  const sampleLocation = useLocation().pathname;
+  const id = sampleLocation.split("/")[2];
+
   useEffect(() => {
     setUserRole(user?.role_name);
   }, [user]);
-
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
 
   return (
     <>
@@ -128,15 +137,15 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
                       size="1.5rem"
                       color={`${colors.primary[300]}`}
                       style={{ cursor: "pointer" }}
-                      // onClick={handleAddtoFav}
+                      // onClick={handleAddtoFav(savedProp?.id)}
                     />
-                    <p>Remove from your favorite</p>
+                    <p>Remove from favorites</p>
                   </>
                 ) : (
                   <>
                     <FavIcon
                       size="1.5rem"
-                      // onClick={handleAddtoFav}
+                      // onClick={handleAddtoFav(savedProp?.id)}
                     />
                     <p>Add to favorites</p>
                   </>

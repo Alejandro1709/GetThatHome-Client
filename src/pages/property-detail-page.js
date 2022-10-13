@@ -10,6 +10,12 @@ import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useLocation } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import {
+  createSavedProperties,
+  getSavedProperties,
+  updateSavedProperties,
+} from "../services/saved-properties-service";
+import { useProperties } from "../context/properties-context";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -130,7 +136,10 @@ export default function PropertyDetailPage() {
   const [name, setName] = useState("");
 
   /*  is favorite */
-  const [isFav, setIsFav] = useState(null);
+  const { savedProps } = useProperties();
+  // const [allSavedProps, setAllSavedProps] = useState(savedProps);
+  const [isFav, setIsFav] = useState(false);
+  const [favSavedProp, setFavSavedProp] = useState(null);
   const myImgs = photo_urls;
 
   const testCoords = {
@@ -143,67 +152,49 @@ export default function PropertyDetailPage() {
 
   useEffect(() => {
     showProperty(id)
-      .then((data) => setPropertyByID(data))
+      .then((data) => {
+        setPropertyByID(data);
+      })
       .catch(console.log);
-    // getSavedProperties().then((saved) => {
-    //   let isFav = saved.find((e) => {
-    //     return e.property.id == id;
-    //   });
-    //   if (isFav) {
-    //     setIsFav(true);
-    //   }
-    // });
+    const savedProp = savedProps.find((e) => e.property.id == id);
+    setFavSavedProp(savedProp);
+    if (savedProp.favorite === true) setIsFav(true);
   }, [id]);
-
-  /* operation_type  */
 
   useEffect(() => {
     setType(operation_type?.type);
-  }, [operation_type]);
-
-  useEffect(() => {
     setPrice(operation_type?.price);
-  }, [operation_type]);
-
-  useEffect(() => {
     setMonthlyRent(operation_type?.monthly_rent);
-  }, [operation_type]);
-  useEffect(() => {
     setMaintenance(operation_type?.maintenance);
-  }, [operation_type]);
-  useEffect(() => {
     setPetsAllowed(operation_type?.pets_allowed);
   }, [operation_type]);
 
-  /* address  */
   useEffect(() => {
     setLatitude(address?.latitude);
-  }, [address]);
-  useEffect(() => {
     setLongitude(address?.longitude);
-  }, [address]);
-  useEffect(() => {
     setName(address?.name);
   }, [address]);
 
-  // function handleAddtoFav(id) {
-  //   console.log("emtre a la fucnion onclick");
-  //   console.log(isFav);
-  //   isFav
-  //     ? updateSavedProperties({ favorite: false }, id)
-  //         .then((data) => {
-  //           console.log("quitar fav");
-  //           setIsFav(false);
-  //         })
-  //         .catch(console.log)
-  //     : updateSavedProperties({ favorite: true }, id)
-  //         .then((data) => {
-  //           console.log(data);
-  //           console.log("crear fav");
-  //           setIsFav(true);
-  //         })
-  //         .catch(console.log);
-  // }
+  console.log(favSavedProp);
+
+  const addFavorite = (id) => {
+    updateSavedProperties({ favorite: true }, id)
+      .then((data) => {
+        console.log(data);
+        console.log("crear fav");
+        setIsFav(true);
+      })
+      .catch(console.log);
+  };
+
+  const removeFavorite = (id) => {
+    updateSavedProperties({ favorite: false }, id)
+      .then((data) => {
+        console.log("quitar fav");
+        setIsFav(false);
+      })
+      .catch(console.log);
+  };
 
   return (
     <TotalContainer>
@@ -258,7 +249,8 @@ export default function PropertyDetailPage() {
           <CardContainer>
             <PropertyCustomCard
               isFav={isFav}
-              // handleAddtoFav={handleAddtoFav(id)}
+              // handleAddtoFav={addOrRemoveFav}
+              savedProp={favSavedProp}
             />
           </CardContainer>
         </aside>

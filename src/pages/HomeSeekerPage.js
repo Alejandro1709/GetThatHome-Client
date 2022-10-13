@@ -5,6 +5,7 @@ import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { getSavedProperties } from "../services/saved-properties-service";
 import { showProperty } from "../services/properties-service";
+import { filterContacted, filterFavorite } from "../utils";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -51,7 +52,7 @@ function FavoriteHomeseekerPage({ properties }) {
   return (
     <ContainerSectionInner>
       <div>
-        <PropertyList properties={properties} isFavorite={true} />
+        <PropertyList properties={properties} />
       </div>
       <PaginationBar />
     </ContainerSectionInner>
@@ -79,7 +80,7 @@ function HomeseekerPage() {
     saved.forEach((e) => {
       showProperty(e.property.id)
         .then((data) => {
-          arr.push(data);
+          arr.push({ ...data, favorite: e.favorite });
         })
         .catch(console.log);
     });
@@ -94,14 +95,6 @@ function HomeseekerPage() {
       })
       .catch(console.log);
   }, []);
-
-  const filterFavorite = (savedProps) => {
-    return savedProps.filter((prop) => prop.favorite === true);
-  };
-
-  const filterContacted = (savedProps) => {
-    return savedProps.filter((prop) => prop.contacted === true);
-  };
 
   return (
     <ContainerPageHomeSeeker>
