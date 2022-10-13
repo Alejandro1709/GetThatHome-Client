@@ -51,13 +51,13 @@ const ContainerSectionInner = styled.section`
 
 function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const { savedProps } = useProperties();
   const [favoriteProps, setFavoriteProps] = useState([]);
   const [contactedProps, setContactedProps] = useState([]);
 
   useEffect(() => {
     getSavedProperties()
       .then((saved) => {
+        console.log("haciendo el useeffect");
         setFavoriteProps(transformSavedList(filterFavorite(saved)));
         setContactedProps(transformSavedList(filterContacted(saved)));
       })
