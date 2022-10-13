@@ -7,11 +7,11 @@ import { fonts } from "../styles/typography";
 import Button from "../components/Button";
 import { useState } from "react";
 import { useProperties } from "../context/properties-context";
-import uploadImages from "../services/cloudinary-service";
 import { createProperty } from "../services/properties-service";
 import { useNavigate } from "react-router-dom";
 import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
 import InputContainer from "../components/InputPlaceAutocomplete";
+import { submitImages } from "../utils";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -356,27 +356,25 @@ export default function NewPropertyForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setError("")
-    images.forEach((img) => {
-      const formData = new FormData();
-      formData.append("file", img?.file);
-      formData.append("upload_preset", "hackf1hx");
-      uploadImages(formData)
-        .then((data) => {
-          const newPhotoUrls = [...propertyData.photo_urls, data.url];
-          setPropertyData({
-            ...propertyData,
-            photo_urls: newPhotoUrls,
-          });
-        })
-        .catch(console.log);
-    });
-    console.log(propertyData);
-    createProperty(propertyData)
-      .then(() => {
-        navigate("/myproperties");
+    setError("");
+    Promise.all(submitImages(images))
+      .then((urls) => {
+        const newPhotoUrls = [...propertyData.photo_urls, ...urls];
+        const newPropertyData = {
+          ...propertyData,
+          photo_urls: newPhotoUrls,
+        };
+        createProperty(newPropertyData)
+          .then(() => {
+            navigate("/myproperties");
+          })
+          .catch((_e) =>
+            setError("Please, complete all the form. Only photos are optional.")
+          );
       })
-      .catch(_e=>setError("Please, complete all the form. Only photos are optional."));
+      .catch((_e) =>
+        setError("Your photos couldn't be uploaded. Please, try again.")
+      );
   }
 
   function handleChange(e) {
