@@ -5,6 +5,8 @@ import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { getSavedProperties } from "../services/saved-properties-service";
 import { showProperty } from "../services/properties-service";
+import { filterContacted, filterFavorite, transformSavedList } from "../utils";
+import { useProperties } from "../context/properties-context";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -47,61 +49,20 @@ const ContainerSectionInner = styled.section`
   justify-content: space-between;
 `;
 
-function FavoriteHomeseekerPage({ properties }) {
-  return (
-    <ContainerSectionInner>
-      <div>
-        <PropertyList properties={properties} isFavorite={true} />
-      </div>
-      <PaginationBar />
-    </ContainerSectionInner>
-  );
-}
-
-function ContactedHomeseekerPage({ properties }) {
-  return (
-    <ContainerSectionInner>
-      <div>
-        <PropertyList properties={properties} />
-      </div>
-      <PaginationBar />
-    </ContainerSectionInner>
-  );
-}
-
 function HomeseekerPage() {
-  const [activeTab, setActiveTab] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const [favoriteProps, setFavoriteProps] = useState([]);
   const [contactedProps, setContactedProps] = useState([]);
-
-  function transformSavedList(saved) {
-    let arr = [];
-    saved.forEach((e) => {
-      showProperty(e.property.id)
-        .then((data) => {
-          arr.push(data);
-        })
-        .catch(console.log);
-    });
-    return arr;
-  }
 
   useEffect(() => {
     getSavedProperties()
       .then((saved) => {
+        console.log("haciendo el useeffect");
         setFavoriteProps(transformSavedList(filterFavorite(saved)));
         setContactedProps(transformSavedList(filterContacted(saved)));
       })
       .catch(console.log);
   }, []);
-
-  const filterFavorite = (savedProps) => {
-    return savedProps.filter((prop) => prop.favorite === true);
-  };
-
-  const filterContacted = (savedProps) => {
-    return savedProps.filter((prop) => prop.contacted === true);
-  };
 
   return (
     <ContainerPageHomeSeeker>
@@ -121,11 +82,14 @@ function HomeseekerPage() {
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
-          {!activeTab ? (
-            <FavoriteHomeseekerPage properties={favoriteProps} />
-          ) : (
-            <ContactedHomeseekerPage properties={contactedProps} />
-          )}
+          <ContainerSectionInner>
+            <div>
+              <PropertyList
+                properties={!activeTab ? favoriteProps : contactedProps}
+              />
+            </div>
+            <PaginationBar />
+          </ContainerSectionInner>
         </ContainerSection>
       </ContainerListHomeSeeker>
     </ContainerPageHomeSeeker>

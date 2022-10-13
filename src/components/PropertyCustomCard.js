@@ -11,7 +11,8 @@ import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
 import { AiFillHeart } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
+import { useProperties } from "../context/properties-context";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -71,7 +72,13 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
+export default function PropertyCustomCard({
+  isFav,
+  addFavorite,
+  removeFavorite,
+  savedProp,
+  id,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleCloseModal(e) {
@@ -79,17 +86,17 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
       setIsModalOpen(false);
     }
   }
-  const [showContactInfo, setShowContactInfo] = useState(false);
 
+  const [showContactInfo, setShowContactInfo] = useState(false);
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
+
+  // const sampleLocation = useLocation().pathname;
+  // const { id } = useParams();
 
   useEffect(() => {
     setUserRole(user?.role_name);
   }, [user]);
-
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
 
   return (
     <>
@@ -128,15 +135,15 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
                       size="1.5rem"
                       color={`${colors.primary[300]}`}
                       style={{ cursor: "pointer" }}
-                      // onClick={handleAddtoFav}
+                      onClick={() => removeFavorite(savedProp.id)}
                     />
-                    <p>Remove from your favorite</p>
+                    <p>Remove from favorites</p>
                   </>
                 ) : (
                   <>
                     <FavIcon
                       size="1.5rem"
-                      // onClick={handleAddtoFav}
+                      onClick={() => addFavorite(savedProp.id)}
                     />
                     <p>Add to favorites</p>
                   </>
