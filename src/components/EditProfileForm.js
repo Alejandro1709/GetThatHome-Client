@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
@@ -90,18 +90,25 @@ function EditProfileForm() {
     name: '',
     email: '',
     phone: '',
-    password: '',
-    passwordConfirm: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [searchParams] = useSearchParams();
-
   const { user } = useAuth();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+      })
+    }
+  }, [user])
+  
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -110,7 +117,6 @@ function EditProfileForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const role = searchParams.get('role');
     const { passwordConfirm, ...user } = formData;
 
     if (user.password !== passwordConfirm) {
@@ -120,15 +126,15 @@ function EditProfileForm() {
 
     setLoading(true);
 
-    createUser({ ...user, role })
-      .then((data) => {
-        setLoading(false);
-        navigate('/', { replace: true });
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    // createUser({ ...user, role })
+    //   .then((data) => {
+    //     setLoading(false);
+    //     navigate('/', { replace: true });
+    //   })
+    //   .catch((err) => {
+    //     setError(err.message);
+    //     setLoading(false);
+    //   });
   }
 
   return (
@@ -143,7 +149,7 @@ function EditProfileForm() {
             id='name'
             placeholder='John Doe'
             required
-            value={formData.name || user.name}
+            value={formData.name}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -155,8 +161,9 @@ function EditProfileForm() {
             id='email'
             placeholder='user@mail.com'
             required
-            value={formData.email || user.email}
+            value={formData.email}
             onChange={handleChange}
+            disabled
           />
         </StyledFormGroup>
         <StyledFormGroup>
@@ -167,7 +174,7 @@ function EditProfileForm() {
             id='phone'
             placeholder='999-999-999'
             required
-            value={formData.phone || user.phone}
+            value={formData.phone}
             onChange={handleChange}
           />
         </StyledFormGroup>
@@ -182,6 +189,7 @@ function EditProfileForm() {
             required
             value={formData.password}
             onChange={handleChange}
+            disabled
           />
         </StyledFormGroup>
         <StyledFormGroup>
@@ -197,6 +205,7 @@ function EditProfileForm() {
             minLength={6}
             value={formData.passwordConfirm}
             onChange={handleChange}
+            disabled
           />
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
