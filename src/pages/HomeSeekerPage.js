@@ -1,16 +1,12 @@
-import styled from "@emotion/styled";
-import { colors, typography } from "../styles";
-import { useEffect, useState } from "react";
-import PaginationBar from "../components/PaginationBar";
-import PropertyList from "../components/PropertyList";
-import { getSavedProperties } from "../services/saved-properties-service";
-import { showProperty } from "../services/properties-service";
-import { filterContacted, filterFavorite, transformSavedList } from "../utils";
-import { useProperties } from "../context/properties-context";
+import styled from '@emotion/styled';
+import { colors, typography } from '../styles';
+import { useState } from 'react';
+import PaginationBar from '../components/PaginationBar';
+import PropertyList from '../components/PropertyList';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 
-const ContainerPageHomeSeeker = styled.div`
-  min-height: inherit;
-`;
+const ContainerPageHomeSeeker = styled.div``;
 
 const ContainerListHomeSeeker = styled.div`
   max-width: 1200px;
@@ -38,32 +34,34 @@ const OptionsTab = styled.button`
   cursor: pointer;
 `;
 
-const ContainerSection = styled.section`
-  height: 100vh;
+const ContainerHeading = styled.h2`
+  ${typography.headline[6]}
 `;
 
-const ContainerSectionInner = styled.section`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+const ContainerSection = styled.section``;
+
+function ActiveHomeseekerPage() {
+  return (
+    <ContainerSection>
+      <ContainerHeading>7 Properties found</ContainerHeading>
+      <PropertyList length={7} />
+      <PaginationBar />
+    </ContainerSection>
+  );
+}
+
+function ClosedHomeseekerPage() {
+  return (
+    <ContainerSection>
+      <ContainerHeading>5 Properties found</ContainerHeading>
+      <PropertyList length={5} />
+      <PaginationBar />
+    </ContainerSection>
+  );
+}
 
 function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const [favoriteProps, setFavoriteProps] = useState([]);
-  const [contactedProps, setContactedProps] = useState([]);
-
-  useEffect(() => {
-    getSavedProperties()
-      .then((saved) => {
-        console.log("haciendo el useeffect");
-        setFavoriteProps(transformSavedList(filterFavorite(saved)));
-        setContactedProps(transformSavedList(filterContacted(saved)));
-      })
-      .catch(console.log);
-  }, []);
-
   return (
     <ContainerPageHomeSeeker>
       <ContainerListHomeSeeker>
@@ -72,24 +70,17 @@ function HomeseekerPage() {
             isActive={activeTab === 0}
             onClick={() => setActiveTab(0)}
           >
-            Favorites
+            FAVORITES
           </OptionsTab>
           <OptionsTab
             isActive={activeTab === 1}
             onClick={() => setActiveTab(1)}
           >
-            Contacted
+            CONTACTED
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
-          <ContainerSectionInner>
-            <div>
-              <PropertyList
-                properties={!activeTab ? favoriteProps : contactedProps}
-              />
-            </div>
-            <PaginationBar />
-          </ContainerSectionInner>
+          {activeTab ? <ClosedHomeseekerPage /> : <ActiveHomeseekerPage />}
         </ContainerSection>
       </ContainerListHomeSeeker>
     </ContainerPageHomeSeeker>

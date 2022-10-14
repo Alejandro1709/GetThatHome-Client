@@ -4,7 +4,7 @@ import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
-import { createUser } from '../services/users-service';
+import { updateUser } from '../services/users-service';
 import { useAuth } from '../context/auth-context';
 import styled from '@emotion/styled';
 
@@ -117,24 +117,18 @@ function EditProfileForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { passwordConfirm, ...user } = formData;
-
-    if (user.password !== passwordConfirm) {
-      setError('Passwords do not match');
-      return;
-    }
 
     setLoading(true);
 
-    // createUser({ ...user, role })
-    //   .then((data) => {
-    //     setLoading(false);
-    //     navigate('/', { replace: true });
-    //   })
-    //   .catch((err) => {
-    //     setError(err.message);
-    //     setLoading(false);
-    //   });
+    updateUser(formData)
+      .then((data) => {
+        setLoading(false);
+        //navigate('/', { replace: true });
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }
 
   return (

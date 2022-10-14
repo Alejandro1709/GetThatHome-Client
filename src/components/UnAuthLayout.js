@@ -47,7 +47,7 @@ const ButtonLogin = styled.button`
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: ${colors.secondary[600]};
+  color: ${colors.secondary[200]};
 `;
 
 function UnAuthLayout({ onLoginClick }) {
