@@ -7,11 +7,11 @@ import { fonts } from "../styles/typography";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { useProperties } from "../context/properties-context";
-import uploadImages from "../services/cloudinary-service";
 import { showProperty, updateProperty } from "../services/properties-service";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
 import InputContainer from "../components/InputPlaceAutocomplete";
+import { readMultiFiles, submitImages } from "../utils";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -276,21 +276,27 @@ const default_data = {
   },
 };
 
+const range = Array.from({ length: 10 }, (_, i) => i + 1);
+
 export default function EditPropertyForm() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const { propertyTypes } = useProperties();
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
+  const { id } = useParams();
   const [propertyData, setPropertyData] = useState(default_data);
+  const [error, setError] = useState("");
   useEffect(() => {
     showProperty(id)
       .then((data) => {
-        setPropertyData(data);
-        console.log(data);
+        const { property_type, ...currData } = data;
+        setPropertyData({
+          ...currData,
+          property_type_id: property_type.id,
+        });
       })
       .catch(console.log);
   }, [id]);
+  useEffect(() => console.log(propertyData), [propertyData]);
   const location = {
     whereing: propertyData.address.name,
     coordinates: {
@@ -298,8 +304,6 @@ export default function EditPropertyForm() {
       lng: propertyData.address.longitude,
     },
   };
-
-  const range = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const changeInput = (e) => {
     //esto es el indice que se le dará a cada imagen, a partir del indice de la ultima foto
@@ -314,36 +318,12 @@ export default function EditPropertyForm() {
     let newImgsToState = readMultiFiles(e, indexImg);
     let newImgsState = [...images, ...newImgsToState];
     setImages(newImgsState);
-
-    console.log(newImgsState);
   };
 
-  function readMultiFiles(e, indexInicial) {
-    const files = e.currentTarget.files;
-    //el array con las imagenes nuevas
-    const arrayImages = [];
-    Object.keys(files).forEach((i) => {
-      const file = files[i];
-      let url = URL.createObjectURL(file);
-      //console.log(file);
-      arrayImages.push({
-        index: indexInicial,
-        name: file.name,
-        url,
-        file,
-      });
-      indexInicial++;
-    });
-    //despues de haber concluido el ciclo retornamos las nuevas imagenes
-    return arrayImages;
-  }
-
   function deleteImg(indice) {
-    //console.log("borrar img " + indice);
     const newImgs = images.filter(function (element) {
       return element.index !== indice;
     });
-    console.log(newImgs);
     setImages(newImgs);
   }
 
@@ -355,7 +335,6 @@ export default function EditPropertyForm() {
       active.classList.remove("activeType");
       selected.classList.add("activeType");
     }
-    // const otherFields = newType === "for sale" ? {price:""} : {monthly_rent:"",maintenance:"",pets_allowed:""}
     const operation_type = {
       type: newType,
     };
@@ -364,25 +343,25 @@ export default function EditPropertyForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    images.forEach((img) => {
-      const formData = new FormData();
-      formData.append("file", img?.file);
-      formData.append("upload_preset", "hackf1hx");
-      uploadImages(formData)
-        .then((data) => {
-          const newPhotoUrls = [...propertyData.photo_urls, data.url];
-          setPropertyData({
-            ...propertyData,
-            photo_urls: newPhotoUrls,
-          });
-        })
-        .catch(console.log);
-    });
-    updateProperty(propertyData, id)
-      .then(() => {
-        navigate("/myproperties");
+    setError("");
+    Promise.all(submitImages(images))
+      .then((urls) => {
+        const newPhotoUrls = [...propertyData.photo_urls, ...urls];
+        const newPropertyData = {
+          ...propertyData,
+          photo_urls: newPhotoUrls,
+        };
+        updateProperty(newPropertyData, id)
+          .then(() => {
+            navigate("/myproperties");
+          })
+          .catch((_e) =>
+            setError("Please, complete all the form. Only photos are optional.")
+          );
       })
-      .catch(console.log);
+      .catch((_e) =>
+        setError("Your photos couldn't be uploaded. Please, try again.")
+      );
   }
 
   function handleChange(e) {
@@ -496,7 +475,7 @@ export default function EditPropertyForm() {
         <InputWrapper>
           <h4>property type</h4>
           <div style={{ display: "flex", gap: "1rem" }}>
-            {propertyTypes.map((type) => {
+            {propertyTypes.map((type, i) => {
               return (
                 <CheckboxWrapper key={type.id}>
                   <input
@@ -505,6 +484,7 @@ export default function EditPropertyForm() {
                     id={type.name}
                     name="property_type_id"
                     onChange={handleChange}
+                    checked={type.id === +propertyData.property_type_id}
                   />
                   <label htmlFor={type.name}>{type.name}</label>
                 </CheckboxWrapper>
@@ -628,11 +608,12 @@ export default function EditPropertyForm() {
             ))
           )}
         </UploadedBoxContainer>
+        {error && <span style={{ color: "red" }}>{error}</span>}
         <Button
           type="submit"
           style={{ width: "fit-content", padding: "1rem 1.5rem" }}
         >
-          Publish property listing
+          Update property listing
         </Button>
       </FormContainer>
     </MainContainer>
