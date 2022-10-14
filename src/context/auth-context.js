@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../services/auth-service";
 import { createUser, getUser } from "../services/users-service";
@@ -8,13 +8,20 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
+
+  function loadUser() {
     getUser()
-      .then((data) => {
-        setUser(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    .then((data) => {
+      setUser(data);
+    })
+    .catch((error) => console.log(error));
+  }
+
+  const loadMemoizedUser = useCallback(loadUser, [])
+
+  useEffect(() => {
+    loadMemoizedUser();
+  }, [loadMemoizedUser]);
 
   function handleLogin(credentials) {
     return login(credentials).then((user) => {

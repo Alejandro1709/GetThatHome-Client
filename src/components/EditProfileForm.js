@@ -123,7 +123,7 @@ function EditProfileForm() {
     updateUser(formData)
       .then((data) => {
         setLoading(false);
-        //navigate('/', { replace: true });
+        navigate('/', { replace: true });
       })
       .catch((err) => {
         setError(err.message);
