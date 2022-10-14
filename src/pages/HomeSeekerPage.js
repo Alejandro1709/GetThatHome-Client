@@ -57,7 +57,6 @@ function HomeseekerPage() {
   useEffect(() => {
     getSavedProperties()
       .then((saved) => {
-        console.log("haciendo el useeffect");
         setFavoriteProps(transformSavedList(filterFavorite(saved)));
         setContactedProps(transformSavedList(filterContacted(saved)));
       })

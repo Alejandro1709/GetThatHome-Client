@@ -14,15 +14,9 @@ export function filterContacted(savedProps) {
 }
 
 export function transformSavedList(saved) {
-  let arr = [];
-  saved.forEach((e) => {
-    showProperty(e.property.id)
-      .then((data) => {
-        arr.push({ ...data, favorite: e.favorite });
-      })
-      .catch(console.log);
+  return saved.map((prop) => {
+    return { ...prop.property_details, favorite: prop.favorite };
   });
-  return arr;
 }
 
 export function submitImages(imgArr) {

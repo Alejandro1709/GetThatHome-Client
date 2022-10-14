@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
 import IconHome from "../assets/icons/LogoHome.png";
 import { fonts, typography } from "../styles/typography";
@@ -36,7 +35,6 @@ function NavBar({ onLoginClick }) {
   // };
 
   const { user } = useAuth();
-  console.log(user);
 
   function deciderFunction() {
     if (user) {
