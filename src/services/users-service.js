@@ -1,8 +1,10 @@
+import { tokenKey } from "../config";
 import apiFetch from "./api-fetch";
 
 export function createUser(userData) {
   return apiFetch("/auth", { body: userData }).then((u) => {
     const {token, ...user} = u
+    sessionStorage.setItem(tokenKey, JSON.stringify(token));
     return user
   });
 }
