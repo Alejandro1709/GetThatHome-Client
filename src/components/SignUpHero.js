@@ -39,6 +39,10 @@ const CreateAccount = styled.button`
   padding: 0.5rem 1rem;
   margin: 1rem;
   width: 16.5rem;
+  &:hover {
+    background-color: ${colors.primary[400]};
+    border: 1px solid ${colors.primary[400]};
+  }
 `;
 
 function SignUpHero() {

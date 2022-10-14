@@ -44,13 +44,22 @@ const LinksPerson = styled.div`
   margin: 1.025rem;
 `;
 
+const ImgAvatar = styled.img`
+  -webkit-transition: 2s linear;
+  transition: 2s linear;
+  &:hover {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+`;
+
 function TeamSection() {
   return (
     <Container>
       <TitleTeam>Meet the team</TitleTeam>
       <TeamContainer>
         <People>
-          <img
+          <ImgAvatar
             src="https://avatars.githubusercontent.com/u/64037397?v=4"
             alt="Human"
             style={{
@@ -87,7 +96,7 @@ function TeamSection() {
           </InfoPerson>
         </People>
         <People>
-          <img
+          <ImgAvatar
             src="https://avatars.githubusercontent.com/u/97063552?v=4"
             alt="Human"
             style={{
@@ -124,7 +133,7 @@ function TeamSection() {
           </InfoPerson>
         </People>
         <People>
-          <img
+          <ImgAvatar
             src="https://avatars.githubusercontent.com/u/101736772?v=4"
             alt="Human"
             style={{
@@ -161,7 +170,7 @@ function TeamSection() {
           </InfoPerson>
         </People>
         <People>
-          <img
+          <ImgAvatar
             src="https://avatars.githubusercontent.com/u/1269801?v=4"
             alt="Human"
             style={{
@@ -198,7 +207,7 @@ function TeamSection() {
           </InfoPerson>
         </People>
         <People>
-          <img
+          <ImgAvatar
             src="https://avatars.githubusercontent.com/u/91625172?v=4"
             alt="Human"
             style={{
