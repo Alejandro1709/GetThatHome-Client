@@ -3,6 +3,7 @@ import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { colors, typography } from "../styles";
 import styled from "@emotion/styled";
+import { useProperties } from "../context/properties-context";
 import { getMyProperties } from "../services/my-properties-service";
 
 const StyledContainer = styled.div`
@@ -48,8 +49,9 @@ const StyledSectionInner = styled.section`
 
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const [active, setActive] = useState([]);
-  const [closed, setClosed] = useState([]);
+  const { properties } = useProperties();
+  const [active, setActive] = useState(properties);
+  const [closed, setClosed] = useState(properties);
   const [reload, setReload] = useState(false);
   useEffect(() => {
     getMyProperties()

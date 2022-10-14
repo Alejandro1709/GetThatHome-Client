@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getProperties } from "../services/properties-service";
 import { getPropertyTypes } from "../services/property-types-service";
-import { getSavedProperties } from "../services/saved-properties-service";
 
 const PropertiesContext = createContext();
 const defaultPreferences = {
@@ -19,7 +18,6 @@ function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-  const [savedProps, setSavedProps] = useState(null);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -30,11 +28,6 @@ function PropertiesProvider({ children }) {
       .then((data) => {
         setTypes(data);
         setPreferences({ ...defaultPreferences, looking: data[0].name });
-      })
-      .catch(console.log);
-    getSavedProperties()
-      .then((data) => {
-        setSavedProps(data);
       })
       .catch(console.log);
   }, []);
@@ -79,7 +72,6 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
-        savedProps,
       }}
     >
       {children}

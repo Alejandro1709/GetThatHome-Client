@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
-import { useAuth } from '../context/auth-context';
+import { createUser } from '../services/users-service';
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -85,7 +85,6 @@ const StyledLoading = styled.div`
 `;
 
 function SignUpForm() {
-  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -98,6 +97,8 @@ function SignUpForm() {
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -116,12 +117,13 @@ function SignUpForm() {
 
     setLoading(true);
 
-    signup({ ...user, role })
-      .then(() => {
+    createUser({ ...user, role })
+      .then((data) => {
         setLoading(false);
+        navigate('/', { replace: true });
       })
-      .catch((error) => {
-        setError(error.message)
+      .catch((err) => {
+        setError(err.message);
         setLoading(false);
       });
   }
