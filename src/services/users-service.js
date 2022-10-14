@@ -9,6 +9,13 @@ export function createUser(userData) {
   });
 }
 
+export function updateUser(userData) {
+  return apiFetch("/auth", {method:"PATCH", body: userData }).then((u) => {
+    const {token, ...user} = u
+    return user
+  });
+}
+
 export function showUser(id) {
   return apiFetch("/users/"+id).then((data) => {
     return data;
