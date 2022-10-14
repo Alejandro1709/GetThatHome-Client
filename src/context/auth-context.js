@@ -26,7 +26,7 @@ function AuthProvider({ children }) {
   function handleSignup(userData) {
     console.log(userData)
     return createUser(userData).then((user) => {
-      // setUser(user);
+      setUser(user);
       navigate("/");
     });
   }
