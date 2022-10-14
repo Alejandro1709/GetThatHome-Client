@@ -85,7 +85,7 @@ function Footer() {
           <TeamNames>
             <span>
               <AiFillGithub />
-              <Span>Stephanny Vargas</Span>
+              <Span>Sthephanny Vargas</Span>
             </span>
             <span>
               <AiFillGithub />
