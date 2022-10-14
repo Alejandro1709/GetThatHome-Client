@@ -5,13 +5,14 @@ import { colors } from "../styles/colors";
 import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
 import { fonts, typography } from "../styles/typography";
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
-import { FaPaw } from "react-icons/fa";
+import { TbArrowBarUp } from "react-icons/tb";
+import { FaPaw, FaRegTrashAlt } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
-import { updateProperty } from "../services/properties-service";
+import { deleteProperty, updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 
 export const ShowCaseBox = styled.div`
@@ -171,6 +172,7 @@ function PropertyCardDetail({
     property_type,
     operation_type,
     photo_urls,
+    active,
   } = property;
   const [geocoded, setGeocoded] = useState(null);
   const navigate = useNavigate();
@@ -225,7 +227,7 @@ function PropertyCardDetail({
             )}
           </Additionals>
         </StyledNavLink>
-        {belongsToMe ? (
+        {belongsToMe && active ? (
           <Options>
             <StyledOption
               onClick={() => {
@@ -233,7 +235,7 @@ function PropertyCardDetail({
               }}
             >
               <FiEdit />
-              Edit
+              EDIT
             </StyledOption>
             <StyledOption
               onClick={() =>
@@ -243,11 +245,34 @@ function PropertyCardDetail({
               }
             >
               <AiOutlineCloseCircle />
-              Close
+              CLOSE
             </StyledOption>
           </Options>
         ) : (
-          <NoOptions />
+          <Options>
+            <StyledOption
+              onClick={() => {
+                updateProperty({ active: true }, id)
+                  .then(() => onCloseProperty())
+                  .catch(console.log);
+              }}
+            >
+              <TbArrowBarUp />
+              RESTORE
+            </StyledOption>
+            <StyledOption
+              onClick={() =>
+                console.log(
+                  deleteProperty(id)
+                    .then(() => onCloseProperty())
+                    .catch(console.log)
+                )
+              }
+            >
+              <FaRegTrashAlt />
+              DELETE
+            </StyledOption>
+          </Options>
         )}
       </ShowCaseData>
     </ShowCaseBox>
