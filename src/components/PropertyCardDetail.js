@@ -14,6 +14,8 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
 import { deleteProperty, updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
+import { useProperties } from "../context/properties-context";
+import { useAuth } from "../context/auth-context";
 
 export const ShowCaseBox = styled.div`
   position: relative;
@@ -157,12 +159,7 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({
-  property,
-  belongsToMe,
-  isFavorite,
-  onCloseProperty,
-}) {
+function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   const {
     id,
     address,
@@ -179,6 +176,18 @@ function PropertyCardDetail({
   useEffect(() => {
     getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
+
+  // *  is favorite */
+  const { savedProps } = useProperties();
+  const { user } = useAuth();
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const savedProp = savedProps.find((e) => e.property_details.id === id);
+      if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+    }
+  }, [savedProps, id, user]);
 
   return (
     <ShowCaseBox>
@@ -220,7 +229,7 @@ function PropertyCardDetail({
             <DataIcons>
               {operation_type.pets_allowed && <FaPaw size="1.5rem" />}
             </DataIcons>
-            {isFavorite && (
+            {isFav && (
               <DataIcons>
                 <AiFillHeart size="1.5rem" color={`${colors.primary[300]}`} />
               </DataIcons>
