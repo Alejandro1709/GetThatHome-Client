@@ -46,7 +46,7 @@ const StyledNewPropCard = styled.div`
 `;
 
 function PropertyList({ properties, isLandlord, onCloseProperty }) {
-  console.log(properties);
+  console.log("PROPERTIES LIST", properties);
   return (
     <div>
       <p>{properties.length} Properties found</p>

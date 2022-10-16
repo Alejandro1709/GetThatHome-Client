@@ -7,15 +7,9 @@ import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
-import {
-  createSavedProperties,
-  getSavedProperties,
-  updateSavedProperties,
-} from "../services/saved-properties-service";
-import { useProperties } from "../context/properties-context";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -135,12 +129,6 @@ export default function PropertyDetailPage() {
   const [longitude, setLongitude] = useState("");
   const [name, setName] = useState("");
 
-  /*  is favorite */
-  const { savedProps } = useProperties();
-  console.log(savedProps);
-  // const [allSavedProps, setAllSavedProps] = useState(savedProps);
-  const [isFav, setIsFav] = useState(false);
-  const [favSavedProp, setFavSavedProp] = useState(null);
   const myImgs = photo_urls;
 
   const testCoords = {
@@ -148,7 +136,6 @@ export default function PropertyDetailPage() {
     longitude: longitude,
   };
 
-  // const sampleLocation = useLocation().pathname;
   const { id } = useParams();
 
   useEffect(() => {
@@ -157,16 +144,7 @@ export default function PropertyDetailPage() {
         setPropertyByID(data);
       })
       .catch(console.log);
-    // function getsaved() {
-    // }
-    // getsaved();
   }, [id]);
-
-  useEffect(() => {
-    const savedProp = savedProps.find((e) => e.property.id == id);
-    setFavSavedProp(savedProp);
-    if (savedProp.favorite === true) setIsFav(true);
-  }, [savedProps]);
 
   useEffect(() => {
     setType(operation_type?.type);
@@ -181,29 +159,6 @@ export default function PropertyDetailPage() {
     setLongitude(address?.longitude);
     setName(address?.name);
   }, [address]);
-
-  console.log(favSavedProp);
-
-  const addFavorite = (id) => {
-    console.log("iddealaddfavorite", id);
-    updateSavedProperties({ favorite: true }, id)
-      .then((data) => {
-        console.log(data);
-        console.log("crear fav");
-        setIsFav(true);
-      })
-      .catch(console.log);
-  };
-
-  const removeFavorite = (id) => {
-    console.log("iddealremovefavorite", id);
-    updateSavedProperties({ favorite: false }, id)
-      .then((data) => {
-        console.log("quitar fav");
-        setIsFav(false);
-      })
-      .catch(console.log);
-  };
 
   return (
     <TotalContainer>
@@ -256,13 +211,7 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard
-              isFav={isFav}
-              addFavorite={addFavorite}
-              removeFavorite={removeFavorite}
-              savedProp={favSavedProp}
-              id={id}
-            />
+            <PropertyCustomCard />
           </CardContainer>
         </aside>
       </Container>

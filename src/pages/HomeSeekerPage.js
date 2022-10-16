@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { getSavedProperties } from "../services/saved-properties-service";
-import { showProperty } from "../services/properties-service";
 import { filterContacted, filterFavorite, transformSavedList } from "../utils";
-import { useProperties } from "../context/properties-context";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -57,7 +55,6 @@ function HomeseekerPage() {
   useEffect(() => {
     getSavedProperties()
       .then((saved) => {
-        console.log("haciendo el useeffect");
         setFavoriteProps(transformSavedList(filterFavorite(saved)));
         setContactedProps(transformSavedList(filterContacted(saved)));
       })

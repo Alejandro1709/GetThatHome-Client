@@ -48,7 +48,6 @@ function LayoutCase() {
           {bestProps.map((property) => (
             <PropertyCardDetail key={property.id} property={property} />
           ))}
-          {/* <PropertyCardDetail /> */}
         </ContainerBestPrices>
       </ContainerCase>
     </Container>
