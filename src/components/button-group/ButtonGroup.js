@@ -54,11 +54,22 @@ export function ButtonGroup({ filters, setFilters }) {
 
   const submitBedBaths = (e) => {
     e.preventDefault();
-    let beds = document.querySelector(".activeTypeBed").getAttribute("value"),
-      baths = document.querySelector(".activeTypeBath").getAttribute("value");
-    if (beds === "any") beds = 0;
-    if (baths === "any") baths = 0;
-    setFilters({ ...filters, ambients: { beds: beds, baths: baths } });
+    const activeBed = document.querySelector(".activeTypeBed"),
+      activeBath = document.querySelector(".activeTypeBath");
+    let beds = 0,
+      baths = 0;
+    if (activeBed) {
+      beds = activeBed.getAttribute("value");
+      if (beds === "any") beds = 0;
+    }
+    if (activeBath) {
+      baths = activeBath.getAttribute("value");
+      if (baths === "any") baths = 0;
+    }
+    setFilters({
+      ...filters,
+      ambients: { beds: beds, baths: baths },
+    });
   };
 
   const submitMore = (e) => {

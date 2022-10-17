@@ -34,7 +34,6 @@ function PropertiesProvider({ children }) {
       .catch(console.log);
     getSavedProperties()
       .then((data) => {
-        console.log("getSavedProperties", data);
         setSavedProps(data);
       })
       .catch(console.log);
