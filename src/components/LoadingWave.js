@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { DotWave } from '@uiball/loaders';
+import { DotWave } from "@uiball/loaders";
 import { colors } from "../styles";
 
 const StyledLoading = styled.div`
@@ -9,10 +9,10 @@ const StyledLoading = styled.div`
   padding: 1rem;
 `;
 
-export default function LoadingWave() {
+export default function LoadingWave({ color }) {
   return (
     <StyledLoading>
-      <DotWave size={47} speed={1} color={colors.primary[300]} />
+      <DotWave size={47} speed={1} color={color || colors.primary[300]} />
     </StyledLoading>
   );
 }

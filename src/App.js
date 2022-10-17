@@ -17,6 +17,8 @@ import { useAuth } from "./context/auth-context";
 import Building from "./assets/images/building.png";
 import EditPropertyForm from "./pages/EditPropertyPage";
 import ProfilePage from "./pages/ProfilePage";
+import LoadingWave from "./components/LoadingWave";
+import { colors } from "./styles";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -75,7 +77,7 @@ removeScript({
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const { user } = useAuth();
+  const { user, status } = useAuth();
   useEffect(() => {
     const script = addScript({
       src: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_TOKEN}&libraries=places`,
@@ -135,8 +137,14 @@ function App() {
               path="*"
               element={
                 <NotFound>
-                  <h1>Building</h1>
-                  <NotFoundImage src={Building} alt="building" />
+                  {status === "loading" ? (
+                    <LoadingWave color= {colors.secondary[500]}/>
+                  ) : (
+                    <>
+                      <h1>Building</h1>
+                      <NotFoundImage src={Building} alt="building" />
+                    </>
+                  )}
                 </NotFound>
               }
             />
