@@ -160,6 +160,7 @@ export const StyledOption = styled.button`
 `;
 
 function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
+  console.log(property);
   const {
     id,
     address,
@@ -183,7 +184,7 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (user?.role_name === "Homeseeker") {
       const savedProp = savedProps.find((e) => e.property_details.id === id);
       if (savedProp) if (savedProp.favorite === true) setIsFav(true);
     }
@@ -236,7 +237,7 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
             )}
           </Additionals>
         </StyledNavLink>
-        {belongsToMe && active ? (
+        {belongsToMe && active && (
           <Options>
             <StyledOption
               onClick={() => {
@@ -257,7 +258,8 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
               CLOSE
             </StyledOption>
           </Options>
-        ) : (
+        )}
+        {belongsToMe && !active && (
           <Options>
             <StyledOption
               onClick={() => {

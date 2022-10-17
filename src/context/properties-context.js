@@ -5,8 +5,8 @@ import { getSavedProperties } from "../services/saved-properties-service";
 
 const PropertiesContext = createContext();
 const defaultPreferences = {
-  looking: "apartment",
-  wanting: "rent",
+  looking: "all",
+  wanting: "all",
   location: {
     whereing: "",
     coordinates: {
@@ -19,7 +19,7 @@ function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-  const [savedProps, setSavedProps] = useState(null);
+  const [savedProps, setSavedProps] = useState([]);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -29,7 +29,7 @@ function PropertiesProvider({ children }) {
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
-        setPreferences({ ...defaultPreferences, looking: data[0].name });
+        //setPreferences({ ...defaultPreferences, looking: data[0].name });
       })
       .catch(console.log);
     getSavedProperties()
@@ -64,7 +64,7 @@ function PropertiesProvider({ children }) {
     const cond3 = lat
       ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
       : true;
-    const cond4 = lat
+    const cond4 = lng
       ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
       : true;
     const cond5 = property.active;

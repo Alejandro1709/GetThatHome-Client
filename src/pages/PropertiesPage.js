@@ -32,7 +32,8 @@ function PropertiesPage() {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
   const filteredProps = filterProperties(propsByPreferences, filters);
-
+  console.log("AQUI");
+  console.log(propsByPreferences);
   return (
     <StyledContainer>
       <SorteableBar filters={filters} setFilters={setFilters} />
