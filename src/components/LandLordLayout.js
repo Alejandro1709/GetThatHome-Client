@@ -30,6 +30,9 @@ const ButtonJoin = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
+  &:hover {
+    background-color: rgba(244, 143, 177, 0.15);
+  }
 `;
 
 const ButtonLogin = styled.button`
@@ -44,11 +47,54 @@ const ButtonLogin = styled.button`
   align-items: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  &:hover {
+    background-color: ${colors.primary[400]};
+    border: 1px solid ${colors.primary[400]};
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: ${colors.secondary[200]};
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+const CssNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${colors.secondary[600]};
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+const ButtonSearch = styled.p`
+  overflow: hidden;
+  border-right: 0.15em solid orange;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes blink-caret {
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: orange;
+    }
+  }
 `;
 
 function LandLordLayout() {
@@ -57,8 +103,10 @@ function LandLordLayout() {
   return (
     <ButtonsNavBar>
       <FindHome>
-        <FiSearch />
-        FIND A HOME
+        <CssNavLink to="/properties">
+          <FiSearch />
+          <ButtonSearch>FIND A HOME</ButtonSearch>
+        </CssNavLink>
       </FindHome>
       <ButtonJoin onClick={logout}>
         <AiOutlineLogout />
