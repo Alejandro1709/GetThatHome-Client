@@ -1,4 +1,3 @@
-import { showProperty } from "./services/properties-service";
 import uploadImages from "./services/cloudinary-service";
 
 export function isVowel(x) {
