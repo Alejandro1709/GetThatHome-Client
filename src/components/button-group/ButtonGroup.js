@@ -28,6 +28,22 @@ export function ButtonGroup({ filters, setFilters }) {
     }
   };
 
+  const test = (e) => {
+    console.log("target", e.target);
+    for (const modal of allModals) {
+      console.log(modal);
+      if (modal[0] === true) {
+        console.log("hay uno abierto");
+      }
+      if (modal[0] === false) {
+        console.log("esta cerrado");
+      }
+    }
+    // window.onclick = function (event) {
+    //   console.log(event.target);
+    // };
+  };
+
   const submitPrice = (e) => {
     e.preventDefault();
     const { min_price, max_price } = e.target.elements;
@@ -106,11 +122,12 @@ export function ButtonGroup({ filters, setFilters }) {
   };
 
   return (
-    <styled.StyledButtonGroup>
+    <styled.StyledButtonGroup id="buttongroup">
       <Button
-        onClick={() => {
-          !pricePopup ? setPricePopup(true) : setPricePopup(false);
+        onClick={(e) => {
+          test(e);
           onlyOneModal();
+          !pricePopup ? setPricePopup(true) : setPricePopup(false);
         }}
       >
         {price}
