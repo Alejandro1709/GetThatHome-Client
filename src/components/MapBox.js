@@ -2,14 +2,13 @@ import mapboxgl from "mapbox-gl"; // or "const mapboxgl = require('mapbox-gl');"
 import Map from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// mapboxgl.accessToken = process.env.MAPBOX_KEY;
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig";
-
 export default function MapBox({ coordValues }) {
   const { latitude, longitude, zoom } = coordValues;
+  console.log(typeof process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
   return (
     <Map
+      // mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+      mapboxAccessToken="pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig"
       initialViewState={{
         latitude: latitude,
         longitude: longitude,
