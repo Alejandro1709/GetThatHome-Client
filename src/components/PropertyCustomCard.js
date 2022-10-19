@@ -104,6 +104,7 @@ export default function PropertyCustomCard() {
         (e) => parseInt(e.property_details.id) === parseInt(id)
       );
       setSavedProps(savedProp);
+      console.log("Es saved prop", savedProp);
       if (savedProp) if (savedProp.favorite === true) setIsFav(true);
     }
   }, [savedProps, id, user]);
@@ -123,6 +124,22 @@ export default function PropertyCustomCard() {
       console.log(data);
       console.log("creating favorite....");
       setIsFav(true);
+    });
+  };
+
+  const createContacted = (id) => {
+    createSavedProperties({ contacted: true, property_id: id }).then((data) => {
+      console.log(data);
+      console.log("creating contacted....");
+      setShowContactInfo(true);
+    });
+  };
+
+  const updateContacted = (id) => {
+    updateSavedProperties({ contacted: true }, id).then((data) => {
+      console.log(data);
+      console.log("adding to contacted....");
+      setShowContactInfo(true);
     });
   };
 
@@ -152,7 +169,7 @@ export default function PropertyCustomCard() {
               </LoginAdText>
               <Button
                 leftIcon={<RiUserReceivedLine size="1.5rem" />}
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsModalOpen(id)}
               >
                 LOGIN
               </Button>
@@ -164,7 +181,13 @@ export default function PropertyCustomCard() {
           <Wrapper>
             {!showContactInfo ? (
               <>
-                <Button onClick={() => setShowContactInfo(true)}>
+                <Button
+                  onClick={
+                    savedProp
+                      ? () => updateContacted(savedProp.id)
+                      : () => createContacted(id)
+                  }
+                >
                   Contact Advertiser
                 </Button>
                 {isFav ? (
