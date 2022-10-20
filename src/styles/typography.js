@@ -80,11 +80,11 @@ for (const size in typography.headline) {
   typography.headline[size] += `
     font-family: ${fonts.primary};
   `;
-  if (size === 2) {
+  if (+size === 2) {
     typography.headline[size] += `
       font-weight: 300;
       `;
-  } else if (size === 6) {
+  } else if (+size === 6) {
     typography.headline[size] += `
     font-weight: 500;
     `;
