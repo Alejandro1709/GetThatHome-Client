@@ -106,7 +106,16 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
-  const [propertyByID, setPropertyByID] = useState("");
+  const [propertyByID, setPropertyByID] = useState({
+    bathrooms: "",
+    bedrooms: "",
+    area: "",
+    description: "",
+    photo_urls: [],
+    operation_type: {},
+    address: {},
+  });
+
   const {
     bathrooms,
     bedrooms,
@@ -117,24 +126,9 @@ export default function PropertyDetailPage() {
     address,
   } = propertyByID;
 
-  /* operation_type  */
-  const [type, setType] = useState("");
-  const [price, setPrice] = useState("");
-  const [monthly_rent, setMonthlyRent] = useState("");
-  const [maintenance, setMaintenance] = useState("");
-  const [pets_allowed, setPetsAllowed] = useState("");
-
-  /* address  */
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [name, setName] = useState("");
-
-  const myImgs = photo_urls;
-
-  const testCoords = {
-    latitude: latitude,
-    longitude: longitude,
-  };
+  const { type, price, monthly_rent, maintenance, pets_allowed } =
+    operation_type;
+  const { latitude, longitude, name } = address;
 
   const { id } = useParams();
 
@@ -146,26 +140,12 @@ export default function PropertyDetailPage() {
       .catch(console.log);
   }, [id]);
 
-  useEffect(() => {
-    setType(operation_type?.type);
-    setPrice(operation_type?.price);
-    setMonthlyRent(operation_type?.monthly_rent);
-    setMaintenance(operation_type?.maintenance);
-    setPetsAllowed(operation_type?.pets_allowed);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setLatitude(address?.latitude);
-    setLongitude(address?.longitude);
-    setName(address?.name);
-  }, [address]);
-
   return (
     <TotalContainer>
       <Container>
         <MainContainer>
           <SliderContainer>
-            <Slider images={myImgs} />
+            <Slider images={photo_urls} />
           </SliderContainer>
           <AboutSection>
             <DescHeader>
@@ -207,7 +187,7 @@ export default function PropertyDetailPage() {
               <p>{name}</p>
             </AboutDesc>
           </AboutSection>
-          <MapBox coordValues={testCoords} />
+          <MapBox coordValues={{ latitude, longitude }} />
         </MainContainer>
         <aside>
           <CardContainer>
