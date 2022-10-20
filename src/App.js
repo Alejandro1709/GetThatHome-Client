@@ -1,24 +1,24 @@
 import styled from "@emotion/styled";
 import { useEffect, useState, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import { useAuth } from "./context/auth-context";
+import { PropertiesProvider } from "./context/properties-context";
+import { colors } from "./styles";
 import Modal from "./components/Modal";
 import LoginForm from "./components/LoginForm";
-import PropertiesPage from "./pages/PropertiesPage";
-import PropertyDetailPage from "./pages/property-detail-page";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import LoadingWave from "./components/LoadingWave";
+import Building from "./assets/images/building.png";
 import SignupPage from "./pages/SignupPage";
 import NewPropertyForm from "./pages/NewPropertyPage";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import { PropertiesProvider } from "./context/properties-context";
-import { useAuth } from "./context/auth-context";
-import Building from "./assets/images/building.png";
 import EditPropertyForm from "./pages/EditPropertyPage";
 import ProfilePage from "./pages/ProfilePage";
-import LoadingWave from "./components/LoadingWave";
-import { colors } from "./styles";
+import LandingPage from "./pages/LandingPage";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
+import PropertiesPage from "./pages/PropertiesPage";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -138,7 +138,7 @@ function App() {
               element={
                 <NotFound>
                   {status === "loading" ? (
-                    <LoadingWave color= {colors.secondary[500]}/>
+                    <LoadingWave color={colors.secondary[500]} />
                   ) : (
                     <>
                       <h1>Building</h1>
