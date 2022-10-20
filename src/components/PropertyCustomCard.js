@@ -105,7 +105,10 @@ export default function PropertyCustomCard() {
       );
       setSavedProps(savedProp);
       console.log("Es saved prop", savedProp);
-      if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+      if (savedProp) {
+        if (savedProp.favorite === true) setIsFav(true);
+        if (savedProp.contacted === true) setShowContactInfo(true);
+      }
     }
   }, [savedProps, id, user]);
 

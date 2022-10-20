@@ -21,7 +21,6 @@ export default function MapBox({ coordValues }) {
       ) : (
         <Map
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          // mapboxAccessToken="pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig"
           initialViewState={{
             latitude,
             longitude,
