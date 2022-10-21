@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DotWave } from '@uiball/loaders';
 import { typography } from '../styles/typography';
 import { colors } from '../styles/colors';
 import { boxShadow } from '../styles/utils';
 import { updateUser } from '../services/users-service';
 import { useAuth } from '../context/auth-context';
 import styled from '@emotion/styled';
+import LoadingWave from './LoadingWave';
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -78,17 +78,9 @@ const StyledFormError = styled.span`
   color: ${colors.error[500]};
 `;
 
-const StyledLoading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-`;
-
 function EditProfileForm() {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     phone: '',
   });
 
@@ -105,10 +97,9 @@ function EditProfileForm() {
         name: user.name,
         email: user.email,
         phone: user.phone,
-      })
+      });
     }
-  }, [user])
-  
+  }, [user]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -203,15 +194,11 @@ function EditProfileForm() {
           />
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
-        {loading && (
-          <StyledLoading>
-            <DotWave size={47} speed={1} color='#F48FB1' />
-          </StyledLoading>
-        )}
+        {loading && <LoadingWave />}
         <StyledFormButton type='submit'>Update Profile</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
   );
 }
 
-export default EditProfileForm;
+export default React.memo(EditProfileForm);
