@@ -10,6 +10,7 @@ import PropertyCustomCard from "../components/PropertyCustomCard";
 import { useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import getGeocode from "../services/mapbox-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -106,6 +107,7 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
+  const [geocoded, setGeocoded] = useState(null);
   const [propertyByID, setPropertyByID] = useState({
     bathrooms: "",
     bedrooms: "",
@@ -128,7 +130,7 @@ export default function PropertyDetailPage() {
 
   const { type, price, monthly_rent, maintenance, pets_allowed } =
     operation_type;
-  const { latitude, longitude, name } = address;
+  const { latitude, longitude } = address;
 
   const { id } = useParams();
 
@@ -140,6 +142,10 @@ export default function PropertyDetailPage() {
       .catch(console.log);
   }, [id]);
 
+  useEffect(() => {
+    getGeocode(address).then(setGeocoded).catch(console.log);
+  }, [address]);
+
   return (
     <TotalContainer>
       <Container>
@@ -150,15 +156,15 @@ export default function PropertyDetailPage() {
           <AboutSection>
             <DescHeader>
               <DescHeaderLeft>
-                <h2>{name}</h2>
-                <h4>{description}</h4>
+                <h2>{address.name}</h2>
+                <h4> {geocoded ? geocoded : "Not an actual address..."}</h4>
               </DescHeaderLeft>
               <DescHeaderRight>
                 <DescMoney>
                   <MoneyIcon />
                   <h4>{type === "for rent" ? monthly_rent : price}</h4>
                 </DescMoney>
-                <h5>{type === "for rent" ? maintenance : ""}</h5>
+                <h5>{type === "for rent" ? "+"+maintenance : ""}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
@@ -172,19 +178,29 @@ export default function PropertyDetailPage() {
               </DescSingleOpt>
               <DescSingleOpt>
                 <BiArea />
-                <h4>{area} area</h4>
+                <h4>{area} m2</h4>
               </DescSingleOpt>
-              <DescSingleOpt>{pets_allowed ? <MdPets /> : ""}</DescSingleOpt>
+              <DescSingleOpt>
+                {pets_allowed ? (
+                  <>
+                    <MdPets /> Pets allowed
+                  </>
+                ) : (
+                  ""
+                )}
+              </DescSingleOpt>
             </DescOptions>
             <AboutDesc>
-              <h3>{description}</h3>
+            <h3>About this property</h3>
               <p>
                 {bedrooms} Bedroom/ {bathrooms} Bathroom.
               </p>
+              <br/>
+              <p>{description}</p>
             </AboutDesc>
             <AboutDesc>
               <h3>Location</h3>
-              <p>{name}</p>
+              <p>{address.name}</p>
             </AboutDesc>
           </AboutSection>
           <MapBox coordValues={{ latitude, longitude }} />
