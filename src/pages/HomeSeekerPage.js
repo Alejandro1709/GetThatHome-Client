@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { getSavedProperties } from "../services/saved-properties-service";
-import { showProperty } from "../services/properties-service";
+import { filterContacted, filterFavorite, transformSavedList } from "../utils";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;

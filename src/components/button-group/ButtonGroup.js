@@ -28,6 +28,22 @@ export function ButtonGroup({ filters, setFilters }) {
     }
   };
 
+  const test = (e) => {
+    console.log("target", e.target);
+    for (const modal of allModals) {
+      console.log(modal);
+      if (modal[0] === true) {
+        console.log("hay uno abierto");
+      }
+      if (modal[0] === false) {
+        console.log("esta cerrado");
+      }
+    }
+    // window.onclick = function (event) {
+    //   console.log(event.target);
+    // };
+  };
+
   const submitPrice = (e) => {
     e.preventDefault();
     const { min_price, max_price } = e.target.elements;
@@ -54,11 +70,22 @@ export function ButtonGroup({ filters, setFilters }) {
 
   const submitBedBaths = (e) => {
     e.preventDefault();
-    let beds = document.querySelector(".activeTypeBed").getAttribute("value"),
-      baths = document.querySelector(".activeTypeBath").getAttribute("value");
-    if (beds === "any") beds = 0;
-    if (baths === "any") baths = 0;
-    setFilters({ ...filters, ambients: { beds: beds, baths: baths } });
+    const activeBed = document.querySelector(".activeTypeBed"),
+      activeBath = document.querySelector(".activeTypeBath");
+    let beds = 0,
+      baths = 0;
+    if (activeBed) {
+      beds = activeBed.getAttribute("value");
+      if (beds === "any") beds = 0;
+    }
+    if (activeBath) {
+      baths = activeBath.getAttribute("value");
+      if (baths === "any") baths = 0;
+    }
+    setFilters({
+      ...filters,
+      ambients: { beds: beds, baths: baths },
+    });
   };
 
   const submitMore = (e) => {
@@ -95,11 +122,12 @@ export function ButtonGroup({ filters, setFilters }) {
   };
 
   return (
-    <styled.StyledButtonGroup>
+    <styled.StyledButtonGroup id="buttongroup">
       <Button
-        onClick={() => {
-          !pricePopup ? setPricePopup(true) : setPricePopup(false);
+        onClick={(e) => {
+          test(e);
           onlyOneModal();
+          !pricePopup ? setPricePopup(true) : setPricePopup(false);
         }}
       >
         {price}

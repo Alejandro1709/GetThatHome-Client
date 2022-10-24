@@ -4,7 +4,6 @@ import apiFetch from "./api-fetch";
 export function login(credentials) {
   return apiFetch("/auth/sign_in", { body: credentials }).then((u) => {
     const { token, ...user } = u;
-    console.log(user);
     sessionStorage.setItem(tokenKey, JSON.stringify(token));
 
     return user;

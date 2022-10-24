@@ -1,6 +1,6 @@
-import { BsChevronRight } from 'react-icons/bs';
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
+import { BsChevronRight } from "react-icons/bs";
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
 
 const StyledPagination = styled.div`
   display: flex;
@@ -14,16 +14,16 @@ const StyledPaginationItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 31px;
-  width: 31px;
-  border-radius: 4px;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.25rem;
   background-color: ${({ isActive }) =>
-    isActive ? colors.primary[100] : 'white'};
+    isActive ? colors.primary[100] : "white"};
   color: ${colors.secondary[600]};
   cursor: pointer;
   user-select: none;
   border: 1px solid
-    ${({ isActive }) => (isActive ? colors.primary[400] : '#eee')};
+    ${({ isActive }) => (isActive ? colors.primary[400] : "#eee")};
 
   &:hover {
     background-color: ${colors.primary[100]};

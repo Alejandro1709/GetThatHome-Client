@@ -7,7 +7,7 @@ import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
 
@@ -106,7 +106,16 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
-  const [propertyByID, setPropertyByID] = useState("");
+  const [propertyByID, setPropertyByID] = useState({
+    bathrooms: "",
+    bedrooms: "",
+    area: "",
+    description: "",
+    photo_urls: [],
+    operation_type: {},
+    address: {},
+  });
+
   const {
     bathrooms,
     bedrooms,
@@ -117,13 +126,11 @@ export default function PropertyDetailPage() {
     address,
   } = propertyByID;
 
-  /* operation_type  */
-  const [type, setType] = useState("");
-  const [price, setPrice] = useState("");
-  const [monthly_rent, setMonthlyRent] = useState("");
-  const [maintenance, setMaintenance] = useState("");
-  const [pets_allowed, setPetsAllowed] = useState("");
+  const { type, price, monthly_rent, maintenance, pets_allowed } =
+    operation_type;
+  const { latitude, longitude, name } = address;
 
+<<<<<<< HEAD:src/pages/property-detail-page.js
   /* address  */
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -140,11 +147,15 @@ export default function PropertyDetailPage() {
 
   const sampleLocation = useLocation().pathname;
   const id = sampleLocation.split("/")[2];
+=======
+  const { id } = useParams();
+>>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
 
   useEffect(() => {
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
+<<<<<<< HEAD:src/pages/property-detail-page.js
     // getSavedProperties().then((saved) => {
     //   let isFav = saved.find((e) => {
     //     return e.property.id == id;
@@ -205,12 +216,16 @@ export default function PropertyDetailPage() {
   //         .catch(console.log);
   // }
 
+=======
+  }, [id]);
+
+>>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
   return (
     <TotalContainer>
       <Container>
         <MainContainer>
           <SliderContainer>
-            <Slider images={myImgs} />
+            <Slider images={photo_urls} />
           </SliderContainer>
           <AboutSection>
             <DescHeader>
@@ -252,14 +267,18 @@ export default function PropertyDetailPage() {
               <p>{name}</p>
             </AboutDesc>
           </AboutSection>
-          <MapBox coordValues={testCoords} />
+          <MapBox coordValues={{ latitude, longitude }} />
         </MainContainer>
         <aside>
           <CardContainer>
+<<<<<<< HEAD:src/pages/property-detail-page.js
             <PropertyCustomCard
               isFav={isFav}
               // handleAddtoFav={handleAddtoFav(id)}
             />
+=======
+            <PropertyCustomCard />
+>>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
           </CardContainer>
         </aside>
       </Container>
