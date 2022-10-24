@@ -160,7 +160,6 @@ export const StyledOption = styled.button`
 `;
 
 function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
-  console.log(property);
   const {
     id,
     address,

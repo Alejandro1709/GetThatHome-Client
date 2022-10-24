@@ -50,8 +50,6 @@ const StyledNewPropCard = styled.div`
 
 function PropertyList({ properties, isLandlord, onCloseProperty }) {
   const [page, setPage] = useState(1);
-  console.log("AQUI AQUI");
-  console.log(page);
   return (
     <div>
       <p>{properties.length} Properties found</p>
