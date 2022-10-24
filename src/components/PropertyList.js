@@ -4,6 +4,9 @@ import { colors, typography } from "../styles";
 import { TbMoodEmpty } from "react-icons/tb";
 import { IoAddCircle } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import PaginationBar from "../components/PaginationBar";
+import { useState } from "react";
+
 
 const StyledList = styled.div`
   display: grid;
@@ -46,11 +49,12 @@ const StyledNewPropCard = styled.div`
 `;
 
 function PropertyList({ properties, isLandlord, onCloseProperty }) {
+  const [page, setPage] = useState(1);
   return (
     <div>
       <p>{properties.length} Properties found</p>
       <StyledList>
-        {properties.map((item) => (
+        {properties.slice((page-1)*6,page*6).map((item) => (
           <PropertyCardDetail
             property={item}
             key={item.id}
@@ -73,6 +77,8 @@ function PropertyList({ properties, isLandlord, onCloseProperty }) {
           <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
+
+    <PaginationBar total={properties.length} page={page} onChangePage={setPage}/>
     </div>
   );
 }

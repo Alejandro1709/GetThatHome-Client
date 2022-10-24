@@ -37,7 +37,6 @@ function PropertiesPage() {
       <SorteableBar filters={filters} setFilters={setFilters} />
       <PropertiesContainer>
         <PropertyList properties={filteredProps} />
-        <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
   );

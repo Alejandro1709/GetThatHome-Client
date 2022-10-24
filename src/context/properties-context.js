@@ -87,7 +87,6 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
-        savedProps,
       }}
     >
       {children}

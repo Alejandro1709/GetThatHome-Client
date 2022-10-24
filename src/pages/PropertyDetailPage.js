@@ -134,9 +134,7 @@ export default function PropertyDetailPage() {
 
   useEffect(() => {
     showProperty(id)
-      .then((data) => {
-        setPropertyByID(data);
-      })
+      .then((data) => setPropertyByID(data))
       .catch(console.log);
   }, [id]);
 
