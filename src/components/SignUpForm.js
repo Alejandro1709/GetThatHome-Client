@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useNavigate } from "react";
 import { useSearchParams } from "react-router-dom";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
@@ -6,6 +6,7 @@ import { boxShadow } from "../styles/utils";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/auth-context";
 import LoadingWave from "./LoadingWave";
+import { createUser } from "../services/users-service";
 
 const StyledFormWrapper = styled.div`
   display: flex;

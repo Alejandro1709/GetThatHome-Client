@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { colors, typography } from "../styles";
 import styled from "@emotion/styled";
@@ -53,6 +52,7 @@ function LandlordPage() {
   const [active, setActive] = useState(properties);
   const [closed, setClosed] = useState(properties);
   const [reload, setReload] = useState(false);
+  
   useEffect(() => {
     getMyProperties()
       .then((data) => {
@@ -70,6 +70,8 @@ function LandlordPage() {
   function changeReload() {
     setReload(!reload);
   }
+
+  
   return (
     <StyledContainer>
       <StyledTabs>
@@ -89,7 +91,7 @@ function LandlordPage() {
               onCloseProperty={changeReload}
             />
           </div>
-          <PaginationBar />
+          
         </StyledSectionInner>
       </StyledSection>
     </StyledContainer>
