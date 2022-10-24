@@ -2,7 +2,7 @@ import { colors } from '../styles/colors';
 import styled from '@emotion/styled';
 import { fonts } from '../styles/typography';
 
-const StyledInputWrapper = styled.div`
+const StyledInputWrapper = styled.form`
   border: 1px solid ${colors.primary[400]};
   background-color: white;
   border-radius: 0.31rem;
@@ -32,11 +32,12 @@ function FilterInput({
   placeholder,
   value,
   onChange,
+  onSubmit,
   hasLeftIcon,
   width,
 }) {
   return (
-    <StyledInputWrapper>
+    <StyledInputWrapper onSubmit={onSubmit}>
       <StyledTop>
         {hasLeftIcon}
         <StyledInput
