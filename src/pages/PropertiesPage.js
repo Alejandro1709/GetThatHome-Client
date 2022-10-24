@@ -25,6 +25,7 @@ const initialFilters = {
   pets: null,
   area: { min: 0, max: Infinity },
   op_type: { rent: null, sale: null },
+  place: [],
 };
 
 function PropertiesPage() {
@@ -33,7 +34,11 @@ function PropertiesPage() {
   const filteredProps = filterProperties(propsByPreferences, filters);
   return (
     <StyledContainer>
-      <SorteableBar filters={filters} setFilters={setFilters} />
+      <SorteableBar
+        filters={filters}
+        setFilters={setFilters}
+        propsByPreferences={propsByPreferences}
+      />
       <PropertiesContainer>
         <PropertyList properties={filteredProps} />
       </PropertiesContainer>
