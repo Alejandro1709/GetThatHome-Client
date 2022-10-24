@@ -2,11 +2,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getProperties } from "../services/properties-service";
 import { getPropertyTypes } from "../services/property-types-service";
 import { getSavedProperties } from "../services/saved-properties-service";
+import { useAuth } from "./auth-context";
 
 const PropertiesContext = createContext();
 const defaultPreferences = {
-  looking: "apartment",
-  wanting: "rent",
+  looking: "all",
+  wanting: "all",
   location: {
     whereing: "",
     coordinates: {
@@ -16,10 +17,11 @@ const defaultPreferences = {
   },
 };
 function PropertiesProvider({ children }) {
+  const { user } = useAuth();
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-  const [savedProps, setSavedProps] = useState(null);
+  const [savedProps, setSavedProps] = useState([]);
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -29,15 +31,21 @@ function PropertiesProvider({ children }) {
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
-        setPreferences({ ...defaultPreferences, looking: data[0].name });
-      })
-      .catch(console.log);
-    getSavedProperties()
-      .then((data) => {
-        setSavedProps(data);
+        //setPreferences({ ...defaultPreferences, looking: data[0].name });
       })
       .catch(console.log);
   }, []);
+
+  useEffect(() => {
+    if (user?.role_name === "Homeseeker") {
+      getSavedProperties()
+        .then((data) => {
+          console.log("getSavedProperties", data);
+          setSavedProps(data);
+        })
+        .catch(console.log);
+    }
+  }, [user]);
 
   function changePreferences(config) {
     setPreferences(config);
@@ -63,7 +71,7 @@ function PropertiesProvider({ children }) {
     const cond3 = lat
       ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
       : true;
-    const cond4 = lat
+    const cond4 = lng
       ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
       : true;
     const cond5 = property.active;
@@ -79,7 +87,6 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
-        savedProps,
       }}
     >
       {children}

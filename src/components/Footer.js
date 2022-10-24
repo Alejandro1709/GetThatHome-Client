@@ -85,11 +85,11 @@ function Footer() {
           <TeamNames>
             <span>
               <AiFillGithub />
-              <Span>Stephanny Vargas</Span>
+              <Span>Sthephanny Vargas</Span>
             </span>
             <span>
               <AiFillGithub />
-              <Span>Erick Cardenas</Span>
+              <Span>Erik Cardenas</Span>
             </span>
           </TeamNames>
         </SectionTeam>

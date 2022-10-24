@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
-import { DotWave } from '@uiball/loaders';
-import { colors } from '../styles';
+import styled from "@emotion/styled";
+import { DotWave } from "@uiball/loaders";
+import { colors } from "../styles";
 
 const StyledLoading = styled.div`
   display: flex;

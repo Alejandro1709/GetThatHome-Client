@@ -13,6 +13,7 @@ const StyledHeader = styled.header`
 
 function ProfilePage() {
   return (
+    
     <StyledProfilePage>
       <StyledHeader>
         <EditProfileForm />

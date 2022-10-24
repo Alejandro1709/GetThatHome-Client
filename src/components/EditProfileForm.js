@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { typography } from '../styles/typography';
-import { colors } from '../styles/colors';
-import { boxShadow } from '../styles/utils';
-import { updateUser } from '../services/users-service';
-import { useAuth } from '../context/auth-context';
-import styled from '@emotion/styled';
-import LoadingWave from './LoadingWave';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { typography } from "../styles/typography";
+import { colors } from "../styles/colors";
+import { boxShadow } from "../styles/utils";
+import { updateUser } from "../services/users-service";
+import { useAuth } from "../context/auth-context";
+import styled from "@emotion/styled";
+import LoadingWave from "./LoadingWave";
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -80,8 +80,8 @@ const StyledFormError = styled.span`
 
 function EditProfileForm() {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
+    name: "",
+    phone: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -95,7 +95,7 @@ function EditProfileForm() {
     if (user) {
       setFormData({
         name: user.name,
-        email: user.email,
+        // email: user.email, User can't change their email
         phone: user.phone,
       });
     }
@@ -112,9 +112,9 @@ function EditProfileForm() {
     setLoading(true);
 
     updateUser(formData)
-      .then((data) => {
+      .then((_data) => {
         setLoading(false);
-        navigate('/', { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((err) => {
         setError(err.message);
@@ -127,49 +127,48 @@ function EditProfileForm() {
       <StyledTitle>Update your Profile</StyledTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='name'>Name</StyledFormLabel>
+          <StyledFormLabel htmlFor="name">Name</StyledFormLabel>
           <StyledFormInput
-            name='name'
-            type='text'
-            id='name'
-            placeholder='John Doe'
+            name="name"
+            type="text"
+            id="name"
+            placeholder="John Doe"
             required
             value={formData.name}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='email'>Email</StyledFormLabel>
+          <StyledFormLabel htmlFor="email">Email</StyledFormLabel>
           <StyledFormInput
-            name='email'
-            type='email'
-            id='email'
-            placeholder='user@mail.com'
+            name="email"
+            type="email"
+            id="email"
+            placeholder="user@mail.com"
             required
-            value={formData.email}
-            onChange={handleChange}
+            value={user.email}
             disabled
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='phone'>Phone</StyledFormLabel>
+          <StyledFormLabel htmlFor="phone">Phone</StyledFormLabel>
           <StyledFormInput
-            name='phone'
-            type='text'
-            id='phone'
-            placeholder='999-999-999'
+            name="phone"
+            type="text"
+            id="phone"
+            placeholder="999-999-999"
             required
             value={formData.phone}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='password'>Password</StyledFormLabel>
+          <StyledFormLabel htmlFor="password">Password</StyledFormLabel>
           <StyledFormInput
-            name='password'
-            type='password'
-            id='password'
-            placeholder='******'
+            name="password"
+            type="password"
+            id="password"
+            placeholder="******"
             minLength={6}
             required
             value={formData.password}
@@ -178,14 +177,14 @@ function EditProfileForm() {
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='password-confirm'>
+          <StyledFormLabel htmlFor="password-confirm">
             Password Confirmation
           </StyledFormLabel>
           <StyledFormInput
-            name='passwordConfirm'
-            type='password'
-            id='password-confirm'
-            placeholder='******'
+            name="passwordConfirm"
+            type="password"
+            id="password-confirm"
+            placeholder="******"
             required
             minLength={6}
             value={formData.passwordConfirm}
@@ -195,7 +194,7 @@ function EditProfileForm() {
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
         {loading && <LoadingWave />}
-        <StyledFormButton type='submit'>Update Profile</StyledFormButton>
+        <StyledFormButton type="submit">Update Profile</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
   );

@@ -7,15 +7,10 @@ import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
-import {
-  createSavedProperties,
-  getSavedProperties,
-  updateSavedProperties,
-} from "../services/saved-properties-service";
-import { useProperties } from "../context/properties-context";
+import getGeocode from "../services/mapbox-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -112,7 +107,17 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
-  const [propertyByID, setPropertyByID] = useState("");
+  const [geocoded, setGeocoded] = useState(null);
+  const [propertyByID, setPropertyByID] = useState({
+    bathrooms: "",
+    bedrooms: "",
+    area: "",
+    description: "",
+    photo_urls: [],
+    operation_type: {},
+    address: {},
+  });
+
   const {
     bathrooms,
     bedrooms,
@@ -123,107 +128,41 @@ export default function PropertyDetailPage() {
     address,
   } = propertyByID;
 
-  /* operation_type  */
-  const [type, setType] = useState("");
-  const [price, setPrice] = useState("");
-  const [monthly_rent, setMonthlyRent] = useState("");
-  const [maintenance, setMaintenance] = useState("");
-  const [pets_allowed, setPetsAllowed] = useState("");
+  const { type, price, monthly_rent, maintenance, pets_allowed } =
+    operation_type;
+  const { latitude, longitude } = address;
 
-  /* address  */
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [name, setName] = useState("");
-
-  /*  is favorite */
-  const { savedProps } = useProperties();
-  console.log(savedProps);
-  // const [allSavedProps, setAllSavedProps] = useState(savedProps);
-  const [isFav, setIsFav] = useState(false);
-  const [favSavedProp, setFavSavedProp] = useState(null);
-  const myImgs = photo_urls;
-
-  const testCoords = {
-    latitude: latitude,
-    longitude: longitude,
-  };
-
-  // const sampleLocation = useLocation().pathname;
   const { id } = useParams();
 
   useEffect(() => {
     showProperty(id)
-      .then((data) => {
-        setPropertyByID(data);
-      })
+      .then((data) => setPropertyByID(data))
       .catch(console.log);
-    // function getsaved() {
-    // }
-    // getsaved();
   }, [id]);
 
   useEffect(() => {
-    const savedProp = savedProps.find((e) => e.property.id == id);
-    setFavSavedProp(savedProp);
-    if (savedProp.favorite === true) setIsFav(true);
-  }, [savedProps]);
-
-  useEffect(() => {
-    setType(operation_type?.type);
-    setPrice(operation_type?.price);
-    setMonthlyRent(operation_type?.monthly_rent);
-    setMaintenance(operation_type?.maintenance);
-    setPetsAllowed(operation_type?.pets_allowed);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setLatitude(address?.latitude);
-    setLongitude(address?.longitude);
-    setName(address?.name);
+    getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
-
-  console.log(favSavedProp);
-
-  const addFavorite = (id) => {
-    console.log("iddealaddfavorite", id);
-    updateSavedProperties({ favorite: true }, id)
-      .then((data) => {
-        console.log(data);
-        console.log("crear fav");
-        setIsFav(true);
-      })
-      .catch(console.log);
-  };
-
-  const removeFavorite = (id) => {
-    console.log("iddealremovefavorite", id);
-    updateSavedProperties({ favorite: false }, id)
-      .then((data) => {
-        console.log("quitar fav");
-        setIsFav(false);
-      })
-      .catch(console.log);
-  };
 
   return (
     <TotalContainer>
       <Container>
         <MainContainer>
           <SliderContainer>
-            <Slider images={myImgs} />
+            <Slider images={photo_urls} />
           </SliderContainer>
           <AboutSection>
             <DescHeader>
               <DescHeaderLeft>
-                <h2>{name}</h2>
-                <h4>{description}</h4>
+                <h2>{address.name}</h2>
+                <h4> {geocoded ? geocoded : "Not an actual address..."}</h4>
               </DescHeaderLeft>
               <DescHeaderRight>
                 <DescMoney>
                   <MoneyIcon />
                   <h4>{type === "for rent" ? monthly_rent : price}</h4>
                 </DescMoney>
-                <h5>{type === "for rent" ? maintenance : ""}</h5>
+                <h5>{type === "for rent" ? "+"+maintenance : ""}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
@@ -237,32 +176,36 @@ export default function PropertyDetailPage() {
               </DescSingleOpt>
               <DescSingleOpt>
                 <BiArea />
-                <h4>{area} area</h4>
+                <h4>{area} m2</h4>
               </DescSingleOpt>
-              <DescSingleOpt>{pets_allowed ? <MdPets /> : ""}</DescSingleOpt>
+              <DescSingleOpt>
+                {pets_allowed ? (
+                  <>
+                    <MdPets /> Pets allowed
+                  </>
+                ) : (
+                  ""
+                )}
+              </DescSingleOpt>
             </DescOptions>
             <AboutDesc>
-              <h3>{description}</h3>
+            <h3>About this property</h3>
               <p>
                 {bedrooms} Bedroom/ {bathrooms} Bathroom.
               </p>
+              <br/>
+              <p>{description}</p>
             </AboutDesc>
             <AboutDesc>
               <h3>Location</h3>
-              <p>{name}</p>
+              <p>{address.name}</p>
             </AboutDesc>
           </AboutSection>
-          <MapBox coordValues={testCoords} />
+          <MapBox coordValues={{ latitude, longitude }} />
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard
-              isFav={isFav}
-              addFavorite={addFavorite}
-              removeFavorite={removeFavorite}
-              savedProp={favSavedProp}
-              id={id}
-            />
+            <PropertyCustomCard />
           </CardContainer>
         </aside>
       </Container>

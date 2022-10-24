@@ -7,12 +7,15 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [userStatus, setUserStatus] = useState("idle");
   const navigate = useNavigate();
 
   function loadUser() {
+    setUserStatus("loading")
     getUser()
     .then((data) => {
       setUser(data);
+      setUserStatus("success")
     })
     .catch((error) => console.log(error));
   }
@@ -26,12 +29,11 @@ function AuthProvider({ children }) {
   function handleLogin(credentials) {
     return login(credentials).then((user) => {
       setUser(user);
-      navigate("/",{replace: true});
+      navigate("/");
     });
   }
 
   function handleSignup(userData) {
-    console.log(userData)
     return createUser(userData).then((user) => {
       setUser(user);
       navigate("/");
@@ -49,6 +51,7 @@ function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
+        status: userStatus,
         login: handleLogin,
         signup: handleSignup,
         logout: handleLogout,

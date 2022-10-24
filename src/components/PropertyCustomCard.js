@@ -11,8 +11,12 @@ import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
 import { AiFillHeart } from "react-icons/ai";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useProperties } from "../context/properties-context";
+import {
+  createSavedProperties,
+  updateSavedProperties,
+} from "../services/saved-properties-service";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -72,13 +76,7 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard({
-  isFav,
-  addFavorite,
-  removeFavorite,
-  savedProp,
-  id,
-}) {
+export default function PropertyCustomCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleCloseModal(e) {
@@ -86,17 +84,77 @@ export default function PropertyCustomCard({
       setIsModalOpen(false);
     }
   }
-
   const [showContactInfo, setShowContactInfo] = useState(false);
+
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
-
-  // const sampleLocation = useLocation().pathname;
-  // const { id } = useParams();
 
   useEffect(() => {
     setUserRole(user?.role_name);
   }, [user]);
+
+  const { id } = useParams();
+  const { savedProps } = useProperties();
+  const [isFav, setIsFav] = useState(false);
+  const [savedProp, setSavedProps] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      const savedProp = savedProps.find(
+        (e) => parseInt(e.property_details.id) === parseInt(id)
+      );
+      setSavedProps(savedProp);
+      console.log("Es saved prop", savedProp);
+      if (savedProp) {
+        if (savedProp.favorite === true) setIsFav(true);
+        if (savedProp.contacted === true) setShowContactInfo(true);
+      }
+    }
+  }, [savedProps, id, user]);
+
+  const addFavorite = (id) => {
+    updateSavedProperties({ favorite: true }, id)
+      .then((data) => {
+        console.log(data);
+        console.log("adding to fav...");
+        setIsFav(true);
+      })
+      .catch(console.log);
+  };
+
+  const createFavorite = (id) => {
+    createSavedProperties({ favorite: true, property_id: id }).then((data) => {
+      console.log(data);
+      console.log("creating favorite....");
+      setIsFav(true);
+    });
+  };
+
+  const createContacted = (id) => {
+    createSavedProperties({ contacted: true, property_id: id }).then((data) => {
+      console.log(data);
+      console.log("creating contacted....");
+      setShowContactInfo(true);
+    });
+  };
+
+  const updateContacted = (id) => {
+    updateSavedProperties({ contacted: true }, id).then((data) => {
+      console.log(data);
+      console.log("adding to contacted....");
+      setShowContactInfo(true);
+    });
+  };
+
+  const removeFavorite = (id) => {
+    updateSavedProperties({ favorite: false }, id)
+      .then((data) => {
+        console.log(data);
+        console.log("deleting from fav...");
+        setIsFav(false);
+      })
+      .catch(console.log);
+  };
 
   return (
     <>
@@ -114,7 +172,7 @@ export default function PropertyCustomCard({
               </LoginAdText>
               <Button
                 leftIcon={<RiUserReceivedLine size="1.5rem" />}
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsModalOpen(id)}
               >
                 LOGIN
               </Button>
@@ -126,7 +184,13 @@ export default function PropertyCustomCard({
           <Wrapper>
             {!showContactInfo ? (
               <>
-                <Button onClick={() => setShowContactInfo(true)}>
+                <Button
+                  onClick={
+                    savedProp
+                      ? () => updateContacted(savedProp.id)
+                      : () => createContacted(id)
+                  }
+                >
                   Contact Advertiser
                 </Button>
                 {isFav ? (
@@ -135,15 +199,19 @@ export default function PropertyCustomCard({
                       size="1.5rem"
                       color={`${colors.primary[300]}`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => removeFavorite(savedProp.id)}
+                      onClick={() => removeFavorite(savedProp.id || id)}
                     />
-                    <p>Remove from favorites</p>
+                    <p>Remove from your favorite</p>
                   </>
                 ) : (
                   <>
                     <FavIcon
                       size="1.5rem"
-                      onClick={() => addFavorite(savedProp.id)}
+                      onClick={
+                        savedProp
+                          ? () => addFavorite(savedProp.id)
+                          : () => createFavorite(id)
+                      }
                     />
                     <p>Add to favorites</p>
                   </>

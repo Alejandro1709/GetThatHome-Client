@@ -1,12 +1,13 @@
-import styled from '@emotion/styled';
-import { colors, typography } from '../styles';
-import { useState } from 'react';
-import PaginationBar from '../components/PaginationBar';
-import PropertyList from '../components/PropertyList';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
+import styled from "@emotion/styled";
+import { colors, typography } from "../styles";
+import { useEffect, useState } from "react";
+import PropertyList from "../components/PropertyList";
+import { getSavedProperties } from "../services/saved-properties-service";
+import { filterContacted, filterFavorite, transformSavedList } from "../utils";
 
-const ContainerPageHomeSeeker = styled.div``;
+const ContainerPageHomeSeeker = styled.div`
+  min-height: inherit;
+`;
 
 const ContainerListHomeSeeker = styled.div`
   max-width: 1200px;
@@ -34,34 +35,31 @@ const OptionsTab = styled.button`
   cursor: pointer;
 `;
 
-const ContainerHeading = styled.h2`
-  ${typography.headline[6]}
+const ContainerSection = styled.section`
+  height: 100vh;
 `;
 
-const ContainerSection = styled.section``;
-
-function ActiveHomeseekerPage() {
-  return (
-    <ContainerSection>
-      <ContainerHeading>7 Properties found</ContainerHeading>
-      <PropertyList length={7} />
-      <PaginationBar />
-    </ContainerSection>
-  );
-}
-
-function ClosedHomeseekerPage() {
-  return (
-    <ContainerSection>
-      <ContainerHeading>5 Properties found</ContainerHeading>
-      <PropertyList length={5} />
-      <PaginationBar />
-    </ContainerSection>
-  );
-}
+const ContainerSectionInner = styled.section`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
 function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
+  const [favoriteProps, setFavoriteProps] = useState([]);
+  const [contactedProps, setContactedProps] = useState([]);
+
+  useEffect(() => {
+    getSavedProperties()
+      .then((saved) => {
+        setFavoriteProps(transformSavedList(filterFavorite(saved)));
+        setContactedProps(transformSavedList(filterContacted(saved)));
+      })
+      .catch(console.log);
+  }, []);
+
   return (
     <ContainerPageHomeSeeker>
       <ContainerListHomeSeeker>
@@ -70,17 +68,23 @@ function HomeseekerPage() {
             isActive={activeTab === 0}
             onClick={() => setActiveTab(0)}
           >
-            FAVORITES
+            Favorites
           </OptionsTab>
           <OptionsTab
             isActive={activeTab === 1}
             onClick={() => setActiveTab(1)}
           >
-            CONTACTED
+            Contacted
           </OptionsTab>
         </ContainerTabs>
         <ContainerSection>
-          {activeTab ? <ClosedHomeseekerPage /> : <ActiveHomeseekerPage />}
+          <ContainerSectionInner>
+            <div>
+              <PropertyList
+                properties={!activeTab ? favoriteProps : contactedProps}
+              />
+            </div>
+          </ContainerSectionInner>
         </ContainerSection>
       </ContainerListHomeSeeker>
     </ContainerPageHomeSeeker>

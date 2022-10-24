@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { DotWave } from '@uiball/loaders';
-import { typography } from '../styles/typography';
-import { colors } from '../styles/colors';
-import { boxShadow } from '../styles/utils';
-import styled from '@emotion/styled';
-import { useAuth } from '../context/auth-context';
+import { useState, useNavigate } from "react";
+import { useSearchParams } from "react-router-dom";
+import { typography } from "../styles/typography";
+import { colors } from "../styles/colors";
+import { boxShadow } from "../styles/utils";
+import styled from "@emotion/styled";
+import { useAuth } from "../context/auth-context";
+import LoadingWave from "./LoadingWave";
+import { createUser } from "../services/users-service";
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -77,27 +78,21 @@ const StyledFormError = styled.span`
   color: ${colors.error[500]};
 `;
 
-const StyledLoading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-`;
-
 function SignUpForm() {
-  const { signup } = useAuth();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    passwordConfirm: '',
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    passwordConfirm: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -106,22 +101,23 @@ function SignUpForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const role = searchParams.get('role');
+    const role = searchParams.get("role");
     const { passwordConfirm, ...user } = formData;
 
     if (user.password !== passwordConfirm) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     setLoading(true);
 
-    signup({ ...user, role })
-      .then(() => {
+    createUser({ ...user, role })
+      .then((data) => {
         setLoading(false);
+        navigate('/', { replace: true });
       })
       .catch((error) => {
-        setError(error.message)
+        setError(error.message);
         setLoading(false);
       });
   }
@@ -131,48 +127,48 @@ function SignUpForm() {
       <StyledTitle>Create your account</StyledTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='name'>Name</StyledFormLabel>
+          <StyledFormLabel htmlFor="name">Name</StyledFormLabel>
           <StyledFormInput
-            name='name'
-            type='text'
-            id='name'
-            placeholder='John Doe'
+            name="name"
+            type="text"
+            id="name"
+            placeholder="John Doe"
             required
             value={formData.name}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='email'>Email</StyledFormLabel>
+          <StyledFormLabel htmlFor="email">Email</StyledFormLabel>
           <StyledFormInput
-            name='email'
-            type='email'
-            id='email'
-            placeholder='user@mail.com'
+            name="email"
+            type="email"
+            id="email"
+            placeholder="user@mail.com"
             required
             value={formData.email}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='phone'>Phone</StyledFormLabel>
+          <StyledFormLabel htmlFor="phone">Phone</StyledFormLabel>
           <StyledFormInput
-            name='phone'
-            type='text'
-            id='phone'
-            placeholder='999-999-999'
+            name="phone"
+            type="text"
+            id="phone"
+            placeholder="999-999-999"
             required
             value={formData.phone}
             onChange={handleChange}
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='password'>Password</StyledFormLabel>
+          <StyledFormLabel htmlFor="password">Password</StyledFormLabel>
           <StyledFormInput
-            name='password'
-            type='password'
-            id='password'
-            placeholder='******'
+            name="password"
+            type="password"
+            id="password"
+            placeholder="******"
             minLength={6}
             required
             value={formData.password}
@@ -180,14 +176,14 @@ function SignUpForm() {
           />
         </StyledFormGroup>
         <StyledFormGroup>
-          <StyledFormLabel htmlFor='password-confirm'>
+          <StyledFormLabel htmlFor="password-confirm">
             Password Confirmation
           </StyledFormLabel>
           <StyledFormInput
-            name='passwordConfirm'
-            type='password'
-            id='password-confirm'
-            placeholder='******'
+            name="passwordConfirm"
+            type="password"
+            id="password-confirm"
+            placeholder="******"
             required
             minLength={6}
             value={formData.passwordConfirm}
@@ -195,12 +191,8 @@ function SignUpForm() {
           />
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
-        {loading && (
-          <StyledLoading>
-            <DotWave size={47} speed={1} color='#F48FB1' />
-          </StyledLoading>
-        )}
-        <StyledFormButton type='submit'>Create Account</StyledFormButton>
+        {loading && <LoadingWave />}
+        <StyledFormButton type="submit">Create Account</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
   );
