@@ -21,10 +21,7 @@ function PropertiesProvider({ children }) {
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-<<<<<<< HEAD
-=======
   const [savedProps, setSavedProps] = useState([]);
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -34,11 +31,7 @@ function PropertiesProvider({ children }) {
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
-<<<<<<< HEAD
-        setPreferences({ ...defaultPreferences, looking: data[0].name });
-=======
         //setPreferences({ ...defaultPreferences, looking: data[0].name });
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa
       })
       .catch(console.log);
   }, []);

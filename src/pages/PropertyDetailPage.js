@@ -130,96 +130,14 @@ export default function PropertyDetailPage() {
     operation_type;
   const { latitude, longitude, name } = address;
 
-<<<<<<< HEAD:src/pages/property-detail-page.js
-  /* address  */
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [name, setName] = useState("");
-
-  /*  is favorite */
-  const [isFav, setIsFav] = useState(null);
-  const myImgs = photo_urls;
-
-  const testCoords = {
-    latitude: latitude,
-    longitude: longitude,
-  };
-
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
-=======
   const { id } = useParams();
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
 
   useEffect(() => {
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
-<<<<<<< HEAD:src/pages/property-detail-page.js
-    // getSavedProperties().then((saved) => {
-    //   let isFav = saved.find((e) => {
-    //     return e.property.id == id;
-    //   });
-    //   if (isFav) {
-    //     setIsFav(true);
-    //   }
-    // });
   }, [id]);
 
-  /* operation_type  */
-
-  useEffect(() => {
-    setType(operation_type?.type);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setPrice(operation_type?.price);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setMonthlyRent(operation_type?.monthly_rent);
-  }, [operation_type]);
-  useEffect(() => {
-    setMaintenance(operation_type?.maintenance);
-  }, [operation_type]);
-  useEffect(() => {
-    setPetsAllowed(operation_type?.pets_allowed);
-  }, [operation_type]);
-
-  /* address  */
-  useEffect(() => {
-    setLatitude(address?.latitude);
-  }, [address]);
-  useEffect(() => {
-    setLongitude(address?.longitude);
-  }, [address]);
-  useEffect(() => {
-    setName(address?.name);
-  }, [address]);
-
-  // function handleAddtoFav(id) {
-  //   console.log("emtre a la fucnion onclick");
-  //   console.log(isFav);
-  //   isFav
-  //     ? updateSavedProperties({ favorite: false }, id)
-  //         .then((data) => {
-  //           console.log("quitar fav");
-  //           setIsFav(false);
-  //         })
-  //         .catch(console.log)
-  //     : updateSavedProperties({ favorite: true }, id)
-  //         .then((data) => {
-  //           console.log(data);
-  //           console.log("crear fav");
-  //           setIsFav(true);
-  //         })
-  //         .catch(console.log);
-  // }
-
-=======
-  }, [id]);
-
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
   return (
     <TotalContainer>
       <Container>
@@ -271,14 +189,7 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-<<<<<<< HEAD:src/pages/property-detail-page.js
-            <PropertyCustomCard
-              isFav={isFav}
-              // handleAddtoFav={handleAddtoFav(id)}
-            />
-=======
             <PropertyCustomCard />
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa:src/pages/PropertyDetailPage.js
           </CardContainer>
         </aside>
       </Container>

@@ -14,20 +14,11 @@ import SignupPage from "./pages/SignupPage";
 import NewPropertyForm from "./pages/NewPropertyPage";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
-<<<<<<< HEAD
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import { PropertiesProvider } from "./context/properties-context";
-import { useAuth } from "./context/auth-context";
-import Building from "./assets/images/building.png";
-import EditPropertyForm from "./pages/EditPropertyPage";
-=======
 import EditPropertyForm from "./pages/EditPropertyPage";
 import ProfilePage from "./pages/ProfilePage";
 import LandingPage from "./pages/LandingPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertiesPage from "./pages/PropertiesPage";
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -141,18 +132,11 @@ function App() {
             {user?.role_name === "Landlord" && (
               <Route path="/editproperty/:id" element={<EditPropertyForm />} />
             )}
-<<<<<<< HEAD
-=======
             {user && <Route path="/profile" element={<ProfilePage />} />}
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa
             <Route
               path="*"
               element={
                 <NotFound>
-<<<<<<< HEAD
-                  <h1>Building</h1>
-                  <NotFoundImage src={Building} alt="building" />
-=======
                   {status === "loading" ? (
                     <LoadingWave color={colors.secondary[500]} />
                   ) : (
@@ -161,7 +145,6 @@ function App() {
                       <NotFoundImage src={Building} alt="building" />
                     </>
                   )}
->>>>>>> 9fa970e0f30ddff77637a225fc2ddcaf4a5c03aa
                 </NotFound>
               }
             />
