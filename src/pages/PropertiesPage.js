@@ -1,7 +1,6 @@
 import { useState } from "react";
 import PropertyList from "../components/PropertyList";
 import SorteableBar from "../components/SorteableBar";
-import PaginationBar from "../components/PaginationBar";
 import { useProperties } from "../context/properties-context";
 import styled from "@emotion/styled";
 import { filterProperties } from "../components/button-group/utils";
@@ -32,14 +31,11 @@ function PropertiesPage() {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
   const filteredProps = filterProperties(propsByPreferences, filters);
-  console.log("AQUI");
-  console.log(propsByPreferences);
   return (
     <StyledContainer>
       <SorteableBar filters={filters} setFilters={setFilters} />
       <PropertiesContainer>
         <PropertyList properties={filteredProps} />
-        <PaginationBar />
       </PropertiesContainer>
     </StyledContainer>
   );
