@@ -85,7 +85,6 @@ function HomeseekerPage() {
                 properties={!activeTab ? favoriteProps : contactedProps}
               />
             </div>
-            <PaginationBar />
           </ContainerSectionInner>
         </ContainerSection>
       </ContainerListHomeSeeker>

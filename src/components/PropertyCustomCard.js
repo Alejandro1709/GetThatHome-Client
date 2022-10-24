@@ -84,8 +84,8 @@ export default function PropertyCustomCard() {
       setIsModalOpen(false);
     }
   }
-
   const [showContactInfo, setShowContactInfo] = useState(false);
+
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
 
@@ -201,7 +201,7 @@ export default function PropertyCustomCard() {
                       style={{ cursor: "pointer" }}
                       onClick={() => removeFavorite(savedProp.id || id)}
                     />
-                    <p>Remove from favorites</p>
+                    <p>Remove from your favorite</p>
                   </>
                 ) : (
                   <>
