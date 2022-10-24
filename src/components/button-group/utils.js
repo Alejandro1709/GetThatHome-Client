@@ -17,8 +17,8 @@ export function filteredByType(properties, { apartments, houses }) {
   if (!apartments && !houses) return properties;
   if (apartments && houses) return properties;
   return properties.filter((prop) => {
-    if (apartments) return prop.property_type.name === "Apartment";
-    if (houses) return prop.property_type.name === "House";
+    if (apartments) return prop.property_type.name === 'Apartment';
+    if (houses) return prop.property_type.name === 'House';
   });
 }
 
@@ -41,9 +41,14 @@ export function filterPetsAllowed(properties) {
 export function filterByOpType(properties, { rent, sale }) {
   if ((!rent && !sale) || (rent && sale)) return properties;
   return properties.filter((prop) => {
-    if (rent) return prop.operation_type.type === "for rent";
-    if (sale) return prop.operation_type.type === "for sale";
+    if (rent) return prop.operation_type.type === 'for rent';
+    if (sale) return prop.operation_type.type === 'for sale';
   });
+}
+
+export function filterByPlace(properties, query) {
+  if (!query) return properties;
+  return properties.filter((prop) => prop.address.name === query);
 }
 
 export function filterProperties(properties, filter) {

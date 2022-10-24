@@ -1,10 +1,10 @@
-import { useState } from "react";
-import PropertyList from "../components/PropertyList";
-import SorteableBar from "../components/SorteableBar";
-import PaginationBar from "../components/PaginationBar";
-import { useProperties } from "../context/properties-context";
-import styled from "@emotion/styled";
-import { filterProperties } from "../components/button-group/utils";
+import { useState } from 'react';
+import PropertyList from '../components/PropertyList';
+import SorteableBar from '../components/SorteableBar';
+import PaginationBar from '../components/PaginationBar';
+import { useProperties } from '../context/properties-context';
+import styled from '@emotion/styled';
+import { filterProperties } from '../components/button-group/utils';
 
 const StyledContainer = styled.div`
   max-width: 1200px;
@@ -26,6 +26,7 @@ const initialFilters = {
   pets: null,
   area: { min: 0, max: Infinity },
   op_type: { rent: null, sale: null },
+  place: [],
 };
 
 function PropertiesPage() {
@@ -35,7 +36,11 @@ function PropertiesPage() {
 
   return (
     <StyledContainer>
-      <SorteableBar filters={filters} setFilters={setFilters} />
+      <SorteableBar
+        filters={filters}
+        setFilters={setFilters}
+        propsByPreferences={propsByPreferences}
+      />
       <PropertiesContainer>
         <PropertyList properties={filteredProps} />
         <PaginationBar />
