@@ -6,9 +6,9 @@ import styled from "@emotion/styled";
 import { filterProperties } from "../components/button-group/utils";
 
 const StyledContainer = styled.div`
-  max-width: 1200px;
   margin: 0 auto;
   min-height: inherit;
+  padding: 2rem;
 `;
 
 const PropertiesContainer = styled.div`
