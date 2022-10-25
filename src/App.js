@@ -22,20 +22,14 @@ import LandingPage from "./pages/LandingPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertiesPage from "./pages/PropertiesPage";
 
-
 const MainContainer = styled.div`
   min-height: 100vh;
   position: relative;
-  /* background-color: ${(props) =>
-    props.theme === "Light" ? "#F5F5F6" : "#282c34"};
-  color: ${(props) => (props.theme === "Light" ? "#0d3f67" : "#FFFFFF")}; */
 `;
 
 const FooterWrapper = styled.div`
   width: 100%;
-  bottom: 0;
   position: absolute;
-  bottom: -10rem;
 `;
 
 const NotFound = styled.div`
@@ -103,8 +97,6 @@ function App() {
     }
   }
 
-  
-
   return (
     <PropertiesProvider>
       <MainContainer id={contextTheme}>
@@ -115,49 +107,55 @@ function App() {
             </Modal>
           )}
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <LandingPage
-                  onLoginClick={() => setIsModalOpen(true)}
-                  isMapReady={isMapLoaded}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <LandingPage
+                    onLoginClick={() => setIsModalOpen(true)}
+                    isMapReady={isMapLoaded}
+                  />
+                }
+              />
+              <Route
+                path="/properties"
+                element={<PropertiesPage isMapReady={isMapLoaded} />}
+              />
+              {/* For the route property detail page add the id of the property */}
+              <Route path="/properties/:id" element={<PropertyDetailPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              {user?.role_name === "Landlord" && (
+                <Route path="/myproperties" element={<LandlordPage />} />
+              )}
+              {user?.role_name === "Homeseeker" && (
+                <Route path="/saved" element={<HomeseekerPage />} />
+              )}
+              {user?.role_name === "Landlord" && (
+                <Route path="/create" element={<NewPropertyForm />} />
+              )}
+              {user?.role_name === "Landlord" && (
+                <Route
+                  path="/editproperty/:id"
+                  element={<EditPropertyForm />}
                 />
-              }
-            />
-            <Route path="/properties" element={<PropertiesPage  isMapReady={isMapLoaded}/>} />
-            {/* For the route property detail page add the id of the property */}
-            <Route path="/properties/:id" element={<PropertyDetailPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            {user?.role_name === "Landlord" && (
-              <Route path="/myproperties" element={<LandlordPage />} />
-            )}
-            {user?.role_name === "Homeseeker" && (
-              <Route path="/saved" element={<HomeseekerPage />} />
-            )}
-            {user?.role_name === "Landlord" && (
-              <Route path="/create" element={<NewPropertyForm />} />
-            )}
-            {user?.role_name === "Landlord" && (
-              <Route path="/editproperty/:id" element={<EditPropertyForm />} />
-            )}
-            {user && <Route path="/profile" element={<ProfilePage />} />}
-            <Route
-              path="*"
-              element={
-                <NotFound>
-                  {status === "loading" ? (
-                    <LoadingWave color={colors.secondary[500]} />
-                  ) : (
-                    <>
-                      <h1>Building</h1>
-                      <NotFoundImage src={Building} alt="building" />
-                    </>
-                  )}
-                </NotFound>
-              }
-            />
-          </Routes>
+              )}
+              {user && <Route path="/profile" element={<ProfilePage />} />}
+              <Route
+                path="*"
+                element={
+                  <NotFound>
+                    {status === "loading" ? (
+                      <LoadingWave color={colors.secondary[500]} />
+                    ) : (
+                      <>
+                        <h1>Building</h1>
+                        <NotFoundImage src={Building} alt="building" />
+                      </>
+                    )}
+                  </NotFound>
+                }
+              />
+            </Routes>
           <FooterWrapper>
             <Footer />
           </FooterWrapper>
