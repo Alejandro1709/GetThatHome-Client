@@ -1,5 +1,4 @@
 import { typography } from "../styles/typography";
-import { FiSearch } from "react-icons/fi";
 import { AiOutlineLogout, AiFillHeart, AiOutlineUser } from "react-icons/ai";
 import { colors } from "../styles";
 import styled from "@emotion/styled";
@@ -9,14 +8,6 @@ import { useAuth } from "../context/auth-context";
 const ButtonsNavBar = styled.div`
   display: flex;
   gap: 1rem;
-`;
-
-const FindHome = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  width: 10.5rem;
-  gap: 0.5rem;
 `;
 
 const ButtonJoin = styled.button`
@@ -30,6 +21,9 @@ const ButtonJoin = styled.button`
   align-items: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  &:hover {
+    background-color: rgba(244, 143, 177, 0.15);
+  }
 `;
 
 const ButtonLogin = styled.button`
@@ -44,22 +38,27 @@ const ButtonLogin = styled.button`
   align-items: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  &:hover {
+    background-color: ${colors.primary[400]};
+    border: 1px solid ${colors.primary[400]};
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: ${colors.secondary[200]};
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 `;
+
 
 function HomeSeekerLayout() {
   const { logout } = useAuth();
+  
 
   return (
     <ButtonsNavBar>
-      <FindHome>
-        <FiSearch />
-        FIND A HOME
-      </FindHome>
       <ButtonJoin onClick={logout}>
         <AiOutlineLogout />
         LOGOUT

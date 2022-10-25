@@ -5,14 +5,17 @@ import { colors } from "../styles/colors";
 import { RiCoinsLine, RiMoneyDollarCircleLine } from "react-icons/ri";
 import { fonts, typography } from "../styles/typography";
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
-import { FaPaw } from "react-icons/fa";
+import { TbArrowBarUp } from "react-icons/tb";
+import { FaPaw, FaRegTrashAlt } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import getGeocode from "../services/mapbox-service";
-import { updateProperty } from "../services/properties-service";
+import { deleteProperty, updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
+import { useProperties } from "../context/properties-context";
+import { useAuth } from "../context/auth-context";
 
 export const ShowCaseBox = styled.div`
   position: relative;
@@ -156,12 +159,7 @@ export const StyledOption = styled.button`
   cursor: pointer;
 `;
 
-function PropertyCardDetail({
-  property,
-  belongsToMe,
-  isFavorite,
-  onCloseProperty,
-}) {
+function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   const {
     id,
     address,
@@ -171,12 +169,26 @@ function PropertyCardDetail({
     property_type,
     operation_type,
     photo_urls,
+    active,
   } = property;
   const [geocoded, setGeocoded] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
+
+  // *  is favorite */
+  const { savedProps } = useProperties();
+  const { user } = useAuth();
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(() => {
+    if (user?.role_name === "Homeseeker") {
+      if (!savedProps) return;
+      const savedProp = savedProps.find((e) => e.property_details.id === id);
+      if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+    }
+  }, [savedProps, id, user]);
 
   return (
     <ShowCaseBox>
@@ -218,14 +230,14 @@ function PropertyCardDetail({
             <DataIcons>
               {operation_type.pets_allowed && <FaPaw size="1.5rem" />}
             </DataIcons>
-            {isFavorite && (
+            {isFav && (
               <DataIcons>
                 <AiFillHeart size="1.5rem" color={`${colors.primary[300]}`} />
               </DataIcons>
             )}
           </Additionals>
         </StyledNavLink>
-        {belongsToMe ? (
+        {belongsToMe && active && (
           <Options>
             <StyledOption
               onClick={() => {
@@ -233,21 +245,45 @@ function PropertyCardDetail({
               }}
             >
               <FiEdit />
-              Edit
+              EDIT
             </StyledOption>
             <StyledOption
               onClick={() =>
                 updateProperty({ active: false }, id)
-                  .then(() => onCloseProperty(true))
+                  .then(() => onCloseProperty())
                   .catch(console.log)
               }
             >
               <AiOutlineCloseCircle />
-              Close
+              CLOSE
             </StyledOption>
           </Options>
-        ) : (
-          <NoOptions />
+        )}
+        {belongsToMe && !active && (
+          <Options>
+            <StyledOption
+              onClick={() => {
+                updateProperty({ active: true }, id)
+                  .then(() => onCloseProperty())
+                  .catch(console.log);
+              }}
+            >
+              <TbArrowBarUp />
+              RESTORE
+            </StyledOption>
+            <StyledOption
+              onClick={() =>
+                console.log(
+                  deleteProperty(id)
+                    .then(() => onCloseProperty())
+                    .catch(console.log)
+                )
+              }
+            >
+              <FaRegTrashAlt />
+              DELETE
+            </StyledOption>
+          </Options>
         )}
       </ShowCaseData>
     </ShowCaseBox>

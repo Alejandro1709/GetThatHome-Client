@@ -4,6 +4,8 @@ import { colors, typography } from "../styles";
 import { TbMoodEmpty } from "react-icons/tb";
 import { IoAddCircle } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import PaginationBar from "../components/PaginationBar";
+import { useState } from "react";
 
 const StyledList = styled.div`
   display: grid;
@@ -45,35 +47,43 @@ const StyledNewPropCard = styled.div`
   }
 `;
 
-function PropertyList({ properties, isLandlord, isFavorite, onCloseProperty }) {
+function PropertyList({ properties, isLandlord, onCloseProperty }) {
+  const [page, setPage] = useState(1);
   return (
-    <div>
-      <p>{properties.length} Properties found</p>
-      <StyledList>
-        {properties.map((item) => (
-          <PropertyCardDetail
-            property={item}
-            key={item.id}
-            belongsToMe={isLandlord}
-            onCloseProperty={onCloseProperty}
-            isFavorite={isFavorite}
-          />
-        ))}
-        {isLandlord && (
-          <NavLink to="/create" style={{ height: "100%" }}>
-            <StyledNewPropCard>
-              <IoAddCircle size="5rem" />
-            </StyledNewPropCard>
-          </NavLink>
-        )}
-      </StyledList>
+    <>
+      <div>
+        <p>{properties.length} Properties found</p>
+        <StyledList>
+          {properties.slice((page - 1) * 6, page * 6).map((item) => (
+            <PropertyCardDetail
+              property={item}
+              key={item.id}
+              belongsToMe={isLandlord}
+              onCloseProperty={onCloseProperty}
+              isFavorite={item.favorite}
+            />
+          ))}
+          {isLandlord && (
+            <NavLink to="/create" style={{ height: "100%" }}>
+              <StyledNewPropCard>
+                <IoAddCircle size="5rem" />
+              </StyledNewPropCard>
+            </NavLink>
+          )}
+        </StyledList>
+      </div>
       {properties.length === 0 && (
         <StyledNotFound>
           No results found
           <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
-    </div>
+      <PaginationBar
+        total={properties.length}
+        page={page}
+        onChangePage={setPage}
+      />
+    </>
   );
 }
 

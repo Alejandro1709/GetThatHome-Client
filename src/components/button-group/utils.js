@@ -1,4 +1,4 @@
-export function filteredByPrice(properties, { min, max }) {
+export function filterByPrice(properties, { min, max }) {
   if (!min && !max) return properties;
 
   return properties.filter((prop) => {
@@ -13,7 +13,7 @@ export function filteredByPrice(properties, { min, max }) {
   });
 }
 
-export function filteredByType(properties, { apartments, houses }) {
+export function filterByType(properties, { apartments, houses }) {
   if (!apartments && !houses) return properties;
   if (apartments && houses) return properties;
   return properties.filter((prop) => {
@@ -22,14 +22,14 @@ export function filteredByType(properties, { apartments, houses }) {
   });
 }
 
-export function filteredByAmbients(properties, { beds, baths }) {
+export function filterByAmbients(properties, { beds, baths }) {
   if (!beds && !baths) return properties;
   return properties.filter((prop) => {
     return prop.bedrooms >= beds && prop.bathrooms >= baths;
   });
 }
 
-export function filteredByArea(properties, { min, max }) {
+export function filterByArea(properties, { min, max }) {
   if (!min && !max) return properties;
   return properties.filter((prop) => prop.area >= min && prop.area <= max);
 }
@@ -46,15 +46,26 @@ export function filterByOpType(properties, { rent, sale }) {
   });
 }
 
-export function filterProperties(properties, filter) {
-  const { price, type, ambients, pets, area, op_type } = filter;
-  const filter1 = filteredByPrice(properties, price);
-  const filter2 = filteredByType(filter1, type);
-  const filter3 = filteredByAmbients(filter2, ambients);
+export function filterByAddress(properties, latitude, longitude) {
+  if (!latitude || !longitude) return properties;
+  return properties.filter((prop) => {
+    return (
+      Math.ceil(+prop.address.latitude) === Math.ceil(+latitude) &&
+      Math.ceil(+prop.address.longitude) === Math.ceil(+longitude)
+    );
+  });
+}
+
+export function filterProperties(properties, filters) {
+  const { price, type, ambients, pets, area, op_type, address } = filters;
+  const filter0 = filterByAddress(properties, address.latitude, address.longitude);
+  const filter1 = filterByPrice(filter0, price);
+  const filter2 = filterByType(filter1, type);
+  const filter3 = filterByAmbients(filter2, ambients);
   let filter4 = filter3;
   if (pets) {
     filter4 = filterPetsAllowed(filter4);
   }
-  const filter5 = filteredByArea(filter4, area);
+  const filter5 = filterByArea(filter4, area);
   return filterByOpType(filter5, op_type);
 }

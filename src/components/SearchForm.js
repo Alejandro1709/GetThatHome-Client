@@ -4,7 +4,6 @@ import { boxShadow } from "../styles/utils";
 import styled from "@emotion/styled";
 import { useProperties } from "../context/properties-context";
 import { PlacesAutocompletion } from "./PlacesAutocompletion";
-import { useEffect } from "react";
 import { isVowel } from "../utils";
 
 const Form = styled.form`
@@ -83,9 +82,7 @@ function SearchForm({ isMapReady }) {
       },
     });
   }
-  useEffect(() => {
-    console.log(propertyTypes);
-  }, [propertyTypes]);
+
   function handleSubmit(e) {
     e.preventDefault();
     navigate("/properties");
