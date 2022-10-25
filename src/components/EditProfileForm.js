@@ -20,12 +20,13 @@ const StyledFormWrapper = styled.div`
   user-select: none;
   top: 50%;
   border-radius: 8px;
-  ${boxShadow[1]}
+  ${boxShadow[1]};
 `;
 
 const StyledTitle = styled.h1`
   ${typography.headline[5]}
   margin: 1rem 0;
+  color: ${colors.secondary[700]};
 `;
 
 const StyledForm = styled.form`
@@ -147,6 +148,7 @@ function EditProfileForm() {
             placeholder="user@mail.com"
             required
             value={user.email}
+            onChange={handleChange}
             disabled
           />
         </StyledFormGroup>

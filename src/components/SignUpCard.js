@@ -1,4 +1,4 @@
-import { typography } from '../styles';
+import { colors, typography } from '../styles';
 import { boxShadow } from '../styles/utils';
 import styled from '@emotion/styled';
 
@@ -21,10 +21,12 @@ const StyledCardInfo = styled.div`
 
 const StyledCardTitle = styled.h2`
   ${typography.headline[6]}
+  color: ${colors.secondary[700]};
 `;
 
 const StyledCardDesc = styled.p`
   ${typography.subtitle[2]}
+  color: ${colors.secondary[700]};
 `;
 
 function SignUpCard({ title, desc, Image, onClick }) {

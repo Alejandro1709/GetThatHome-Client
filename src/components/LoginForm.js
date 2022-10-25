@@ -23,6 +23,7 @@ const StyledFormWrapper = styled.div`
 const StyledTitle = styled.h1`
   ${typography.headline[5]}
   margin: 1rem 0;
+  color: ${colors.secondary[700]};
 `;
 
 const StyledForm = styled.form`

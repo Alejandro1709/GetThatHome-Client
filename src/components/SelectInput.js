@@ -3,7 +3,6 @@ import { colors } from "../styles/colors";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { fonts, typography } from "../styles/typography";
-import { useProperties } from "../context/properties-context";
 
 const StyledInputWrapper = styled.div`
   border: 1px solid ${colors.primary[400]};
@@ -78,7 +77,6 @@ const CheckboxWrapper = styled.div`
 
 function SelectInput({ filters, setFilters }) {
   const [open, setOpen] = useState(false);
-  const { properties } = useProperties();
 
   const sortType = (e) => {
     const value = e.target.getAttribute("value");

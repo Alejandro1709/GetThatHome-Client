@@ -1,10 +1,9 @@
-import { useState, useNavigate } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import { boxShadow } from "../styles/utils";
 import styled from "@emotion/styled";
-import { useAuth } from "../context/auth-context";
 import LoadingWave from "./LoadingWave";
 import { createUser } from "../services/users-service";
 
@@ -26,6 +25,7 @@ const StyledFormWrapper = styled.div`
 const StyledTitle = styled.h1`
   ${typography.headline[5]}
   margin: 1rem 0;
+  color: ${colors.secondary[700]};
 `;
 
 const StyledForm = styled.form`
