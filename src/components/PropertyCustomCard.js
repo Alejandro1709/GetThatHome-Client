@@ -17,7 +17,6 @@ import {
   createSavedProperties,
   updateSavedProperties,
 } from "../services/saved-properties-service";
-import { showProperty } from "../services/properties-service";
 import { showUser } from "../services/users-service";
 
 const Wrapper = styled.div`
@@ -79,7 +78,7 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard() {
+export default function PropertyCustomCard({ownerId}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleCloseModal(e) {
@@ -100,8 +99,7 @@ export default function PropertyCustomCard() {
   const { savedProps } = useProperties();
   const [isFav, setIsFav] = useState(false);
   const [savedProp, setSavedProps] = useState(null);
-  const [ownerId, setOwnerId] = useState(null);
-  const [contactInfo, setContactInfo] = useState("");
+  const [contactInfo, setContactInfo] = useState({});
 
   useEffect(() => {
     if (!user) return;
@@ -114,9 +112,6 @@ export default function PropertyCustomCard() {
     if (!savedProp) return;
     if (savedProp.favorite === true) setIsFav(true);
     if (savedProp.contacted === true) {
-      showProperty(savedProp.property_details.id).then((data) =>
-        setOwnerId(data.owner_id)
-      );
       setShowContactInfo(true);
     }
   }, [savedProps, id, user]);

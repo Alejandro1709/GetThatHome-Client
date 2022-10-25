@@ -126,6 +126,7 @@ export default function PropertyDetailPage() {
     photo_urls,
     operation_type,
     address,
+    owner_id
   } = propertyByID;
 
   const { type, price, monthly_rent, maintenance, pets_allowed } =
@@ -205,7 +206,7 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard />
+            <PropertyCustomCard ownerId={owner_id}/>
           </CardContainer>
         </aside>
       </Container>
