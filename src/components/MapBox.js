@@ -32,7 +32,7 @@ export default function MapBox({ coordValues }) {
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
           <Marker longitude={longitude} latitude={latitude} anchor="bottom">
-            <IoIosPin size="2rem" color={`${colors.primary[400]}`}/>
+            <IoIosPin size="4rem" color={`${colors.primary[400]}`}/>
           </Marker>
         </Map>
       )}
