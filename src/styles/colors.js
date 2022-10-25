@@ -13,6 +13,7 @@ export const colors = {
     500: "#8E8E8E",
     600: "#616161",
     700: "#373737",
+    800: "#282c34",
   },
   error: {
     100: "#FFEBEE",
@@ -23,13 +24,3 @@ export const colors = {
     600: "#F44336",
   },
 };
-
-// export const Dark = {
-//   background_color: "#282c34",
-//   color: "#FFFFFF",
-// };
-
-// export const Light = {
-//   background_color: "#F5F5F6",
-//   color: "#0d3f67",
-// };
