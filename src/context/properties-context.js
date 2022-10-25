@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getProperties } from "../services/properties-service";
 import { getPropertyTypes } from "../services/property-types-service";
+import { getSavedProperties } from "../services/saved-properties-service";
+import { useAuth } from "./auth-context";
 
 const PropertiesContext = createContext();
 const defaultPreferences = {
@@ -31,6 +33,17 @@ function PropertiesProvider({ children }) {
       })
       .catch(console.log);
   }, []);
+
+  useEffect(() => {
+    if (user?.role_name === "Homeseeker") {
+      getSavedProperties()
+        .then((data) => {
+          setSavedProps(data);
+        })
+        .catch(console.log);
+    }
+  }, [user]);
+
 
   function changePreferences(config) {
     setPreferences(config);
@@ -76,6 +89,7 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
+        savedProps,
         changeToDefaultPreferences,
       }}
     >
