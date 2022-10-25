@@ -44,7 +44,7 @@ function PaginationBar({ total, page, onChangePage }) {
     if (page >= total) return;
     onChangePage(page + 1);
   }
-  const pages = Array.from({ length: Math.ceil(total/6) }, (_, i) => i + 1);
+  const pages = Array.from({ length: Math.ceil(total / 6) }, (_, i) => i + 1);
   return (
     <StyledPagination>
       {pages.map((_e, index) => {
