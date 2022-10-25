@@ -19,17 +19,23 @@ export function ButtonGroup({ filters, setFilters }) {
     const { min_price, max_price } = e.target.elements;
     let minValue = min_price.value,
       maxValue = max_price.value;
+    if (minValue === "") minValue = 0;
+    if (maxValue === "") maxValue = Infinity;
     setFilters({
       ...filters,
       price: { min: minValue, max: maxValue },
     });
-    if (minValue === "") minValue = 0;
-    if (maxValue === "") maxValue = 0;
-    if (minValue === 0 && maxValue === 0) {
-      setPricePopup(false);
-      return;
+
+    if (minValue === 0 && maxValue === Infinity) {
+      setPrice(`PRICE`);
+    } else if (minValue === 0 && maxValue !== Infinity) {
+      setPrice(`<${maxValue}`);
+    } else if (minValue !== 0 && maxValue === Infinity) {
+      setPrice(`${minValue}<`);
+    } else {
+      setPrice(`${minValue} - ${maxValue}`);
     }
-    setPrice(`${minValue} - ${maxValue}`);
+
     setPricePopup(false);
   };
 
