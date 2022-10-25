@@ -73,6 +73,7 @@ export function ButtonGroup({ filters, setFilters }) {
       ...filters,
       ambients: { beds: beds, baths: baths },
     });
+    setBedBathPopup(false);
   };
 
   const submitMore = (e) => {
@@ -84,6 +85,7 @@ export function ButtonGroup({ filters, setFilters }) {
       pets: showPets,
       area: { min: elements[1].value, max: elements[2].value },
     });
+    setMorePopUp(false)
   };
 
   return (
