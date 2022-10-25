@@ -40,7 +40,6 @@ function PropertiesProvider({ children }) {
     if (user?.role_name === "Homeseeker") {
       getSavedProperties()
         .then((data) => {
-          console.log("getSavedProperties", data);
           setSavedProps(data);
         })
         .catch(console.log);
@@ -87,6 +86,7 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
+        savedProps,
       }}
     >
       {children}
