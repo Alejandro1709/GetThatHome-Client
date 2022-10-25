@@ -149,8 +149,8 @@ function NavBar({ onLoginClick }) {
                 <MdLightMode />
               </IconContainer>
             }
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            boxShadow="0px 1px 2px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 5px rgba(0, 0, 0, 0.2)"
             height={36}
             width={50}
             borderRadius={16}
