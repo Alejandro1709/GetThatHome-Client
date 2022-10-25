@@ -1,9 +1,12 @@
 import styled from "@emotion/styled";
 import { useEffect, useState, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
+import ReactSwitch from "react-switch";
 import { useAuth } from "./context/auth-context";
+import { useThemeContext } from "./context/theme-context";
 import { PropertiesProvider } from "./context/properties-context";
 import { colors } from "./styles";
+import "./styles/theme.css";
 import Modal from "./components/Modal";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
@@ -20,9 +23,13 @@ import LandingPage from "./pages/LandingPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertiesPage from "./pages/PropertiesPage";
 
+
 const MainContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  /* background-color: ${(props) =>
+    props.theme === "Light" ? "#F5F5F6" : "#282c34"};
+  color: ${(props) => (props.theme === "Light" ? "#0d3f67" : "#FFFFFF")}; */
 `;
 
 const FooterWrapper = styled.div`
@@ -40,6 +47,13 @@ const NotFound = styled.div`
 const NotFoundImage = styled.img`
   max-width: 32.2rem;
   margin: 1.5rem;
+`;
+
+const ModeSwitch = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: 6rem;
+  right: 2%;
 `;
 
 const GOOGLE_API_TOKEN = process.env.REACT_APP_GCP_API_KEY;
@@ -96,9 +110,18 @@ function App() {
     }
   }
 
+  const { contextTheme, setContextTheme } = useThemeContext();
+  console.log(contextTheme);
+  const [checked, setChecked] = useState(false);
+  const handleSwitch = (nextChecked) => {
+    setContextTheme((state) => (state === "Light" ? "Dark" : "Light"));
+    setChecked(nextChecked);
+    console.log(nextChecked);
+  };
+
   return (
     <PropertiesProvider>
-      <MainContainer id="maincontainer">
+      <MainContainer id={contextTheme}>
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
@@ -106,6 +129,23 @@ function App() {
             </Modal>
           )}
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
+          <ModeSwitch>
+            <ReactSwitch
+              checked={checked}
+              onChange={handleSwitch}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={30}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+              className="react-switch"
+              id="material-switch"
+            />
+          </ModeSwitch>
           <Routes>
             <Route
               path="/"
