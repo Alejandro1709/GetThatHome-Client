@@ -2,16 +2,17 @@ import { BsChevronDown } from "react-icons/bs";
 import Button from "../Button";
 import { useState } from "react";
 import * as styled from "./ui";
-import Modal from "../Modal";
 import { BedBathPopUp, MorePopUp, PricePopUp, TypePopUp } from "./button-types";
+import { useComponentVisible } from "../../hooks";
 
 export function ButtonGroup({ filters, setFilters }) {
-  const [price, setPrice] = useState(null || "price");
-  const [type, setType] = useState(null || "property type");
-  const [pricePopup, setPricePopup] = useState(false);
-  const [typePopUp, setTypePopUp] = useState(false);
-  const [bedbathPopUp, setBedBathPopUp] = useState(false);
-  const [morePopUp, setMorePopUp] = useState(false);
+  const [price, setPrice] = useState("price");
+  const [type, setType] = useState("property type");
+  const [priceRef, pricePopup, setPricePopup] = useComponentVisible(false);
+  const [typeRef, typePopup, setTypePopup] = useComponentVisible(false);
+  const [bedbathRef, bedbathPopup, setBedBathPopup] =
+    useComponentVisible(false);
+  const [moreRef, morePopUp, setMorePopUp] = useComponentVisible(false);
 
   const submitPrice = (e) => {
     e.preventDefault();
@@ -78,73 +79,52 @@ export function ButtonGroup({ filters, setFilters }) {
   };
 
   return (
-    <styled.StyledButtonGroup id="buttongroup">
-      <Button
-        onClick={() => {
-          setPricePopup(!pricePopup);
-        }}
-      >
-        {price}
-      </Button>
-      {pricePopup && (
-        <Modal
-          onModalClose={(e) => {
-            if (e.target.dataset.type === "modal") setPricePopup(false);
+    <styled.ButtonGroup id="buttongroup">
+      <styled.ButtonContainer ref={priceRef}>
+        <Button
+          onClick={() => {
+            setPricePopup(!pricePopup);
           }}
         >
-          <PricePopUp onSubmit={submitPrice} />
-        </Modal>
-      )}
-      <Button
-        onClick={() => {
-          setTypePopUp(!typePopUp);
-        }}
-      >
-        {type}
-      </Button>
-      {typePopUp && (
-        <Modal
-          onModalClose={(e) => {
-            if (e.target.dataset.type === "modal") setTypePopUp(false);
+          {price}
+        </Button>
+        {pricePopup && <PricePopUp onSubmit={submitPrice} />}
+      </styled.ButtonContainer>
+
+      <styled.ButtonContainer ref={typeRef}>
+        <Button
+          onClick={() => {
+            setTypePopup(!typePopup);
           }}
         >
-          <TypePopUp onSubmit={submitType} />
-        </Modal>
-      )}
-      <Button
-        onClick={() => {
-          setBedBathPopUp(!bedbathPopUp);
-        }}
-      >
-        Beds and baths
-      </Button>
-      {bedbathPopUp && (
-        <Modal
-          onModalClose={(e) => {
-            if (e.target.dataset.type === "modal") setBedBathPopUp(false);
+          {type}
+        </Button>
+        {typePopup && <TypePopUp onSubmit={submitType} />}
+      </styled.ButtonContainer>
+
+      <styled.ButtonContainer ref={bedbathRef}>
+        <Button
+          onClick={() => {
+            setBedBathPopup(!bedbathPopup);
           }}
         >
-          <BedBathPopUp onSubmit={submitBedBaths} />
-        </Modal>
-      )}
-      <Button
-        hasIcon
-        Icon={BsChevronDown}
-        onClick={() => {
-          setMorePopUp(!morePopUp);
-        }}
-      >
-        More
-      </Button>
-      {morePopUp && (
-        <Modal
-          onModalClose={(e) => {
-            if (e.target.dataset.type === "modal") setMorePopUp(false);
+          Beds and baths
+        </Button>
+        {bedbathPopup && <BedBathPopUp onSubmit={submitBedBaths} />}
+      </styled.ButtonContainer>
+
+      <styled.ButtonContainer ref={moreRef}>
+        <Button
+          hasIcon
+          Icon={BsChevronDown}
+          onClick={() => {
+            setMorePopUp(!morePopUp);
           }}
         >
-          <MorePopUp onSubmit={submitMore} />
-        </Modal>
-      )}
-    </styled.StyledButtonGroup>
+          More
+        </Button>
+        {morePopUp && <MorePopUp onSubmit={submitMore} />}
+      </styled.ButtonContainer>
+    </styled.ButtonGroup>
   );
 }

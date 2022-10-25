@@ -6,9 +6,9 @@ import * as styled from "./ui";
 
 export function PricePopUp({ onSubmit }) {
   return (
-    <styled.PricePopUp>
+    <styled.Popup>
       <styled.PopUpCard onSubmit={onSubmit}>
-        <p>salary range</p>
+        <p>Price range</p>
         <styled.InputsWrapper>
           <FilterInput
             placeholder="min"
@@ -36,13 +36,13 @@ export function PricePopUp({ onSubmit }) {
         </styled.InputsWrapper>
         <Button type="submit">done</Button>
       </styled.PopUpCard>
-    </styled.PricePopUp>
+    </styled.Popup>
   );
 }
 
 export function TypePopUp({ onSubmit }) {
   return (
-    <styled.TypePopUp>
+    <styled.Popup>
       <styled.PopUpCard onSubmit={onSubmit}>
         <p>property type</p>
         <styled.InputsWrapper>
@@ -57,7 +57,7 @@ export function TypePopUp({ onSubmit }) {
         </styled.InputsWrapper>
         <Button type="submit">done</Button>
       </styled.PopUpCard>
-    </styled.TypePopUp>
+    </styled.Popup>
   );
 }
 
@@ -84,7 +84,7 @@ export function BedBathPopUp({ onSubmit }) {
     }
   };
   return (
-    <styled.BedBathPopUp>
+    <styled.Popup>
       <styled.PopUpCard onSubmit={onSubmit}>
         <p>beds</p>
         <styled.InputsWrapper2>
@@ -124,13 +124,13 @@ export function BedBathPopUp({ onSubmit }) {
         </styled.InputsWrapper2>
         <Button type="submit">done</Button>
       </styled.PopUpCard>
-    </styled.BedBathPopUp>
+    </styled.Popup>
   );
 }
 
 export function MorePopUp({ onSubmit }) {
   return (
-    <styled.MorePopUp>
+    <styled.Popup>
       <styled.PopUpCard onSubmit={onSubmit}>
         <p>pets allowed</p>
         <styled.CheckboxWrapper style={{ alignSelf: "flex-start" }}>
@@ -145,6 +145,6 @@ export function MorePopUp({ onSubmit }) {
         </styled.InputsWrapper>
         <Button>done</Button>
       </styled.PopUpCard>
-    </styled.MorePopUp>
+    </styled.Popup>
   );
 }
