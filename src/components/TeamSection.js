@@ -7,6 +7,7 @@ import { BsTools } from "react-icons/bs";
 
 const Container = styled.div`
   height: 30.3rem;
+  padding: 0 3rem;
 `;
 
 const TitleTeam = styled.span`
@@ -45,6 +46,10 @@ const LinksPerson = styled.div`
 `;
 
 const ImgAvatar = styled.img`
+  object-fit: cover;
+  width: 11.25rem;
+  min-width: 5rem;
+  border-radius: 50%;
   -webkit-transition: 2s linear;
   transition: 2s linear;
   &:hover {
@@ -101,15 +106,7 @@ function TeamSection() {
       <TeamContainer>
         {teamMembers.map((member, index) => (
           <People key={index}>
-            <ImgAvatar
-              src={member.avatar_url}
-              alt="Human"
-              style={{
-                width: "11.25rem",
-                height: "11.25rem",
-                borderRadius: "50%",
-              }}
-            />
+            <ImgAvatar src={member.avatar_url} alt="Human" />
             <InfoPerson>
               {member.name}
               <LinksPerson>
