@@ -8,14 +8,7 @@ import { filterProperties } from "../components/button-group/utils";
 const StyledContainer = styled.div`
   margin: 0 auto;
   min-height: inherit;
-  padding: 2rem;
-`;
-
-const PropertiesContainer = styled.div`
-  min-height: inherit;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 0.5rem;
 `;
 
 const initialFilters = {
@@ -25,10 +18,10 @@ const initialFilters = {
   pets: null,
   area: { min: 0, max: Infinity },
   op_type: { rent: null, sale: null },
-  address: {latitude: null, longitude: null},
+  address: { latitude: null, longitude: null },
 };
 
-function PropertiesPage({isMapReady}) {
+function PropertiesPage({ isMapReady }) {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
   const filteredProps = filterProperties(propsByPreferences, filters);
@@ -39,9 +32,7 @@ function PropertiesPage({isMapReady}) {
         setFilters={setFilters}
         isMapReady={isMapReady}
       />
-      <PropertiesContainer>
-        <PropertyList properties={filteredProps} />
-      </PropertiesContainer>
+      <PropertyList properties={filteredProps} />
     </StyledContainer>
   );
 }

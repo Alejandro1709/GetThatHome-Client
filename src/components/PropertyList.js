@@ -7,6 +7,14 @@ import { NavLink } from "react-router-dom";
 import PaginationBar from "../components/PaginationBar";
 import { useState } from "react";
 
+const Wrapper = styled.div`
+  padding: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: inherit;
+`;
+
 const StyledList = styled.div`
   display: grid;
   place-items: center;
@@ -47,10 +55,10 @@ const StyledNewPropCard = styled.div`
   }
 `;
 
-function PropertyList({ properties, isLandlord, onCloseProperty }) {
+function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
   const [page, setPage] = useState(1);
   return (
-    <>
+    <Wrapper>
       <div>
         <p>{properties.length} Properties found</p>
         <StyledList>
@@ -63,7 +71,7 @@ function PropertyList({ properties, isLandlord, onCloseProperty }) {
               isFavorite={item.favorite}
             />
           ))}
-          {isLandlord && (
+          {isActive && (
             <NavLink to="/create" style={{ height: "100%" }}>
               <StyledNewPropCard>
                 <IoAddCircle size="5rem" />
@@ -78,12 +86,14 @@ function PropertyList({ properties, isLandlord, onCloseProperty }) {
           <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
-      <PaginationBar
-        total={properties.length}
-        page={page}
-        onChangePage={setPage}
-      />
-    </>
+      {properties.length !== 0 && (
+        <PaginationBar
+          total={properties.length}
+          page={page}
+          onChangePage={setPage}
+        />
+      )}
+    </Wrapper>
   );
 }
 

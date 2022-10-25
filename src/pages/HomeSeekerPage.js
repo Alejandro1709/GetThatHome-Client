@@ -10,10 +10,6 @@ const ContainerPageHomeSeeker = styled.div`
   padding: 1rem;
 `;
 
-const ContainerListHomeSeeker = styled.div`
-  margin: 2rem auto 0 auto;
-`;
-
 const ContainerTabs = styled.div`
   display: flex;
   align-items: center;
@@ -35,17 +31,6 @@ const OptionsTab = styled.button`
   cursor: pointer;
 `;
 
-const ContainerSection = styled.section`
-  height: 100vh;
-`;
-
-const ContainerSectionInner = styled.section`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
 function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [favoriteProps, setFavoriteProps] = useState([]);
@@ -62,31 +47,15 @@ function HomeseekerPage() {
 
   return (
     <ContainerPageHomeSeeker>
-      <ContainerListHomeSeeker>
-        <ContainerTabs>
-          <OptionsTab
-            isActive={activeTab === 0}
-            onClick={() => setActiveTab(0)}
-          >
-            Favorites
-          </OptionsTab>
-          <OptionsTab
-            isActive={activeTab === 1}
-            onClick={() => setActiveTab(1)}
-          >
-            Contacted
-          </OptionsTab>
-        </ContainerTabs>
-        <ContainerSection>
-          <ContainerSectionInner>
-            <div>
-              <PropertyList
-                properties={!activeTab ? favoriteProps : contactedProps}
-              />
-            </div>
-          </ContainerSectionInner>
-        </ContainerSection>
-      </ContainerListHomeSeeker>
+      <ContainerTabs>
+        <OptionsTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
+          Favorites
+        </OptionsTab>
+        <OptionsTab isActive={activeTab === 1} onClick={() => setActiveTab(1)}>
+          Contacted
+        </OptionsTab>
+      </ContainerTabs>
+      <PropertyList properties={!activeTab ? favoriteProps : contactedProps} />
     </ContainerPageHomeSeeker>
   );
 }

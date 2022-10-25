@@ -34,25 +34,13 @@ const StyledTab = styled.button`
   cursor: pointer;
 `;
 
-const StyledSection = styled.section`
-  height: 100vh;
-  overflow: scroll;
-`;
-
-const StyledSectionInner = styled.section`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
 function LandlordPage() {
   const [activeTab, setActiveTab] = useState(0);
   const { properties } = useProperties();
   const [active, setActive] = useState(properties);
   const [closed, setClosed] = useState(properties);
   const [reload, setReload] = useState(false);
-  
+
   useEffect(() => {
     getMyProperties()
       .then((data) => {
@@ -70,7 +58,6 @@ function LandlordPage() {
     setReload(!reload);
   }
 
-  
   return (
     <StyledContainer>
       <StyledTabs>
@@ -81,18 +68,12 @@ function LandlordPage() {
           Closed
         </StyledTab>
       </StyledTabs>
-      <StyledSection>
-        <StyledSectionInner>
-          <div>
-            <PropertyList
-              properties={!activeTab ? active : closed}
-              isLandlord={true}
-              onCloseProperty={changeReload}
-            />
-          </div>
-          
-        </StyledSectionInner>
-      </StyledSection>
+      <PropertyList
+        properties={!activeTab ? active : closed}
+        isLandlord={true}
+        isActive={!activeTab}
+        onCloseProperty={changeReload}
+      />
     </StyledContainer>
   );
 }

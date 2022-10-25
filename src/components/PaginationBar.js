@@ -8,6 +8,7 @@ const StyledPagination = styled.div`
   gap: 0.5rem;
   align-items: center;
   margin-top: 2.31rem;
+  margin-bottom: 0.5rem;
 `;
 
 const StyledPaginationItem = styled.div`
@@ -37,14 +38,15 @@ const NextBtn = styled.div`
 `;
 
 function PaginationBar({ total, page, onChangePage }) {
+  const totalPages =  Math.ceil(total / 6)
   function handleClick(e) {
     onChangePage(+e.target.dataset.id);
   }
   function handleNextClick() {
-    if (page >= total) return;
+    if (page >= totalPages) return;
     onChangePage(page + 1);
   }
-  const pages = Array.from({ length: Math.ceil(total / 6) }, (_, i) => i + 1);
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <StyledPagination>
       {pages.map((_e, index) => {
