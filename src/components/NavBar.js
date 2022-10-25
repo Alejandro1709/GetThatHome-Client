@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
+import ReactSwitch from "react-switch";
 import IconHome from "../assets/icons/LogoHome.png";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { FiSearch } from "react-icons/fi";
 import { fonts, typography } from "../styles/typography";
 import { boxShadow } from "../styles/utils";
 import HomeSeekerLayout from "./HomeSeekerLayout";
@@ -8,8 +11,9 @@ import UnAuthLayout from "./UnAuthLayout";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth-context";
 import { colors } from "../styles";
-import { FiSearch } from "react-icons/fi";
 import { useProperties } from "../context/properties-context";
+import { useState } from "react";
+import { useThemeContext } from "../context/theme-context";
 
 const Wrapper = styled.div`
   position: relative;
@@ -77,9 +81,24 @@ const ButtonSearch = styled.p`
   }
 `;
 
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
 function NavBar({ onLoginClick }) {
   const { changeToDefaultPreferences } = useProperties();
   const { user } = useAuth();
+
+  const { setContextTheme } = useThemeContext();
+  const [checked, setChecked] = useState(false);
+
+  const handleSwitch = (nextChecked) => {
+    setContextTheme((state) => (state === "Light" ? "Dark" : "Light"));
+    setChecked(nextChecked);
+  };
 
   function deciderFunction() {
     if (user) {
@@ -109,7 +128,35 @@ function NavBar({ onLoginClick }) {
               <ButtonSearch>FIND A HOME</ButtonSearch>
             </StyledNavLink>
           </FindHome>
+
           {deciderFunction()}
+
+          <ReactSwitch
+            checked={checked}
+            onChange={handleSwitch}
+            onColor={colors.secondary[300]}
+            onHandleColor={colors.primary[400]}
+            handleDiameter={36}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            checkedHandleIcon={
+              <IconContainer>
+                <MdDarkMode />
+              </IconContainer>
+            }
+            uncheckedHandleIcon={
+              <IconContainer>
+                <MdLightMode />
+              </IconContainer>
+            }
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={36}
+            width={50}
+            borderRadius={16}
+            className="react-switch"
+            id="small-radius-switch"
+          />
         </BtnContainer>
       </ContainerNavBar>
     </Wrapper>
