@@ -37,7 +37,6 @@ function PropertiesProvider({ children }) {
   }
 
   function changeToDefaultPreferences() {
-    console.log("hello");
     setPreferences(defaultPreferences);
   }
 
