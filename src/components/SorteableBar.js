@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import FilterInput from './FilterInput';
-import SelectInput from './SelectInput';
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { ButtonGroup } from './button-group/ButtonGroup';
-import { filterByPlace } from './button-group/utils';
+import { useState } from "react";
+import SelectInput from "./SelectInput";
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
+import { AiOutlineSearch } from "react-icons/ai";
+import { ButtonGroup } from "./button-group/ButtonGroup";
+import InputContainer from "./InputPlaceAutocomplete";
+import { PlacesAutocompletion } from "./PlacesAutocompletion";
 
 const StyledSorteableBarTop = styled.div`
   margin: 2rem 0;
@@ -21,30 +21,27 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
   font-size: 1.2rem;
 `;
 
-function SorteableBar({ filters, setFilters, propsByPreferences }) {
-  const [query, setQuery] = useState('');
+function SorteableBar({ filters, setFilters,isMapReady }) {
+  const [query, setQuery] = useState({
+    whereing: "",
+    coordinates: {
+      lat: "",
+      lng: "",
+    },
+  });
 
-  function handleChangeQuery(e) {
-    setQuery(e.target.value);
-  }
-
-  function handleSearch(e) {
-    e.preventDefault();
-    console.log('searching for', query);
-    const places = filterByPlace(propsByPreferences, query);
-    console.log('search returned', places);
-    setFilters((prev) => ({ ...prev, place: places }));
+  function changeLocation({ whereing, coordinates }) {
+    setQuery({ whereing, coordinates });
+    const { lat, lng } = coordinates
+    setFilters({...filters, address: {latitude: lat,longitude: lng}});
   }
 
   return (
     <StyledSorteableBarTop>
-      <FilterInput
-        onSubmit={handleSearch}
-        placeholder='Search by address...'
-        hasLeftIcon={<MagnifyingGlass />}
-        value={query}
-        onChange={handleChangeQuery}
-      />
+     { isMapReady && <InputContainer leftIcon={<MagnifyingGlass/>}>
+        <PlacesAutocompletion {...{ location: query, changeLocation, placeholder:"Search by address" }} />
+      </InputContainer>}
+
       <ButtonGroup filters={filters} setFilters={setFilters} />
       <SelectInput filters={filters} setFilters={setFilters} />
     </StyledSorteableBarTop>

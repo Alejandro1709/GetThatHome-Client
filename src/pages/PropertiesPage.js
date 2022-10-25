@@ -25,10 +25,10 @@ const initialFilters = {
   pets: null,
   area: { min: 0, max: Infinity },
   op_type: { rent: null, sale: null },
-  place: [],
+  address: {latitude: null, longitude: null},
 };
 
-function PropertiesPage() {
+function PropertiesPage({isMapReady}) {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
   const filteredProps = filterProperties(propsByPreferences, filters);
@@ -37,7 +37,7 @@ function PropertiesPage() {
       <SorteableBar
         filters={filters}
         setFilters={setFilters}
-        propsByPreferences={propsByPreferences}
+        isMapReady={isMapReady}
       />
       <PropertiesContainer>
         <PropertyList properties={filteredProps} />
