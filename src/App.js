@@ -5,7 +5,6 @@ import { useAuth } from "./context/auth-context";
 import { PropertiesProvider } from "./context/properties-context";
 import { useThemeContext } from "./context/theme-context";
 import { colors } from "./styles";
-import "./styles/theme.css";
 import Modal from "./components/Modal";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
@@ -25,6 +24,9 @@ import PropertiesPage from "./pages/PropertiesPage";
 const MainContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  color: ${({ theme }) => (theme === "Dark" ? colors.secondary[200] : "")};
+  background-color: ${({ theme }) =>
+    theme === "Dark" ? colors.secondary[800] : colors.secondary[300]};
 `;
 
 const FooterWrapper = styled.div`
@@ -99,7 +101,7 @@ function App() {
 
   return (
     <PropertiesProvider>
-      <MainContainer id={contextTheme}>
+      <MainContainer theme={contextTheme}>
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
@@ -107,55 +109,52 @@ function App() {
             </Modal>
           )}
           <NavBar onLoginClick={() => setIsModalOpen(true)} />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <LandingPage
-                    onLoginClick={() => setIsModalOpen(true)}
-                    isMapReady={isMapLoaded}
-                  />
-                }
-              />
-              <Route
-                path="/properties"
-                element={<PropertiesPage isMapReady={isMapLoaded} />}
-              />
-              {/* For the route property detail page add the id of the property */}
-              <Route path="/properties/:id" element={<PropertyDetailPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              {user?.role_name === "Landlord" && (
-                <Route path="/myproperties" element={<LandlordPage />} />
-              )}
-              {user?.role_name === "Homeseeker" && (
-                <Route path="/saved" element={<HomeseekerPage />} />
-              )}
-              {user?.role_name === "Landlord" && (
-                <Route path="/create" element={<NewPropertyForm />} />
-              )}
-              {user?.role_name === "Landlord" && (
-                <Route
-                  path="/editproperty/:id"
-                  element={<EditPropertyForm />}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <LandingPage
+                  onLoginClick={() => setIsModalOpen(true)}
+                  isMapReady={isMapLoaded}
                 />
-              )}
-              {user && <Route path="/profile" element={<ProfilePage />} />}
-              <Route
-                path="*"
-                element={
-                  <NotFound>
-                    {status === "loading" ? (
-                      <LoadingWave color={colors.secondary[500]} />
-                    ) : (
-                      <>
-                        <h1>Building</h1>
-                        <NotFoundImage src={Building} alt="building" />
-                      </>
-                    )}
-                  </NotFound>
-                }
-              />
-            </Routes>
+              }
+            />
+            <Route
+              path="/properties"
+              element={<PropertiesPage isMapReady={isMapLoaded} />}
+            />
+            {/* For the route property detail page add the id of the property */}
+            <Route path="/properties/:id" element={<PropertyDetailPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            {user?.role_name === "Landlord" && (
+              <Route path="/myproperties" element={<LandlordPage />} />
+            )}
+            {user?.role_name === "Homeseeker" && (
+              <Route path="/saved" element={<HomeseekerPage />} />
+            )}
+            {user?.role_name === "Landlord" && (
+              <Route path="/create" element={<NewPropertyForm />} />
+            )}
+            {user?.role_name === "Landlord" && (
+              <Route path="/editproperty/:id" element={<EditPropertyForm />} />
+            )}
+            {user && <Route path="/profile" element={<ProfilePage />} />}
+            <Route
+              path="*"
+              element={
+                <NotFound>
+                  {status === "loading" ? (
+                    <LoadingWave color={colors.secondary[500]} />
+                  ) : (
+                    <>
+                      <h1>Building</h1>
+                      <NotFoundImage src={Building} alt="building" />
+                    </>
+                  )}
+                </NotFound>
+              }
+            />
+          </Routes>
           <FooterWrapper>
             <Footer />
           </FooterWrapper>
