@@ -56,7 +56,6 @@ function LandlordPage() {
   useEffect(() => {
     getMyProperties()
       .then((data) => {
-        console.log("get my properties");
         const props = data.map((p) => p.property_details);
         const newActive = props.filter((prop) => prop.active);
         const newClosed = props.filter((prop) => !prop.active);

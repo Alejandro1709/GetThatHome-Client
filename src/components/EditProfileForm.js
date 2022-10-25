@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
@@ -200,4 +200,4 @@ function EditProfileForm() {
   );
 }
 
-export default EditProfileForm;
+export default React.memo(EditProfileForm);

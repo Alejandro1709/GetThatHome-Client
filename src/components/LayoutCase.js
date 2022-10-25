@@ -38,7 +38,6 @@ const ContainerBestPrices = styled.div`
 
 function LayoutCase() {
   const { bestProps } = useProperties();
-  console.log(bestProps);
   return (
     <Container>
       <ContainerCase>

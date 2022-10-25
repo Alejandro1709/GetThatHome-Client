@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { colors, typography } from "../styles";
 import { useEffect, useState } from "react";
-import PaginationBar from "../components/PaginationBar";
 import PropertyList from "../components/PropertyList";
 import { getSavedProperties } from "../services/saved-properties-service";
 import { filterContacted, filterFavorite, transformSavedList } from "../utils";

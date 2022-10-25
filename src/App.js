@@ -116,7 +116,7 @@ function App() {
                 />
               }
             />
-            <Route path="/properties" element={<PropertiesPage />} />
+            <Route path="/properties" element={<PropertiesPage  isMapReady={isMapLoaded}/>} />
             {/* For the route property detail page add the id of the property */}
             <Route path="/properties/:id" element={<PropertyDetailPage />} />
             <Route path="/signup" element={<SignupPage />} />

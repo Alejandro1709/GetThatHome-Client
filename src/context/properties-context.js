@@ -17,11 +17,10 @@ const defaultPreferences = {
   },
 };
 function PropertiesProvider({ children }) {
-  const { user } = useAuth();
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
-  const [savedProps, setSavedProps] = useState([]);
+
   useEffect(() => {
     getProperties()
       .then((data) => {
@@ -31,7 +30,6 @@ function PropertiesProvider({ children }) {
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
-        //setPreferences({ ...defaultPreferences, looking: data[0].name });
       })
       .catch(console.log);
   }, []);
@@ -46,8 +44,13 @@ function PropertiesProvider({ children }) {
     }
   }, [user]);
 
+
   function changePreferences(config) {
     setPreferences(config);
+  }
+
+  function changeToDefaultPreferences() {
+    setPreferences(defaultPreferences);
   }
 
   function propertiesWithBestPrices() {
@@ -87,6 +90,7 @@ function PropertiesProvider({ children }) {
         changePreferences,
         preferences,
         savedProps,
+        changeToDefaultPreferences,
       }}
     >
       {children}
