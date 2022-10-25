@@ -47,7 +47,7 @@ const ResultItem = styled.div`
     background-color: ${colors.primary[100]};
   }
 `;
-export function PlacesAutocompletion({ location, changeLocation }) {
+export function PlacesAutocompletion({ location, changeLocation, placeholder }) {
   async function handleSelect(value) {
     console.log("selecting a place");
     const result = (await geocodeByAddress(value))[0];
@@ -71,7 +71,7 @@ export function PlacesAutocompletion({ location, changeLocation }) {
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <SearchInput>
           <LookingTypeSearch
-            {...getInputProps({ placeholder: "Type address..." })}
+            {...getInputProps({ placeholder: placeholder || "Type address..." })}
           />
 
           {(suggestions.length > 0 || loading) && (
