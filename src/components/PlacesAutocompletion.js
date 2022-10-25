@@ -55,7 +55,6 @@ export function PlacesAutocompletion({
   placeholder,
 }) {
   async function handleSelect(value) {
-    console.log("selecting a place");
     const result = (await geocodeByAddress(value))[0];
     const coordinates = await getLatLng(result);
     const whereing = result.formatted_address;
