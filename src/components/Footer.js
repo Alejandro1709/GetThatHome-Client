@@ -12,7 +12,6 @@ const FooterContainer = styled.div`
   z-index: 1;
   background: ${colors.secondary[300]};
   border-top: 1px solid ${colors.primary[400]};
-  margin-top: 2rem;
 `;
 
 const ContainerFooter = styled.div`
