@@ -45,10 +45,7 @@ function PaginationBar({ total, page, onChangePage }) {
     onChangePage(page + 1);
   }
   const pages = Array.from({ length: Math.ceil(total/6) }, (_, i) => i + 1);
-  console.log("AQUI")
-  console.log(total, page, onChangePage);
   return (
-    
     <StyledPagination>
       {pages.map((_e, index) => {
         const pageNumber = index + 1;
