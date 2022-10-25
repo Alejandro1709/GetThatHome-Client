@@ -29,6 +29,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  color: ${colors.secondary[700]};
   & h6 {
     ${typography.headline[6]};
     margin: 0;
@@ -54,6 +55,7 @@ const DataText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: ${colors.secondary[700]};
   ${typography.body[2]};
   & h4 {
     color: ${colors.primary[400]};
