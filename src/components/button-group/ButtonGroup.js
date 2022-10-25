@@ -48,9 +48,11 @@ export function ButtonGroup({ filters, setFilters }) {
       ...filters,
       type: { apartments: showApartments, houses: showHouses },
     });
-    if (showHouses) setType("houses");
-    if (showApartments) setType("apartments");
-    if (showHouses && showApartments) setType("houses & apartments");
+
+    setTypePopup(false);
+    if (showHouses && !showApartments) return setType("houses");
+    if (showApartments && !showHouses) return setType("apartments");
+    setType("Property type");
   };
 
   const submitBedBaths = (e) => {
