@@ -5,10 +5,11 @@ import { Global } from "@emotion/react";
 import { global, reset } from "./styles";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import { ThemeContextProvider } from "./context/theme-context";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <>
+  <ThemeContextProvider>
     <Global styles={global} />
     <Global styles={reset} />
     <BrowserRouter>
@@ -16,5 +17,5 @@ root.render(
         <App />
       </AuthProvider>
     </BrowserRouter>
-  </>
+  </ThemeContextProvider>
 );

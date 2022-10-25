@@ -60,6 +60,4 @@ function LandingPage({ isMapReady }) {
   );
 }
 
-// Exporta LandingPage...
-
 export default LandingPage;
