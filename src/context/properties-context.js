@@ -36,6 +36,11 @@ function PropertiesProvider({ children }) {
     setPreferences(config);
   }
 
+  function changeToDefaultPreferences() {
+    console.log("hello");
+    setPreferences(defaultPreferences);
+  }
+
   function propertiesWithBestPrices() {
     const sort_by_cost = (a, b) => {
       const getCost = (prop) =>
@@ -72,6 +77,7 @@ function PropertiesProvider({ children }) {
         propsByPreferences,
         changePreferences,
         preferences,
+        changeToDefaultPreferences,
       }}
     >
       {children}
