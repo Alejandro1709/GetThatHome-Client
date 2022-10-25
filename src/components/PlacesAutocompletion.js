@@ -5,6 +5,7 @@ import { colors, typography } from "../styles";
 import { boxShadow } from "../styles/utils";
 
 const SearchInput = styled.div`
+  position: relative;
   border: none;
   display: flex;
   flex-direction: column;
@@ -29,11 +30,12 @@ const LookingTypeSearch = styled.input`
 `;
 const ResultBox = styled.div`
   position: absolute;
-  top: 15%;
+  top: 90%;
+  left:0;
   max-width: 17.5rem;
+  z-index: 99;
   height: 10rem;
   background-color: white;
-  border-radius: 0.5rem;
   text-align: left;
   cursor: pointer;
   overflow: scroll;
@@ -47,7 +49,11 @@ const ResultItem = styled.div`
     background-color: ${colors.primary[100]};
   }
 `;
-export function PlacesAutocompletion({ location, changeLocation, placeholder }) {
+export function PlacesAutocompletion({
+  location,
+  changeLocation,
+  placeholder,
+}) {
   async function handleSelect(value) {
     console.log("selecting a place");
     const result = (await geocodeByAddress(value))[0];
@@ -58,7 +64,7 @@ export function PlacesAutocompletion({ location, changeLocation, placeholder }) 
 
   function handleChange(value) {
     const whereing = value;
-    const coordinates = location.coordinates;
+    const coordinates = { lat: "", long: "" };
     changeLocation({ coordinates, whereing });
   }
 
@@ -71,7 +77,9 @@ export function PlacesAutocompletion({ location, changeLocation, placeholder }) 
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <SearchInput>
           <LookingTypeSearch
-            {...getInputProps({ placeholder: placeholder || "Type address..." })}
+            {...getInputProps({
+              placeholder: placeholder || "Type address...",
+            })}
           />
 
           {(suggestions.length > 0 || loading) && (
