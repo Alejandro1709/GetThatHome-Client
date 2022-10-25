@@ -17,8 +17,10 @@ const defaultPreferences = {
   },
 };
 function PropertiesProvider({ children }) {
+  const { user } = useAuth();
   const [properties, setProperties] = useState([]);
   const [types, setTypes] = useState([]);
+  const [savedProps, setSavedProps] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
 
   useEffect(() => {
@@ -43,7 +45,6 @@ function PropertiesProvider({ children }) {
         .catch(console.log);
     }
   }, [user]);
-
 
   function changePreferences(config) {
     setPreferences(config);
