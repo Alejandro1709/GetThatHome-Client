@@ -7,10 +7,10 @@ import { filterContacted, filterFavorite, transformSavedList } from "../utils";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
+  padding: 1rem;
 `;
 
 const ContainerListHomeSeeker = styled.div`
-  max-width: 1200px;
   margin: 2rem auto 0 auto;
 `;
 
