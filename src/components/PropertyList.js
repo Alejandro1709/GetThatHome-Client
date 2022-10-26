@@ -56,6 +56,7 @@ const StyledNewPropCard = styled.div`
 `;
 
 function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
+  console.log("Properties List", properties);
   const [page, setPage] = useState(1);
   return (
     <Wrapper>
@@ -68,7 +69,6 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
               key={item.id}
               belongsToMe={isLandlord}
               onCloseProperty={onCloseProperty}
-              isFavorite={item.favorite}
             />
           ))}
           {isActive && (

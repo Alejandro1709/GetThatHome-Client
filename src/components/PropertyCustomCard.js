@@ -15,6 +15,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useProperties } from "../context/properties-context";
 import {
   createSavedProperties,
+  getSavedProperties,
   updateSavedProperties,
 } from "../services/saved-properties-service";
 import { showUser } from "../services/users-service";
@@ -80,7 +81,7 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard({ownerId}) {
+export default function PropertyCustomCard({ ownerId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleCloseModal(e) {
@@ -88,8 +89,8 @@ export default function PropertyCustomCard({ownerId}) {
       setIsModalOpen(false);
     }
   }
-  const [showContactInfo, setShowContactInfo] = useState(false);
 
+  // User
   const { user } = useAuth();
   const [userRole, setUserRole] = useState("");
 
@@ -97,26 +98,35 @@ export default function PropertyCustomCard({ownerId}) {
     setUserRole(user?.role_name);
   }, [user]);
 
+  // Saved Prop
   const { id } = useParams();
-  const { savedProps } = useProperties();
-  const [isFav, setIsFav] = useState(false);
+  const [isFav, setIsFav] = useState(null);
   const [savedProp, setSavedProps] = useState(null);
+  const [showContactInfo, setShowContactInfo] = useState(false);
   const [contactInfo, setContactInfo] = useState({});
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     if (!user) return;
-    const savedProp = savedProps.find(
-      (e) => parseInt(e.property_details.id) === parseInt(id)
-    );
-    setSavedProps(savedProp);
-    console.log("Saved Prop", savedProp);
 
-    if (!savedProp) return;
-    if (savedProp.favorite === true) setIsFav(true);
-    if (savedProp.contacted === true) {
-      setShowContactInfo(true);
-    }
-  }, [savedProps, id, user]);
+    getSavedProperties()
+      .then((data) => {
+        console.log("Saved Props from API", data);
+        setSavedProps(data);
+        const savedProp = data.find(
+          (e) => parseInt(e.property_details.id) === parseInt(id)
+        );
+        setSavedProps(savedProp);
+        console.log("Saved Prop", savedProp);
+        if (!savedProp) return;
+        if (savedProp.favorite === true) setIsFav(true);
+        if (savedProp.favorite === false) setIsFav(false);
+        if (savedProp.contacted === true) {
+          setShowContactInfo(true);
+        }
+      })
+      .catch(console.log);
+  }, [id, user, isFav, reload]);
 
   useEffect(() => {
     if (!ownerId) return;
@@ -126,45 +136,79 @@ export default function PropertyCustomCard({ownerId}) {
   const addFavorite = (id) => {
     updateSavedProperties({ favorite: true }, id)
       .then((data) => {
-        console.log(data);
         console.log("adding to fav...");
         setIsFav(true);
+        changeReload();
       })
       .catch(console.log);
   };
 
   const createFavorite = (id) => {
     createSavedProperties({ favorite: true, property_id: id }).then((data) => {
-      console.log(data);
       console.log("creating favorite....");
       setIsFav(true);
-    });
-  };
-
-  const createContacted = (id) => {
-    createSavedProperties({ contacted: true, property_id: id }).then((data) => {
-      console.log(data);
-      console.log("creating contacted....");
-      setShowContactInfo(true);
-    });
-  };
-
-  const updateContacted = (id) => {
-    updateSavedProperties({ contacted: true }, id).then((data) => {
-      console.log(data);
-      console.log("adding to contacted....");
-      setShowContactInfo(true);
+      changeReload();
     });
   };
 
   const removeFavorite = (id) => {
     updateSavedProperties({ favorite: false }, id)
       .then((data) => {
-        console.log(data);
         console.log("deleting from fav...");
         setIsFav(false);
+        changeReload();
       })
       .catch(console.log);
+  };
+
+  const createContacted = (id) => {
+    createSavedProperties({ contacted: true, property_id: id }).then((data) => {
+      console.log("creating contacted....");
+      setShowContactInfo(true);
+      changeReload();
+    });
+  };
+
+  const updateContacted = (id) => {
+    updateSavedProperties({ contacted: true }, id).then((data) => {
+      console.log("adding to contacted....");
+      setShowContactInfo(true);
+      changeReload();
+    });
+  };
+
+  const changeReload = () => {
+    setReload(!reload);
+  };
+
+  const FavDisplay = () => {
+    return (
+      <>
+        {isFav ? (
+          <>
+            <AiFillHeart
+              size="1.5rem"
+              color={`${colors.primary[300]}`}
+              style={{ cursor: "pointer" }}
+              onClick={() => removeFavorite(savedProp.id || id)}
+            />
+            <p>Remove from your favorite</p>
+          </>
+        ) : (
+          <>
+            <FavIcon
+              size="1.5rem"
+              onClick={
+                savedProp
+                  ? () => addFavorite(savedProp.id)
+                  : () => createFavorite(id)
+              }
+            />
+            <p>Add to favorites</p>
+          </>
+        )}
+      </>
+    );
   };
 
   return (
@@ -193,7 +237,24 @@ export default function PropertyCustomCard({ownerId}) {
 
         {user && userRole === "Homeseeker" && (
           <Wrapper>
-            {!showContactInfo ? (
+            {showContactInfo ? (
+              <>
+                <h6>Contact information</h6>
+                <DataText>
+                  <h4>Name</h4>
+                  <p>{contactInfo.name}</p>
+                </DataText>
+                <DataText>
+                  <h4>Email</h4>
+                  <p>{contactInfo.email}</p>
+                </DataText>
+                <DataText>
+                  <h4>Phone</h4>
+                  <p>{contactInfo.phone}</p>
+                </DataText>
+                <FavDisplay />
+              </>
+            ) : (
               <>
                 <Button
                   onClick={
@@ -204,48 +265,7 @@ export default function PropertyCustomCard({ownerId}) {
                 >
                   Contact Advertiser
                 </Button>
-                {isFav ? (
-                  <>
-                    <AiFillHeart
-                      size="1.5rem"
-                      color={`${colors.primary[300]}`}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => removeFavorite(savedProp.id || id)}
-                    />
-                    <p>Remove from your favorite</p>
-                  </>
-                ) : (
-                  <>
-                    <FavIcon
-                      size="1.5rem"
-                      onClick={
-                        savedProp
-                          ? () => addFavorite(savedProp.id)
-                          : () => createFavorite(id)
-                      }
-                    />
-                    <p>Add to favorites</p>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <h6>Contact information</h6>
-                <DataText>
-                  <h4>Name</h4>
-                  <p>{contactInfo.name}</p>
-                  {/* <p>hugo</p> */}
-                </DataText>
-                <DataText>
-                  <h4>Email</h4>
-                  <p>{contactInfo.email}</p>
-                  {/* <p>dude@greathouse.com</p> */}
-                </DataText>
-                <DataText>
-                  <h4>Phone</h4>
-                  <p>{contactInfo.phone}</p>
-                  {/* <p>999444333</p> */}
-                </DataText>
+                <FavDisplay />
               </>
             )}
           </Wrapper>
