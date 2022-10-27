@@ -16,6 +16,7 @@ import { deleteProperty, updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 import { useProperties } from "../context/properties-context";
 import { useAuth } from "../context/auth-context";
+import { getSavedProperties } from "../services/saved-properties-service";
 
 export const ShowCaseBox = styled.div`
   position: relative;
@@ -178,17 +179,39 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   }, [address]);
 
   // *  is favorite */
-  const { savedProps } = useProperties();
   const { user } = useAuth();
+  const { savedProps, changeReload } = useProperties();
+  const [savedPropsApi, setSavedPropsApi] = useState(null);
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
     if (user?.role_name === "Homeseeker") {
-      if (!savedProps) return;
-      const savedProp = savedProps.find((e) => e.property_details.id === id);
-      if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+      getSavedProperties()
+        .then((data) => {
+          console.log("Saved Props from context", savedProps);
+          console.log("Saved Props from API", data);
+          setSavedPropsApi(data);
+        })
+        .catch(console.log);
     }
-  }, [savedProps, id, user]);
+  }, [id, user]);
+
+  useEffect(() => {
+    if (!savedPropsApi) return;
+    const savedProp = savedPropsApi.find((e) => e.property_details.id === id);
+    console.log("Saved Prop", savedProp);
+    if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+  }, [savedPropsApi]);
+
+  // useEffect(() => {
+  //   if (user?.role_name === "Homeseeker") {
+  //     changeReload();
+  //     if (!savedProps) return;
+  //     console.log("Saved Props from context", savedProps);
+  //     const savedProp = savedProps.find((e) => e.property_details.id === id);
+  //     if (savedProp) if (savedProp.favorite === true) setIsFav(true);
+  //   }
+  // }, [id, user]);
 
   return (
     <ShowCaseBox>

@@ -22,6 +22,7 @@ function PropertiesProvider({ children }) {
   const [types, setTypes] = useState([]);
   const [savedProps, setSavedProps] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     getProperties()
@@ -37,6 +38,7 @@ function PropertiesProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    console.log("Get saved properties effect");
     if (user?.role_name === "Homeseeker") {
       getSavedProperties()
         .then((data) => {
@@ -44,7 +46,7 @@ function PropertiesProvider({ children }) {
         })
         .catch(console.log);
     }
-  }, [user]);
+  }, [user, reload]);
 
   function changePreferences(config) {
     setPreferences(config);
@@ -61,6 +63,10 @@ function PropertiesProvider({ children }) {
       return getCost(a) - getCost(b);
     };
     return properties.sort(sort_by_cost).slice(0, 3);
+  }
+
+  function changeReload() {
+    setReload(!reload);
   }
 
   const propsByPreferences = properties.filter((property) => {
@@ -92,6 +98,7 @@ function PropertiesProvider({ children }) {
         preferences,
         savedProps,
         changeToDefaultPreferences,
+        changeReload,
       }}
     >
       {children}

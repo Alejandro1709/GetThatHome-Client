@@ -35,15 +35,21 @@ function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [favoriteProps, setFavoriteProps] = useState([]);
   const [contactedProps, setContactedProps] = useState([]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     getSavedProperties()
       .then((saved) => {
+        console.log("Saved properties", saved);
         setFavoriteProps(transformSavedList(filterFavorite(saved)));
         setContactedProps(transformSavedList(filterContacted(saved)));
       })
       .catch(console.log);
-  }, []);
+  }, [reload]);
+
+  function changeReload() {
+    setReload(!reload);
+  }
 
   return (
     <ContainerPageHomeSeeker>
@@ -55,7 +61,10 @@ function HomeseekerPage() {
           Contacted
         </OptionsTab>
       </ContainerTabs>
-      <PropertyList properties={!activeTab ? favoriteProps : contactedProps} />
+      <PropertyList
+        properties={!activeTab ? favoriteProps : contactedProps}
+        onReload={changeReload}
+      />
     </ContainerPageHomeSeeker>
   );
 }
