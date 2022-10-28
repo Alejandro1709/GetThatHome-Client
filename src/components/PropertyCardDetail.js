@@ -1,3 +1,5 @@
+
+import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { boxShadow } from "../styles/utils";
 import casa1 from "../assets/images/casa1.jpg";
@@ -7,7 +9,6 @@ import { fonts, typography } from "../styles/typography";
 import { BiBed, BiBuildingHouse, BiBath, BiArea } from "react-icons/bi";
 import { TbArrowBarUp } from "react-icons/tb";
 import { FaPaw, FaRegTrashAlt } from "react-icons/fa";
-import styled from "@emotion/styled";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -16,7 +17,6 @@ import { deleteProperty, updateProperty } from "../services/properties-service";
 import { AiFillHeart } from "react-icons/ai";
 import { useProperties } from "../context/properties-context";
 import { useAuth } from "../context/auth-context";
-import { getSavedProperties } from "../services/saved-properties-service";
 
 export const ShowCaseBox = styled.div`
   position: relative;
@@ -180,38 +180,17 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
 
   // *  is favorite */
   const { user } = useAuth();
-  const { savedProps, changeReload } = useProperties();
-  const [savedPropsApi, setSavedPropsApi] = useState(null);
+  const { savedProps } = useProperties();
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
     if (user?.role_name === "Homeseeker") {
-      getSavedProperties()
-        .then((data) => {
-          console.log("Saved Props from context", savedProps);
-          console.log("Saved Props from API", data);
-          setSavedPropsApi(data);
-        })
-        .catch(console.log);
+      if (!savedProps) return;
+      console.log("Saved Props from context", savedProps);
+      const savedProp = savedProps.find((e) => e.property_details.id === id);
+      if (savedProp?.favorite === true) setIsFav(true);
     }
-  }, [id, user]);
-
-  useEffect(() => {
-    if (!savedPropsApi) return;
-    const savedProp = savedPropsApi.find((e) => e.property_details.id === id);
-    console.log("Saved Prop", savedProp);
-    if (savedProp) if (savedProp.favorite === true) setIsFav(true);
-  }, [savedPropsApi]);
-
-  // useEffect(() => {
-  //   if (user?.role_name === "Homeseeker") {
-  //     changeReload();
-  //     if (!savedProps) return;
-  //     console.log("Saved Props from context", savedProps);
-  //     const savedProp = savedProps.find((e) => e.property_details.id === id);
-  //     if (savedProp) if (savedProp.favorite === true) setIsFav(true);
-  //   }
-  // }, [id, user]);
+  }, [id, user, savedProps]);
 
   return (
     <ShowCaseBox>

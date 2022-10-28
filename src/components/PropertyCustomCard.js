@@ -15,7 +15,6 @@ import { NavLink, useParams } from "react-router-dom";
 import { useProperties } from "../context/properties-context";
 import {
   createSavedProperties,
-  getSavedProperties,
   updateSavedProperties,
 } from "../services/saved-properties-service";
 import { showUser } from "../services/users-service";
@@ -82,56 +81,44 @@ const LoginAdText = styled.div`
 `;
 
 export default function PropertyCustomCard({ ownerId }) {
+  // User
+  const { user } = useAuth();
+  const { savedProps, changeReload } = useProperties();
+  const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFav, setIsFav] = useState(null);
+  const [savedProp, setSavedProp] = useState(null);
+  const [showContactInfo, setShowContactInfo] = useState(false);
+  const [contactInfo, setContactInfo] = useState({});
+
+
+  useEffect(() => {
+    if (!user) return;
+    console.log(savedProps);
+
+    const savedProp = savedProps.find(
+      (e) => parseInt(e.property_details.id) === parseInt(id)
+    );
+    setSavedProp(savedProp);
+    console.log("Saved Prop", savedProp);
+    if (!savedProp) return;
+    if (savedProp.favorite === true) setIsFav(true);
+    if (savedProp.favorite === false) setIsFav(false);
+    if (savedProp.contacted === true) {
+      setShowContactInfo(true);
+    }
+  }, [id, user, savedProps]);
+
+  useEffect(() => {
+    if (!ownerId) return;
+    showUser(ownerId).then((data) => setContactInfo(data));
+  }, [ownerId]);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
-
-  // User
-  const { user } = useAuth();
-  const [userRole, setUserRole] = useState("");
-
-  useEffect(() => {
-    setUserRole(user?.role_name);
-  }, [user]);
-
-  // Saved Prop
-  const { id } = useParams();
-  const [isFav, setIsFav] = useState(null);
-  const [savedProp, setSavedProps] = useState(null);
-  const [showContactInfo, setShowContactInfo] = useState(false);
-  const [contactInfo, setContactInfo] = useState({});
-  const [reload, setReload] = useState(false);
-
-  useEffect(() => {
-    if (!user) return;
-
-    getSavedProperties()
-      .then((data) => {
-        console.log("Saved Props from API", data);
-        setSavedProps(data);
-        const savedProp = data.find(
-          (e) => parseInt(e.property_details.id) === parseInt(id)
-        );
-        setSavedProps(savedProp);
-        console.log("Saved Prop", savedProp);
-        if (!savedProp) return;
-        if (savedProp.favorite === true) setIsFav(true);
-        if (savedProp.favorite === false) setIsFav(false);
-        if (savedProp.contacted === true) {
-          setShowContactInfo(true);
-        }
-      })
-      .catch(console.log);
-  }, [id, user, isFav, reload]);
-
-  useEffect(() => {
-    if (!ownerId) return;
-    showUser(ownerId).then((data) => setContactInfo(data));
-  }, [ownerId]);
 
   const addFavorite = (id) => {
     updateSavedProperties({ favorite: true }, id)
@@ -177,10 +164,6 @@ export default function PropertyCustomCard({ ownerId }) {
     });
   };
 
-  const changeReload = () => {
-    setReload(!reload);
-  };
-
   const FavDisplay = () => {
     return (
       <>
@@ -190,7 +173,7 @@ export default function PropertyCustomCard({ ownerId }) {
               size="1.5rem"
               color={`${colors.primary[300]}`}
               style={{ cursor: "pointer" }}
-              onClick={() => removeFavorite(savedProp.id || id)}
+              onClick={() => removeFavorite(savedProp?.id || id)}
             />
             <p>Remove from your favorite</p>
           </>
@@ -235,7 +218,7 @@ export default function PropertyCustomCard({ ownerId }) {
           </Wrapper>
         )}
 
-        {user && userRole === "Homeseeker" && (
+        {user?.role_name === "Homeseeker" && (
           <Wrapper>
             {showContactInfo ? (
               <>
@@ -270,7 +253,7 @@ export default function PropertyCustomCard({ ownerId }) {
             )}
           </Wrapper>
         )}
-        {user && userRole === "Landlord" && (
+        {user?.role_name === "Landlord" && (
           <NavLink to={`/editproperty/${id}`}>
             <Button leftIcon={<FaRegEdit size="1.5rem" />}>
               Edit Property
