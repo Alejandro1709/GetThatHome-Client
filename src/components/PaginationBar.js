@@ -1,6 +1,7 @@
 import { BsChevronRight } from "react-icons/bs";
 import { colors } from "../styles/colors";
 import styled from "@emotion/styled";
+import { useThemeContext } from "../context/theme-context";
 
 const StyledPagination = styled.div`
   display: flex;
@@ -20,8 +21,14 @@ const StyledPaginationItem = styled.div`
   border-radius: 0.25rem;
   background-color: ${({ isActive }) =>
     isActive ? colors.primary[100] : colors.primary[200]};
-  color: ${({ isActive }) =>
-    isActive ? colors.primary[200] : colors.primary[600]};
+  color: ${({ theme, isActive }) => {
+    if (theme !== "Dark" && !isActive) {
+      return colors.secondary[800];
+    }
+    if (theme === "Dark" && !isActive) {
+      return colors.primary[400];
+    }
+  }};
   cursor: pointer;
   user-select: none;
   border: 1px solid
@@ -37,16 +44,18 @@ const NextBtn = styled.div`
   cursor: pointer;
 `;
 
-function PaginationBar({ total, page, onChangePage }) {
-  const totalPages =  Math.ceil(total / 6)
+function PaginationBar({ totalPages, page, onChangePage }) {
+  const { contextTheme } = useThemeContext();
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   function handleClick(e) {
     onChangePage(+e.target.dataset.id);
   }
+
   function handleNextClick() {
     if (page >= totalPages) return;
     onChangePage(page + 1);
   }
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <StyledPagination>
       {pages.map((_e, index) => {
@@ -57,6 +66,7 @@ function PaginationBar({ total, page, onChangePage }) {
             data-id={pageNumber}
             isActive={page === pageNumber}
             onClick={handleClick}
+            theme={contextTheme}
           >
             {pageNumber}
           </StyledPaginationItem>
