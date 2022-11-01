@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../services/auth-service";
-import { createUser, getUser } from "../services/users-service";
+import { createUser, getUser, updateUser } from "../services/users-service";
 
 const AuthContext = createContext();
 
@@ -47,6 +47,14 @@ function AuthProvider({ children }) {
     });
   }
 
+  function handleUpdate(userData) {
+    return updateUser(userData)
+    .then((data) => {
+      setUser(data);
+      navigate("/");
+    })
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -55,6 +63,7 @@ function AuthProvider({ children }) {
         login: handleLogin,
         signup: handleSignup,
         logout: handleLogout,
+        edit: handleUpdate,
       }}
     >
       {children}

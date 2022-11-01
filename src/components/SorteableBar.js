@@ -24,7 +24,7 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
 
 function SorteableBar({ filters, setFilters, isMapReady }) {
   const { preferences, changePreferences } = useProperties();
-  const [query, setQuery] = useState({
+  const [query, setQuery] = useState(preferences.location ||{
     whereing: "",
     coordinates: {
       lat: "",

@@ -14,6 +14,7 @@ const StyledInputWrapper = styled.div`
 `;
 
 const StyledSelect = styled.div`
+  color: ${colors.secondary[700]};
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -81,7 +82,7 @@ function SelectInput() {
   const { preferences, changePreferences } = useProperties();
   const sortType = (e) => {
     const value = e.target.getAttribute("value");
-    changePreferences({ ...preferences, wanting: value })
+    changePreferences({ ...preferences, wanting: value });
   };
 
   return (
