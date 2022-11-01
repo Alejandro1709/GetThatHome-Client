@@ -63,13 +63,17 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
+    const columnGap = 16;
+    const rowGap = 64;
     const rows = Math.floor(
-      listRef.current.clientHeight / cardRef.current?.clientHeight
+      (listRef.current.clientHeight + rowGap) /
+        (cardRef.current?.clientHeight + rowGap)
     );
     const columns = Math.floor(
-      listRef.current.clientWidth / cardRef.current?.clientWidth
+      (listRef.current.clientWidth + columnGap) /
+        (cardRef.current?.clientWidth + columnGap)
     );
-    setMaxLength(rows * columns);
+    setMaxLength(Math.max(rows * columns || 0, 6));
   }, []);
 
   return (
@@ -79,15 +83,17 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
         <StyledList ref={listRef}>
           {properties
             .slice((page - 1) * maxLength, page * maxLength)
-            .map((item) => (
-              <div ref={cardRef} key={item.id}>
-                <PropertyCardDetail
-                  property={item}
-                  belongsToMe={isLandlord}
-                  onCloseProperty={onCloseProperty}
-                />
-              </div>
-            ))}
+            .map((item) => {
+              return (
+                <div ref={cardRef} key={item.id}>
+                  <PropertyCardDetail
+                    property={item}
+                    belongsToMe={isLandlord}
+                    onCloseProperty={onCloseProperty}
+                  />
+                </div>
+              );
+            })}
           {isActive && (
             <NavLink to="/create" style={{ height: "100%" }}>
               <StyledNewPropCard>
