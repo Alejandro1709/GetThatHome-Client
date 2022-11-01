@@ -5,7 +5,7 @@ import { TbMoodEmpty } from "react-icons/tb";
 import { IoAddCircle } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 import PaginationBar from "../components/PaginationBar";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Wrapper = styled.div`
   padding: 0.75rem 0;
@@ -56,21 +56,38 @@ const StyledNewPropCard = styled.div`
 `;
 
 function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
-  console.log("Properties List", properties);
   const [page, setPage] = useState(1);
+  // const maxLength = 6;
+  const [maxLength, setMaxLength] = useState(6);
+  const listRef = useRef(null);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const rows = Math.floor(
+      listRef.current.clientHeight / cardRef.current?.clientHeight
+    );
+    const columns = Math.floor(
+      listRef.current.clientWidth / cardRef.current?.clientWidth
+    );
+    setMaxLength(rows * columns);
+  }, []);
+
   return (
     <Wrapper>
       <div>
         <p>{properties.length} Properties found</p>
-        <StyledList>
-          {properties.slice((page - 1) * 6, page * 6).map((item) => (
-            <PropertyCardDetail
-              property={item}
-              key={item.id}
-              belongsToMe={isLandlord}
-              onCloseProperty={onCloseProperty}
-            />
-          ))}
+        <StyledList ref={listRef}>
+          {properties
+            .slice((page - 1) * maxLength, page * maxLength)
+            .map((item) => (
+              <div ref={cardRef} key={item.id}>
+                <PropertyCardDetail
+                  property={item}
+                  belongsToMe={isLandlord}
+                  onCloseProperty={onCloseProperty}
+                />
+              </div>
+            ))}
           {isActive && (
             <NavLink to="/create" style={{ height: "100%" }}>
               <StyledNewPropCard>
@@ -86,9 +103,9 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
           <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
-      {properties.length !== 0 && (
+      {properties.length > maxLength && (
         <PaginationBar
-          total={properties.length}
+          totalPages={Math.ceil(properties.length / maxLength)}
           page={page}
           onChangePage={setPage}
         />
