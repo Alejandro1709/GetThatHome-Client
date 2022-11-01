@@ -70,7 +70,6 @@ function PropertiesProvider({ children }) {
 
   const propsByPreferences = properties.filter((property) => {
     const { lat, lng } = preferences.location.coordinates;
-    console.log(+lng - 0.5, +property.address.longitude, +lng + 0.5);
     const cond1 =
       property.operation_type.type === `for ${preferences.wanting}` ||
       preferences.wanting === "all";
@@ -86,7 +85,6 @@ function PropertiesProvider({ children }) {
         +property.address.longitude <= lng + 1
       : true;
 
-    console.log(cond1, cond2, cond3, cond4);
     return cond1 && cond2 && cond3 && cond4;
   });
 
