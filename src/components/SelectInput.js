@@ -3,6 +3,7 @@ import { colors } from "../styles/colors";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { fonts, typography } from "../styles/typography";
+import { useProperties } from "../context/properties-context";
 
 const StyledInputWrapper = styled.div`
   border: 1px solid ${colors.primary[400]};
@@ -75,24 +76,12 @@ const CheckboxWrapper = styled.div`
   }
 `;
 
-function SelectInput({ filters, setFilters }) {
+function SelectInput() {
   const [open, setOpen] = useState(false);
-
+  const { preferences, changePreferences } = useProperties();
   const sortType = (e) => {
     const value = e.target.getAttribute("value");
-    let onlyRent = null,
-      onlySale = null;
-    if (value === "both") {
-      onlyRent = true;
-      onlySale = true;
-    }
-    if (value === "buy") {
-      onlySale = true;
-    }
-    if (value === "rent") {
-      onlyRent = true;
-    }
-    setFilters({ ...filters, op_type: { rent: onlyRent, sale: onlySale } });
+    changePreferences({ ...preferences, wanting: value })
   };
 
   return (
@@ -109,13 +98,13 @@ function SelectInput({ filters, setFilters }) {
         <OptsBox>
           <Opt>
             <CheckboxWrapper onClick={sortType} value="both">
-              <input type="radio" value="both" id="both" name="type" />
+              <input type="radio" value="all" id="both" name="type" />
               <label htmlFor="both">Both</label>
             </CheckboxWrapper>
           </Opt>
           <Opt>
             <CheckboxWrapper onClick={sortType} value="buy">
-              <input type="radio" value="buy" id="buy" name="type" />
+              <input type="radio" value="sale" id="buy" name="type" />
               <label htmlFor="buy">Buying</label>
             </CheckboxWrapper>
           </Opt>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropertyList from "../components/PropertyList";
 import SorteableBar from "../components/SorteableBar";
 import { useProperties } from "../context/properties-context";
@@ -24,7 +24,12 @@ const initialFilters = {
 function PropertiesPage({ isMapReady }) {
   const { propsByPreferences } = useProperties();
   const [filters, setFilters] = useState(initialFilters);
-  const filteredProps = filterProperties(propsByPreferences, filters);
+  const [filteredProps, setFilteredProps] = useState(propsByPreferences);
+
+  useEffect(() => {
+    setFilteredProps(filterProperties(propsByPreferences, filters));
+  }, [propsByPreferences, filters]);
+
   return (
     <StyledContainer>
       <SorteableBar

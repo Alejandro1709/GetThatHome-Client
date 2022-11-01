@@ -6,6 +6,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { ButtonGroup } from "./button-group/ButtonGroup";
 import InputContainer from "./InputPlaceAutocomplete";
 import { PlacesAutocompletion } from "./PlacesAutocompletion";
+import { useProperties } from "../context/properties-context";
 
 const StyledSorteableBarTop = styled.div`
   margin: 2rem 0;
@@ -21,7 +22,8 @@ const MagnifyingGlass = styled(AiOutlineSearch)`
   font-size: 1.2rem;
 `;
 
-function SorteableBar({ filters, setFilters,isMapReady }) {
+function SorteableBar({ filters, setFilters, isMapReady }) {
+  const { preferences, changePreferences } = useProperties();
   const [query, setQuery] = useState({
     whereing: "",
     coordinates: {
@@ -32,18 +34,25 @@ function SorteableBar({ filters, setFilters,isMapReady }) {
 
   function changeLocation({ whereing, coordinates }) {
     setQuery({ whereing, coordinates });
-    const { lat, lng } = coordinates
-    setFilters({...filters, address: {latitude: lat,longitude: lng}});
+    changePreferences({ ...preferences, location: { whereing, coordinates } });
   }
 
   return (
     <StyledSorteableBarTop>
-     { isMapReady && <InputContainer leftIcon={<MagnifyingGlass/>}>
-        <PlacesAutocompletion {...{ location: query, changeLocation, placeholder:"Search by address" }} />
-      </InputContainer>}
+      {isMapReady && (
+        <InputContainer leftIcon={<MagnifyingGlass />}>
+          <PlacesAutocompletion
+            {...{
+              location: query,
+              changeLocation,
+              placeholder: "Search by address",
+            }}
+          />
+        </InputContainer>
+      )}
 
       <ButtonGroup filters={filters} setFilters={setFilters} />
-      <SelectInput filters={filters} setFilters={setFilters} />
+      <SelectInput />
     </StyledSorteableBarTop>
   );
 }

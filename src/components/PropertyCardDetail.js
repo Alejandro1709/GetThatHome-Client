@@ -186,7 +186,6 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   useEffect(() => {
     if (user?.role_name === "Homeseeker") {
       if (!savedProps) return;
-      console.log("Saved Props from context", savedProps);
       const savedProp = savedProps.find((e) => e.property_details.id === id);
       if (savedProp?.favorite === true) setIsFav(true);
     }
