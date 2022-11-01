@@ -8,7 +8,7 @@ import { filterProperties } from "../components/button-group/utils";
 const StyledContainer = styled.div`
   margin: 0 auto;
   min-height: inherit;
-  padding: 0.5rem;
+  padding: 1rem;
 `;
 
 const initialFilters = {
