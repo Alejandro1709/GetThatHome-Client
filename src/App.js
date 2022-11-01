@@ -1,32 +1,37 @@
 import styled from "@emotion/styled";
 import { useEffect, useState, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import { useAuth } from "./context/auth-context";
+import { PropertiesProvider } from "./context/properties-context";
+import { useThemeContext } from "./context/theme-context";
+import { colors } from "./styles";
 import Modal from "./components/Modal";
 import LoginForm from "./components/LoginForm";
-import PropertiesPage from "./pages/PropertiesPage";
-import PropertyDetailPage from "./pages/property-detail-page";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import LoadingWave from "./components/LoadingWave";
+import Building from "./assets/images/building.png";
 import SignupPage from "./pages/SignupPage";
 import NewPropertyForm from "./pages/NewPropertyPage";
 import LandlordPage from "./pages/LandlordPage";
 import HomeseekerPage from "./pages/HomeSeekerPage";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import { PropertiesProvider } from "./context/properties-context";
-import { useAuth } from "./context/auth-context";
-import Building from "./assets/images/building.png";
 import EditPropertyForm from "./pages/EditPropertyPage";
+import ProfilePage from "./pages/ProfilePage";
+import LandingPage from "./pages/LandingPage";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
+import PropertiesPage from "./pages/PropertiesPage";
 
 const MainContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  color: ${({ theme }) => (theme === "Dark" ? colors.secondary[200] : "")};
+  background-color: ${({ theme }) =>
+    theme === "Dark" ? colors.secondary[800] : colors.secondary[300]};
 `;
 
 const FooterWrapper = styled.div`
   width: 100%;
-  bottom: 0;
   position: absolute;
-  bottom: -10rem;
 `;
 
 const NotFound = styled.div`
@@ -74,7 +79,8 @@ removeScript({
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const { user } = useAuth();
+  const { user, status } = useAuth();
+  const { contextTheme } = useThemeContext();
   useEffect(() => {
     const script = addScript({
       src: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_TOKEN}&libraries=places`,
@@ -95,7 +101,7 @@ function App() {
 
   return (
     <PropertiesProvider>
-      <MainContainer id="maincontainer">
+      <MainContainer theme={contextTheme}>
         <Fragment>
           {isModalOpen && (
             <Modal onModalClose={handleCloseModal}>
@@ -113,7 +119,10 @@ function App() {
                 />
               }
             />
-            <Route path="/properties" element={<PropertiesPage />} />
+            <Route
+              path="/properties"
+              element={<PropertiesPage isMapReady={isMapLoaded} />}
+            />
             {/* For the route property detail page add the id of the property */}
             <Route path="/properties/:id" element={<PropertyDetailPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -129,12 +138,19 @@ function App() {
             {user?.role_name === "Landlord" && (
               <Route path="/editproperty/:id" element={<EditPropertyForm />} />
             )}
+            {user && <Route path="/profile" element={<ProfilePage />} />}
             <Route
               path="*"
               element={
                 <NotFound>
-                  <h1>Building</h1>
-                  <NotFoundImage src={Building} alt="building" />
+                  {status === "loading" ? (
+                    <LoadingWave color={colors.secondary[500]} />
+                  ) : (
+                    <>
+                      <h1>Building</h1>
+                      <NotFoundImage src={Building} alt="building" />
+                    </>
+                  )}
                 </NotFound>
               }
             />

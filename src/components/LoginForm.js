@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import Input from "./Input";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/auth-context";
+import LoadingWave from "./LoadingWave";
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const StyledFormWrapper = styled.div`
 const StyledTitle = styled.h1`
   ${typography.headline[5]}
   margin: 1rem 0;
+  color: ${colors.secondary[700]};
 `;
 
 const StyledForm = styled.form`
@@ -38,21 +40,6 @@ const StyledFormGroup = styled.div`
   gap: 4px;
   width: 100%;
 `;
-
-// const StyledFormLabel = styled.label`
-//   ${typography.overline}
-// `;
-
-// const StyledFormInput = styled.input`
-//   border: none;
-//   padding: 8px;
-//   border-radius: 8px;
-//   border: 1px solid ${colors.primary[300]};
-
-//   &:focus {
-//     outline: 1px solid ${colors.primary[500]};
-//   }
-// `;
 
 const StyledFormButton = styled.button`
   display: flex;
@@ -72,11 +59,6 @@ const StyledFormButton = styled.button`
     background-color: ${colors.primary[400]};
   }
 `;
-
-// const StyledFormError = styled.span`
-//   ${typography.caption}
-//   color: ${colors.error[500]};
-// `;
 
 function LoginForm({ onLoginClick, handleCloseModal }) {
   const [formData, setFormData] = useState({
@@ -134,9 +116,7 @@ function LoginForm({ onLoginClick, handleCloseModal }) {
           />
         </StyledFormGroup>
         <span style={{ color: "red" }}>{error}</span>
-        {status === "loading" && (
-          <span style={{ color: colors.primary[400] }}>Loading ...</span>
-        )}
+        {status === "loading" && <LoadingWave />}
         <StyledFormButton type="submit">
           <RiUserReceivedLine />
           Login

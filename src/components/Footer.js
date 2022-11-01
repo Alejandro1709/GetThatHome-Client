@@ -12,7 +12,6 @@ const FooterContainer = styled.div`
   z-index: 1;
   background: ${colors.secondary[300]};
   border-top: 1px solid ${colors.primary[400]};
-  margin-top: 2rem;
 `;
 
 const ContainerFooter = styled.div`
@@ -75,7 +74,7 @@ function Footer() {
             </span>
             <span>
               <AiFillGithub />
-              <Span>Bryan Mendoza G.</Span>
+              <Span>Bryan Mendoza</Span>
             </span>
           </TeamNames>
           <span>
@@ -85,11 +84,11 @@ function Footer() {
           <TeamNames>
             <span>
               <AiFillGithub />
-              <Span>Sthephanny Vargas</Span>
+              <Span>Stephanny Vargas</Span>
             </span>
             <span>
               <AiFillGithub />
-              <Span>Erick Cardenas</Span>
+              <Span>Erik Cardenas</Span>
             </span>
           </TeamNames>
         </SectionTeam>

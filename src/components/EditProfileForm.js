@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import { boxShadow } from "../styles/utils";
+import { updateUser } from "../services/users-service";
+import { useAuth } from "../context/auth-context";
 import styled from "@emotion/styled";
 import LoadingWave from "./LoadingWave";
-import { useAuth } from "../context/auth-context";
 
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const StyledFormWrapper = styled.div`
   user-select: none;
   top: 50%;
   border-radius: 8px;
-  ${boxShadow[1]}
+  ${boxShadow[1]};
 `;
 
 const StyledTitle = styled.h1`
@@ -78,20 +79,28 @@ const StyledFormError = styled.span`
   color: ${colors.error[500]};
 `;
 
-function SignUpForm() {
-  const { signup } = useAuth();
+function EditProfileForm() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
-    password: "",
-    passwordConfirm: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name,
+        // email: user.email, User can't change their email
+        phone: user.phone,
+      });
+    }
+  }, [user]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -100,29 +109,23 @@ function SignUpForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const role = searchParams.get("role");
-    const { passwordConfirm, ...user } = formData;
-
-    if (user.password !== passwordConfirm) {
-      setError("Passwords do not match");
-      return;
-    }
 
     setLoading(true);
 
-    signup({ ...user, role })
-      .then(() => {
+    updateUser(formData)
+      .then((_data) => {
         setLoading(false);
+        navigate("/", { replace: true });
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch((err) => {
+        setError(err.message);
         setLoading(false);
       });
   }
 
   return (
     <StyledFormWrapper>
-      <StyledTitle>Create your account</StyledTitle>
+      <StyledTitle>Update your Profile</StyledTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledFormGroup>
           <StyledFormLabel htmlFor="name">Name</StyledFormLabel>
@@ -144,8 +147,9 @@ function SignUpForm() {
             id="email"
             placeholder="user@mail.com"
             required
-            value={formData.email}
+            value={user.email}
             onChange={handleChange}
+            disabled
           />
         </StyledFormGroup>
         <StyledFormGroup>
@@ -171,6 +175,7 @@ function SignUpForm() {
             required
             value={formData.password}
             onChange={handleChange}
+            disabled
           />
         </StyledFormGroup>
         <StyledFormGroup>
@@ -186,14 +191,15 @@ function SignUpForm() {
             minLength={6}
             value={formData.passwordConfirm}
             onChange={handleChange}
+            disabled
           />
           {error && <StyledFormError>{error}</StyledFormError>}
         </StyledFormGroup>
         {loading && <LoadingWave />}
-        <StyledFormButton type="submit">Create Account</StyledFormButton>
+        <StyledFormButton type="submit">Update Profile</StyledFormButton>
       </StyledForm>
     </StyledFormWrapper>
   );
 }
 
-export default SignUpForm;
+export default React.memo(EditProfileForm);

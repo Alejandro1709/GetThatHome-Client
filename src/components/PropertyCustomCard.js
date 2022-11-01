@@ -11,7 +11,13 @@ import Modal from "./Modal";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../context/auth-context";
 import { AiFillHeart } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { useProperties } from "../context/properties-context";
+import {
+  createSavedProperties,
+  updateSavedProperties,
+} from "../services/saved-properties-service";
+import { showUser } from "../services/users-service";
 
 const Wrapper = styled.div`
   min-width: 14rem;
@@ -23,6 +29,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  color: ${colors.secondary[700]};
   & h6 {
     ${typography.headline[6]};
     margin: 0;
@@ -48,10 +55,12 @@ const DataText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: ${colors.secondary[700]};
   ${typography.body[2]};
   & h4 {
     color: ${colors.primary[400]};
     ${typography.body[2]};
+    font-weight: 700;
   }
 `;
 
@@ -71,25 +80,119 @@ const LoginAdText = styled.div`
   font-family: ${fonts.secondary};
 `;
 
-export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
+export default function PropertyCustomCard({ ownerId }) {
+  // User
+  const { user } = useAuth();
+  const { savedProps, changeReload } = useProperties();
+  const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFav, setIsFav] = useState(null);
+  const [savedProp, setSavedProp] = useState(null);
+  const [showContactInfo, setShowContactInfo] = useState(false);
+  const [contactInfo, setContactInfo] = useState({});
+
+
+  useEffect(() => {
+    if (!user) return;
+    console.log(savedProps);
+
+    const savedProp = savedProps.find(
+      (e) => parseInt(e.property_details.id) === parseInt(id)
+    );
+    setSavedProp(savedProp);
+    console.log("Saved Prop", savedProp);
+    if (!savedProp) return;
+    if (savedProp.favorite === true) setIsFav(true);
+    if (savedProp.favorite === false) setIsFav(false);
+    if (savedProp.contacted === true) {
+      setShowContactInfo(true);
+    }
+  }, [id, user, savedProps]);
+
+  useEffect(() => {
+    if (!ownerId) return;
+    showUser(ownerId).then((data) => setContactInfo(data));
+  }, [ownerId]);
 
   function handleCloseModal(e) {
     if (e.target.dataset.type === "modal") {
       setIsModalOpen(false);
     }
   }
-  const [showContactInfo, setShowContactInfo] = useState(false);
 
-  const { user } = useAuth();
-  const [userRole, setUserRole] = useState("");
+  const addFavorite = (id) => {
+    updateSavedProperties({ favorite: true }, id)
+      .then((data) => {
+        console.log("adding to fav...");
+        setIsFav(true);
+        changeReload();
+      })
+      .catch(console.log);
+  };
 
-  useEffect(() => {
-    setUserRole(user?.role_name);
-  }, [user]);
+  const createFavorite = (id) => {
+    createSavedProperties({ favorite: true, property_id: id }).then((data) => {
+      console.log("creating favorite....");
+      setIsFav(true);
+      changeReload();
+    });
+  };
 
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
+  const removeFavorite = (id) => {
+    updateSavedProperties({ favorite: false }, id)
+      .then((data) => {
+        console.log("deleting from fav...");
+        setIsFav(false);
+        changeReload();
+      })
+      .catch(console.log);
+  };
+
+  const createContacted = (id) => {
+    createSavedProperties({ contacted: true, property_id: id }).then((data) => {
+      console.log("creating contacted....");
+      setShowContactInfo(true);
+      changeReload();
+    });
+  };
+
+  const updateContacted = (id) => {
+    updateSavedProperties({ contacted: true }, id).then((data) => {
+      console.log("adding to contacted....");
+      setShowContactInfo(true);
+      changeReload();
+    });
+  };
+
+  const FavDisplay = () => {
+    return (
+      <>
+        {isFav ? (
+          <>
+            <AiFillHeart
+              size="1.5rem"
+              color={`${colors.primary[300]}`}
+              style={{ cursor: "pointer" }}
+              onClick={() => removeFavorite(savedProp?.id || id)}
+            />
+            <p>Remove from your favorite</p>
+          </>
+        ) : (
+          <>
+            <FavIcon
+              size="1.5rem"
+              onClick={
+                savedProp
+                  ? () => addFavorite(savedProp.id)
+                  : () => createFavorite(id)
+              }
+            />
+            <p>Add to favorites</p>
+          </>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -107,7 +210,7 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
               </LoginAdText>
               <Button
                 leftIcon={<RiUserReceivedLine size="1.5rem" />}
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsModalOpen(id)}
               >
                 LOGIN
               </Button>
@@ -115,49 +218,42 @@ export default function PropertyCustomCard({ isFav, handleAddtoFav }) {
           </Wrapper>
         )}
 
-        {user && userRole === "Homeseeker" && (
+        {user?.role_name === "Homeseeker" && (
           <Wrapper>
-            {!showContactInfo ? (
-              <>
-                <Button onClick={() => setShowContactInfo(true)}>
-                  Contact Advertiser
-                </Button>
-                {isFav ? (
-                  <>
-                    <AiFillHeart
-                      size="1.5rem"
-                      color={`${colors.primary[300]}`}
-                      style={{ cursor: "pointer" }}
-                      // onClick={handleAddtoFav}
-                    />
-                    <p>Remove from your favorite</p>
-                  </>
-                ) : (
-                  <>
-                    <FavIcon
-                      size="1.5rem"
-                      // onClick={handleAddtoFav}
-                    />
-                    <p>Add to favorites</p>
-                  </>
-                )}
-              </>
-            ) : (
+            {showContactInfo ? (
               <>
                 <h6>Contact information</h6>
                 <DataText>
+                  <h4>Name</h4>
+                  <p>{contactInfo.name}</p>
+                </DataText>
+                <DataText>
                   <h4>Email</h4>
-                  <p>dude@greathouse.com</p>
+                  <p>{contactInfo.email}</p>
                 </DataText>
                 <DataText>
                   <h4>Phone</h4>
-                  <p>999444333</p>
+                  <p>{contactInfo.phone}</p>
                 </DataText>
+                <FavDisplay />
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={
+                    savedProp
+                      ? () => updateContacted(savedProp.id)
+                      : () => createContacted(id)
+                  }
+                >
+                  Contact Advertiser
+                </Button>
+                <FavDisplay />
               </>
             )}
           </Wrapper>
         )}
-        {user && userRole === "Landlord" && (
+        {user?.role_name === "Landlord" && (
           <NavLink to={`/editproperty/${id}`}>
             <Button leftIcon={<FaRegEdit size="1.5rem" />}>
               Edit Property

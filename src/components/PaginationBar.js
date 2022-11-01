@@ -1,6 +1,6 @@
-import { BsChevronRight } from 'react-icons/bs';
-import { colors } from '../styles/colors';
-import styled from '@emotion/styled';
+import { BsChevronRight } from "react-icons/bs";
+import { colors } from "../styles/colors";
+import styled from "@emotion/styled";
 
 const StyledPagination = styled.div`
   display: flex;
@@ -8,22 +8,24 @@ const StyledPagination = styled.div`
   gap: 0.5rem;
   align-items: center;
   margin-top: 2.31rem;
+  margin-bottom: 0.5rem;
 `;
 
 const StyledPaginationItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 31px;
-  width: 31px;
-  border-radius: 4px;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.25rem;
   background-color: ${({ isActive }) =>
-    isActive ? colors.primary[100] : 'white'};
-  color: ${colors.secondary[600]};
+    isActive ? colors.primary[100] : colors.primary[200]};
+  color: ${({ isActive }) =>
+    isActive ? colors.primary[200] : colors.primary[600]};
   cursor: pointer;
   user-select: none;
   border: 1px solid
-    ${({ isActive }) => (isActive ? colors.primary[400] : '#eee')};
+    ${({ isActive }) => (isActive ? colors.primary[400] : colors.primary[100])};
 
   &:hover {
     background-color: ${colors.primary[100]};
@@ -31,15 +33,38 @@ const StyledPaginationItem = styled.div`
   }
 `;
 
-function PaginationBar() {
+const NextBtn = styled.div`
+  cursor: pointer;
+`;
+
+function PaginationBar({ total, page, onChangePage }) {
+  const totalPages =  Math.ceil(total / 6)
+  function handleClick(e) {
+    onChangePage(+e.target.dataset.id);
+  }
+  function handleNextClick() {
+    if (page >= totalPages) return;
+    onChangePage(page + 1);
+  }
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <StyledPagination>
-      <StyledPaginationItem isActive={true}>1</StyledPaginationItem>
-      <StyledPaginationItem>2</StyledPaginationItem>
-      <StyledPaginationItem>3</StyledPaginationItem>
-      <StyledPaginationItem>4</StyledPaginationItem>
-      <StyledPaginationItem>5</StyledPaginationItem>
-      <BsChevronRight />
+      {pages.map((_e, index) => {
+        const pageNumber = index + 1;
+        return (
+          <StyledPaginationItem
+            key={index}
+            data-id={pageNumber}
+            isActive={page === pageNumber}
+            onClick={handleClick}
+          >
+            {pageNumber}
+          </StyledPaginationItem>
+        );
+      })}
+      <NextBtn>
+        <BsChevronRight onClick={handleNextClick} />
+      </NextBtn>
     </StyledPagination>
   );
 }

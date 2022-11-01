@@ -7,9 +7,10 @@ import { colors } from "../styles/colors";
 import Slider from "../components/Slider";
 import MapBox from "../components/MapBox";
 import PropertyCustomCard from "../components/PropertyCustomCard";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { showProperty } from "../services/properties-service";
 import { useEffect, useState } from "react";
+import getGeocode from "../services/mapbox-service";
 
 const TotalContainer = styled.div`
   min-height: inherit;
@@ -106,7 +107,17 @@ const CardContainer = styled.div`
 `;
 
 export default function PropertyDetailPage() {
-  const [propertyByID, setPropertyByID] = useState("");
+  const [geocoded, setGeocoded] = useState(null);
+  const [propertyByID, setPropertyByID] = useState({
+    bathrooms: "",
+    bedrooms: "",
+    area: "",
+    description: "",
+    photo_urls: [],
+    operation_type: {},
+    address: {},
+  });
+
   const {
     bathrooms,
     bedrooms,
@@ -115,115 +126,44 @@ export default function PropertyDetailPage() {
     photo_urls,
     operation_type,
     address,
+    owner_id
   } = propertyByID;
 
-  /* operation_type  */
-  const [type, setType] = useState("");
-  const [price, setPrice] = useState("");
-  const [monthly_rent, setMonthlyRent] = useState("");
-  const [maintenance, setMaintenance] = useState("");
-  const [pets_allowed, setPetsAllowed] = useState("");
+  const { type, price, monthly_rent, maintenance, pets_allowed } =
+    operation_type;
+  const { latitude, longitude } = address;
 
-  /* address  */
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [name, setName] = useState("");
-
-  /*  is favorite */
-  const [isFav, setIsFav] = useState(null);
-  const myImgs = photo_urls;
-
-  const testCoords = {
-    latitude: latitude,
-    longitude: longitude,
-  };
-
-  const sampleLocation = useLocation().pathname;
-  const id = sampleLocation.split("/")[2];
+  const { id } = useParams();
 
   useEffect(() => {
     showProperty(id)
       .then((data) => setPropertyByID(data))
       .catch(console.log);
-    // getSavedProperties().then((saved) => {
-    //   let isFav = saved.find((e) => {
-    //     return e.property.id == id;
-    //   });
-    //   if (isFav) {
-    //     setIsFav(true);
-    //   }
-    // });
   }, [id]);
 
-  /* operation_type  */
-
   useEffect(() => {
-    setType(operation_type?.type);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setPrice(operation_type?.price);
-  }, [operation_type]);
-
-  useEffect(() => {
-    setMonthlyRent(operation_type?.monthly_rent);
-  }, [operation_type]);
-  useEffect(() => {
-    setMaintenance(operation_type?.maintenance);
-  }, [operation_type]);
-  useEffect(() => {
-    setPetsAllowed(operation_type?.pets_allowed);
-  }, [operation_type]);
-
-  /* address  */
-  useEffect(() => {
-    setLatitude(address?.latitude);
+    getGeocode(address).then(setGeocoded).catch(console.log);
   }, [address]);
-  useEffect(() => {
-    setLongitude(address?.longitude);
-  }, [address]);
-  useEffect(() => {
-    setName(address?.name);
-  }, [address]);
-
-  // function handleAddtoFav(id) {
-  //   console.log("emtre a la fucnion onclick");
-  //   console.log(isFav);
-  //   isFav
-  //     ? updateSavedProperties({ favorite: false }, id)
-  //         .then((data) => {
-  //           console.log("quitar fav");
-  //           setIsFav(false);
-  //         })
-  //         .catch(console.log)
-  //     : updateSavedProperties({ favorite: true }, id)
-  //         .then((data) => {
-  //           console.log(data);
-  //           console.log("crear fav");
-  //           setIsFav(true);
-  //         })
-  //         .catch(console.log);
-  // }
 
   return (
     <TotalContainer>
       <Container>
         <MainContainer>
           <SliderContainer>
-            <Slider images={myImgs} />
+            <Slider images={photo_urls} />
           </SliderContainer>
           <AboutSection>
             <DescHeader>
               <DescHeaderLeft>
-                <h2>{name}</h2>
-                <h4>{description}</h4>
+                <h2>{address.name}</h2>
+                <h4> {geocoded ? geocoded : "Not an actual address..."}</h4>
               </DescHeaderLeft>
               <DescHeaderRight>
                 <DescMoney>
                   <MoneyIcon />
                   <h4>{type === "for rent" ? monthly_rent : price}</h4>
                 </DescMoney>
-                <h5>{type === "for rent" ? maintenance : ""}</h5>
+                <h5>{type === "for rent" ? "+"+maintenance : ""}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
@@ -237,29 +177,36 @@ export default function PropertyDetailPage() {
               </DescSingleOpt>
               <DescSingleOpt>
                 <BiArea />
-                <h4>{area} area</h4>
+                <h4>{area} m2</h4>
               </DescSingleOpt>
-              <DescSingleOpt>{pets_allowed ? <MdPets /> : ""}</DescSingleOpt>
+              <DescSingleOpt>
+                {pets_allowed ? (
+                  <>
+                    <MdPets /> Pets allowed
+                  </>
+                ) : (
+                  ""
+                )}
+              </DescSingleOpt>
             </DescOptions>
             <AboutDesc>
-              <h3>{description}</h3>
+            <h3>About this property</h3>
               <p>
                 {bedrooms} Bedroom/ {bathrooms} Bathroom.
               </p>
+              <br/>
+              <p>{description}</p>
             </AboutDesc>
             <AboutDesc>
               <h3>Location</h3>
-              <p>{name}</p>
+              <p>{address.name}</p>
             </AboutDesc>
           </AboutSection>
-          <MapBox coordValues={testCoords} />
+          <MapBox coordValues={{ latitude, longitude }} />
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard
-              isFav={isFav}
-              // handleAddtoFav={handleAddtoFav(id)}
-            />
+            <PropertyCustomCard ownerId={owner_id}/>
           </CardContainer>
         </aside>
       </Container>

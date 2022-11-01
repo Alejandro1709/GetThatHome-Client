@@ -38,7 +38,6 @@ const ContainerBestPrices = styled.div`
 
 function LayoutCase() {
   const { bestProps } = useProperties();
-  console.log(bestProps);
   return (
     <Container>
       <ContainerCase>
@@ -48,7 +47,6 @@ function LayoutCase() {
           {bestProps.map((property) => (
             <PropertyCardDetail key={property.id} property={property} />
           ))}
-          {/* <PropertyCardDetail /> */}
         </ContainerBestPrices>
       </ContainerCase>
     </Container>

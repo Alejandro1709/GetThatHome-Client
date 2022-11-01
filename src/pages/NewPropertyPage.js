@@ -7,11 +7,11 @@ import { fonts } from "../styles/typography";
 import Button from "../components/Button";
 import { useState } from "react";
 import { useProperties } from "../context/properties-context";
-import uploadImages from "../services/cloudinary-service";
 import { createProperty } from "../services/properties-service";
 import { useNavigate } from "react-router-dom";
 import { PlacesAutocompletion } from "../components/PlacesAutocompletion";
 import InputContainer from "../components/InputPlaceAutocomplete";
+import { submitImages } from "../utils";
 
 const MainContainer = styled.div`
   min-height: inherit;
@@ -167,14 +167,12 @@ const CheckboxWrapper = styled.div`
     ${typography.body[2]}
     color: ${colors.secondary[600]};
   }
-
   & input[type="radio"] {
     appearance: none;
     margin: 0;
     width: 1.25rem;
     height: 1.25rem;
   }
-
   & input[type="radio"]::before {
     position: absolute;
     content: "";
@@ -197,14 +195,12 @@ const CheckboxWrapper = styled.div`
     background-color: ${colors.primary[300]};
     border: 1px solid ${colors.primary[300]};
   }
-
   & input[type="checkbox"] {
     appearance: none;
     margin: 0;
     width: 1.25rem;
     height: 1.25rem;
   }
-
   & input[type="checkbox"]::before {
     position: absolute;
     content: "";
@@ -356,27 +352,25 @@ export default function NewPropertyForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setError("")
-    images.forEach((img) => {
-      const formData = new FormData();
-      formData.append("file", img?.file);
-      formData.append("upload_preset", "hackf1hx");
-      uploadImages(formData)
-        .then((data) => {
-          const newPhotoUrls = [...propertyData.photo_urls, data.url];
-          setPropertyData({
-            ...propertyData,
-            photo_urls: newPhotoUrls,
-          });
-        })
-        .catch(console.log);
-    });
-    console.log(propertyData);
-    createProperty(propertyData)
-      .then(() => {
-        navigate("/myproperties");
+    setError("");
+    Promise.all(submitImages(images))
+      .then((urls) => {
+        const newPhotoUrls = [...propertyData.photo_urls, ...urls];
+        const newPropertyData = {
+          ...propertyData,
+          photo_urls: newPhotoUrls,
+        };
+        createProperty(newPropertyData)
+          .then(() => {
+            navigate("/myproperties");
+          })
+          .catch((_e) =>
+            setError("Please, complete all the form. Only photos are optional.")
+          );
       })
-      .catch(_e=>setError("Please, complete all the form. Only photos are optional."));
+      .catch((_e) =>
+        setError("Your photos couldn't be uploaded. Please, try again.")
+      );
   }
 
   function handleChange(e) {
@@ -622,7 +616,7 @@ export default function NewPropertyForm() {
             ))
           )}
         </UploadedBoxContainer>
-        {error && <span style={{ color: "red" }}>{error}</span>}
+        {error && <span style={{ color: colors.error[500]}}>{error}</span>}
         <Button
           type="submit"
           style={{ width: "fit-content", padding: "1rem 1.5rem" }}

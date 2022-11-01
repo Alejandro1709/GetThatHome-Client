@@ -1,6 +1,6 @@
 export default async function getGeocode({longitude,latitude}){
   const response = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=country,region&access_token=pk.eyJ1IjoiZGF2aWRtMjQwNSIsImEiOiJjbDh1aXlpeTEwNGR6M3FwazVxMnQ0aWZ6In0.F590aJ4ztzGjREG9ypUnig`
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=country,region&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`
   )
   let data;
   if (!response.ok) {

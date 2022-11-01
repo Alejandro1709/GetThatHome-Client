@@ -7,6 +7,7 @@ import { BsTools } from "react-icons/bs";
 
 const Container = styled.div`
   height: 30.3rem;
+  padding: 0 3rem;
 `;
 
 const TitleTeam = styled.span`
@@ -44,196 +45,99 @@ const LinksPerson = styled.div`
   margin: 1.025rem;
 `;
 
+const ImgAvatar = styled.img`
+  object-fit: cover;
+  width: 11.25rem;
+  min-width: 5rem;
+  border-radius: 50%;
+  -webkit-transition: 2s linear;
+  transition: 2s linear;
+  &:hover {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+`;
+const Link = styled.a`
+  text-decoration: none;
+  color: ${colors.secondary[600]};
+`;
+
+const teamMembers = [
+  {
+    name: "Alejandro La Rosa",
+    avatar_url: "https://avatars.githubusercontent.com/u/64037397?v=4",
+    github: "https://github.com/Alejandro1709",
+    linkedin: "https://www.linkedin.com/in/alejandro-la-rosa-4497a995",
+    role: "Frontend",
+  },
+  {
+    name: "Bryan Mendoza",
+    avatar_url: "https://avatars.githubusercontent.com/u/97063552?v=4",
+    github: "https://github.com/mgbryan90",
+    linkedin: "https://www.linkedin.com/in/bryanmendozaguerreros",
+    role: "Frontend",
+  },
+  {
+    name: "David Montoya",
+    avatar_url: "https://avatars.githubusercontent.com/u/101736772?v=4",
+    github: "https://github.com/DavidMontoya24",
+    linkedin: "https://www.linkedin.com/in/davidmontoya24",
+    role: "Frontend",
+  },
+  {
+    name: "Erik Cardenas",
+    avatar_url: "https://avatars.githubusercontent.com/u/1269801?v=4",
+    github: "http://github.com/efdree",
+    linkedin: "https://www.linkedin.com/in/erikcardenasv",
+    role: "Backend",
+  },
+  {
+    name: "Stephanny Vargas",
+    avatar_url: "https://avatars.githubusercontent.com/u/91625172?v=4",
+    github: "http://github.com/stephv729",
+    linkedin: "https://www.linkedin.com/in/stephannyvargas",
+    role: "Backend",
+  },
+];
 function TeamSection() {
   return (
     <Container>
       <TitleTeam>Meet the team</TitleTeam>
       <TeamContainer>
-        <People>
-          <img
-            src="https://avatars.githubusercontent.com/u/64037397?v=4"
-            alt="Human"
-            style={{
-              width: "11.25rem",
-              height: "11.25rem",
-              borderRadius: "50%",
-            }}
-          />
-          <InfoPerson>
-            Alejandro La Rosa
-            <LinksPerson>
-              <GiPencilBrush
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-              <a
-                href="https://github.com/Alejandro1709"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiFillGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/alejandro-la-rosa-4497a995"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiOutlineLinkedin />
-              </a>
-            </LinksPerson>
-          </InfoPerson>
-        </People>
-        <People>
-          <img
-            src="https://avatars.githubusercontent.com/u/97063552?v=4"
-            alt="Human"
-            style={{
-              width: "11.25rem",
-              height: "11.25rem",
-              borderRadius: "50%",
-            }}
-          />
-          <InfoPerson>
-            Bryan Mendoza G.
-            <LinksPerson>
-              <GiPencilBrush
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-              <a
-                href="https://github.com/mgbryan90"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiFillGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/bryanmendozaguerreros"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiOutlineLinkedin />
-              </a>
-            </LinksPerson>
-          </InfoPerson>
-        </People>
-        <People>
-          <img
-            src="https://avatars.githubusercontent.com/u/101736772?v=4"
-            alt="Human"
-            style={{
-              width: "11.25rem",
-              height: "11.25rem",
-              borderRadius: "50%",
-            }}
-          />
-          <InfoPerson>
-            David Montoya
-            <LinksPerson>
-              <GiPencilBrush
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-              <a
-                href="https://github.com/DavidMontoya24"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiFillGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/davidmontoya24"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiOutlineLinkedin />
-              </a>
-            </LinksPerson>
-          </InfoPerson>
-        </People>
-        <People>
-          <img
-            src="https://avatars.githubusercontent.com/u/1269801?v=4"
-            alt="Human"
-            style={{
-              width: "11.25rem",
-              height: "11.25rem",
-              borderRadius: "50%",
-            }}
-          />
-          <InfoPerson>
-            Erik Cardenas
-            <LinksPerson>
-              <BsTools
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-              <a
-                href="http://github.com/efdree"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiFillGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/erikcardenasv"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiOutlineLinkedin />
-              </a>
-            </LinksPerson>
-          </InfoPerson>
-        </People>
-        <People>
-          <img
-            src="https://avatars.githubusercontent.com/u/91625172?v=4"
-            alt="Human"
-            style={{
-              width: "11.25rem",
-              height: "11.25rem",
-              borderRadius: "50%",
-            }}
-          />
-          <InfoPerson>
-            Stephanny Vargas
-            <LinksPerson>
-              <BsTools
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-              <a
-                href="https://github.com/stephv729"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiFillGithub />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/stephannyvargas"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <AiOutlineLinkedin />
-              </a>
-            </LinksPerson>
-          </InfoPerson>
-        </People>
+        {teamMembers.map((member, index) => (
+          <People key={index}>
+            <ImgAvatar src={member.avatar_url} alt="Human" />
+            <InfoPerson>
+              {member.name}
+              <LinksPerson>
+                {member.role === "Frontend" && (
+                  <GiPencilBrush
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                )}
+                {member.role === "Backend" && (
+                  <BsTools
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                )}
+                <Link href={member.github} target="_blank" rel="noreferrer">
+                  <AiFillGithub />
+                </Link>
+                <Link href={member.linkedin} target="_blank" rel="noreferrer">
+                  <AiOutlineLinkedin />
+                </Link>
+              </LinksPerson>
+            </InfoPerson>
+          </People>
+        ))}
       </TeamContainer>
     </Container>
   );

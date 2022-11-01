@@ -3,13 +3,17 @@ import { colors } from "../../styles";
 import { fonts, typography } from "../../styles/typography";
 import { boxShadow } from "../../styles/utils";
 
-export const StyledButtonGroup = styled.div`
+export const ButtonGroup = styled.div`
   display: flex;
   gap: 0.5rem;
-  position: relative;
+  /* position: relative; */
   & button {
     max-height: 2.25rem;
   }
+`;
+
+export const ButtonContainer = styled.div`
+  position: relative;
 `;
 
 export const PopUpCard = styled.form`
@@ -29,32 +33,10 @@ export const PopUpCard = styled.form`
   }
 `;
 
-export const PricePopUp = styled.div`
+export const Popup = styled.div`
   position: absolute;
-  top: 50px;
-  left: -100px;
   z-index: 1;
-`;
-
-export const TypePopUp = styled.div`
-  position: absolute;
-  top: 50px;
-  left: 65px;
-  z-index: 1;
-`;
-
-export const BedBathPopUp = styled.div`
-  position: absolute;
-  top: 50px;
-  right: 70px;
-  z-index: 1;
-`;
-
-export const MorePopUp = styled.div`
-  position: absolute;
-  top: 50px;
-  right: -100px;
-  z-index: 1;
+  top: 110%;
 `;
 
 export const InputsWrapper = styled.div`
