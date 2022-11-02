@@ -29,7 +29,7 @@ export function submitImages(imgArr) {
     } catch (error) {
       console.log(error);
     }
-    return uploadedImg?.url;
+    return uploadedImg?.url.replace('http://','https://');
   });
 }
 
