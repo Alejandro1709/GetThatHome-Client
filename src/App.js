@@ -20,6 +20,7 @@ import ProfilePage from "./pages/ProfilePage";
 import LandingPage from "./pages/LandingPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertiesPage from "./pages/PropertiesPage";
+import GetThatHomeLogo from "./assets/icons/gth-logo";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -43,6 +44,68 @@ const NotFoundImage = styled.img`
   max-width: 32.2rem;
   margin: 1.5rem;
 `;
+
+const ContainerLoading = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  width: 100%;
+  min-height: 100vh;
+  text-align: center;
+  ${colors.gradient[1]};
+  animation: 1.5s ease-in-out 2s close;
+  & svg {
+    width: 20rem;
+    animation: 2s ease-in-out grow;
+  }
+  @keyframes grow {
+    0% {
+      transform: scale(0.8);
+    }
+    25% {
+      transform: rotate(540deg);
+    }
+    45% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    75% {
+      transform: rotate(-15deg);
+    }
+    90% {
+      transform: rotate(-5deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes close {
+    100% {
+      transform: translateY(-100vh);
+      display: none;
+    }
+  }
+  & h1 {
+    color: ${colors.secondary[200]};
+  }
+`;
+
+const IntroModal = () => {
+  return (
+    <Modal>
+      <ContainerLoading>
+        {GetThatHomeLogo}
+        {/* <img src={GetThatHomeLogo} /> */}
+        <h1>Welcome to GetThatHome</h1>
+      </ContainerLoading>
+    </Modal>
+  );
+};
 
 const GOOGLE_API_TOKEN = process.env.REACT_APP_GCP_API_KEY;
 
@@ -79,6 +142,7 @@ removeScript({
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [intro, setIntro] = useState(true);
   const { user, status } = useAuth();
   const { contextTheme } = useThemeContext();
   useEffect(() => {
@@ -99,8 +163,13 @@ function App() {
     }
   }
 
+  setTimeout(() => {
+    setIntro(false);
+  }, 3500);
+
   return (
     <PropertiesProvider>
+      {intro && <IntroModal />}
       <MainContainer theme={contextTheme}>
         <Fragment>
           {isModalOpen && (
@@ -123,7 +192,6 @@ function App() {
               path="/properties"
               element={<PropertiesPage isMapReady={isMapLoaded} />}
             />
-            {/* For the route property detail page add the id of the property */}
             <Route path="/properties/:id" element={<PropertyDetailPage />} />
             <Route path="/signup" element={<SignupPage />} />
             {user?.role_name === "Landlord" && (

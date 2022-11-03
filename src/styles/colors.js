@@ -23,4 +23,14 @@ export const colors = {
     500: "#EF5350",
     600: "#F44336",
   },
+  gradient: {
+    1: `background-image: linear-gradient(
+      to bottom,
+      #f48fb1,
+      #e983a6,
+      #de789a,
+      #d46c8f,
+      #c96184
+    )`,
+  },
 };
