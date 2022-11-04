@@ -56,7 +56,6 @@ export function ButtonGroup({ filters, setFilters }) {
       changePreferences({ ...preferences, looking: "Apartment" });
       return setType("apartments");
     }
-
     changePreferences({ ...preferences, looking: "all" });
     setType("Property type");
   };
@@ -115,7 +114,7 @@ export function ButtonGroup({ filters, setFilters }) {
         >
           {type}
         </Button>
-        {typePopup && <TypePopUp onSubmit={submitType} />}
+        {typePopup && <TypePopUp onSubmit={submitType} type={type} />}
       </styled.ButtonContainer>
 
       <styled.ButtonContainer ref={bedbathRef}>

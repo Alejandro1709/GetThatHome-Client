@@ -40,18 +40,34 @@ export function PricePopUp({ onSubmit }) {
   );
 }
 
-export function TypePopUp({ onSubmit }) {
+export function TypePopUp({ onSubmit, type }) {
+  const checkedHouses = () => {
+    return type === "houses" ? true : false;
+  };
+  const checkedApartments = () => {
+    return type === "apartments" ? true : false;
+  };
   return (
     <styled.Popup>
-      <styled.PopUpCard onSubmit={onSubmit}>
+      <styled.PopUpCard onSubmit={onSubmit} id="typeForm">
         <p>property type</p>
         <styled.InputsWrapper>
           <styled.CheckboxWrapper>
-            <input type="checkbox" value="houses" id="houses" />
+            <input
+              type="checkbox"
+              value="houses"
+              id="houses"
+              defaultChecked={checkedHouses()}
+            />
             <label htmlFor="houses">Houses</label>
           </styled.CheckboxWrapper>
           <styled.CheckboxWrapper>
-            <input type="checkbox" value="apartments" id="apartments" />
+            <input
+              type="checkbox"
+              value="apartments"
+              id="apartments"
+              defaultChecked={checkedApartments()}
+            />
             <label htmlFor="apartments">Apartments</label>
           </styled.CheckboxWrapper>
         </styled.InputsWrapper>
