@@ -306,7 +306,7 @@ export default function EditPropertyForm() {
       propImgs.push({ index: i, url: propertyData.photo_urls[i] });
     }
     console.log(propImgs);
-    // setImages(propImgs);
+    setImages(propImgs);
   }, [propertyData]);
 
   const location = {
