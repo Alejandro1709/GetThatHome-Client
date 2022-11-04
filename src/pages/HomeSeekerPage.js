@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 import { colors, typography } from "../styles";
 import { useEffect, useState } from "react";
 import PropertyList from "../components/PropertyList";
-import { getSavedProperties } from "../services/saved-properties-service";
+import { useProperties } from "../context/properties-context";
 import { filterContacted, filterFavorite, transformSavedList } from "../utils";
+import { useThemeContext } from "../context/theme-context";
 
 const ContainerPageHomeSeeker = styled.div`
   min-height: inherit;
@@ -23,8 +24,11 @@ const OptionsTab = styled.button`
   border: none;
   padding: 0.5rem;
   background: none;
-  color: ${({ isActive }) =>
-    isActive ? colors.secondary[700] : colors.secondary[500]};
+  color: ${({ isActive, theme }) => {
+    if (isActive && theme !== "Dark") return colors.secondary[700];
+    if (isActive && theme === "Dark") return colors.secondary[300];
+    return colors.secondary[500];
+  }};
   border-bottom: 2px solid
     ${({ isActive }) =>
       isActive ? colors.primary[300] : colors.secondary[500]};
@@ -35,29 +39,29 @@ function HomeseekerPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [favoriteProps, setFavoriteProps] = useState([]);
   const [contactedProps, setContactedProps] = useState([]);
-  const [reload, setReload] = useState(false);
+  const { savedProps, changeReload } = useProperties();
+  const { contextTheme } = useThemeContext();
 
   useEffect(() => {
-    getSavedProperties()
-      .then((saved) => {
-        console.log("Saved properties", saved);
-        setFavoriteProps(transformSavedList(filterFavorite(saved)));
-        setContactedProps(transformSavedList(filterContacted(saved)));
-      })
-      .catch(console.log);
-  }, [reload]);
-
-  function changeReload() {
-    setReload(!reload);
-  }
+    setFavoriteProps(transformSavedList(filterFavorite(savedProps)));
+    setContactedProps(transformSavedList(filterContacted(savedProps)));
+  }, [savedProps]);
 
   return (
     <ContainerPageHomeSeeker>
       <ContainerTabs>
-        <OptionsTab isActive={activeTab === 0} onClick={() => setActiveTab(0)}>
+        <OptionsTab
+          theme={contextTheme}
+          isActive={activeTab === 0}
+          onClick={() => setActiveTab(0)}
+        >
           Favorites
         </OptionsTab>
-        <OptionsTab isActive={activeTab === 1} onClick={() => setActiveTab(1)}>
+        <OptionsTab
+          theme={contextTheme}
+          isActive={activeTab === 1}
+          onClick={() => setActiveTab(1)}
+        >
           Contacted
         </OptionsTab>
       </ContainerTabs>

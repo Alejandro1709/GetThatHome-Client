@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { typography } from "../styles/typography";
 import { colors } from "../styles/colors";
 import { boxShadow } from "../styles/utils";
-import { updateUser } from "../services/users-service";
 import { useAuth } from "../context/auth-context";
 import styled from "@emotion/styled";
 import LoadingWave from "./LoadingWave";
@@ -88,9 +86,7 @@ function EditProfileForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { user } = useAuth();
-
-  const navigate = useNavigate();
+  const { user, edit } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -112,10 +108,9 @@ function EditProfileForm() {
 
     setLoading(true);
 
-    updateUser(formData)
+    edit(formData)
       .then((_data) => {
         setLoading(false);
-        navigate("/", { replace: true });
       })
       .catch((err) => {
         setError(err.message);

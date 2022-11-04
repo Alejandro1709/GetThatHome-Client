@@ -49,6 +49,8 @@ export function filterByOpType(properties, { rent, sale }) {
 export function filterByAddress(properties, latitude, longitude) {
   if (!latitude || !longitude) return properties;
   return properties.filter((prop) => {
+    console.log("LAT:", prop.address.latitude, latitude);
+    console.log("LNG:", prop.address.longitude, longitude);
     return (
       Math.ceil(+prop.address.latitude) === Math.ceil(+latitude) &&
       Math.ceil(+prop.address.longitude) === Math.ceil(+longitude)
@@ -57,15 +59,20 @@ export function filterByAddress(properties, latitude, longitude) {
 }
 
 export function filterProperties(properties, filters) {
-  const { price, type, ambients, pets, area, op_type, address } = filters;
-  const filter0 = filterByAddress(properties, address.latitude, address.longitude);
-  const filter1 = filterByPrice(filter0, price);
-  const filter2 = filterByType(filter1, type);
-  const filter3 = filterByAmbients(filter2, ambients);
+  // const { price, type, ambients, pets, area, op_type, address } = filters;
+  const { price, ambients, pets, area } = filters;
+  // const filter0 = filterByAddress(
+  //   properties,
+  //   address.latitude,
+  //   address.longitude
+  // );
+  const filter1 = filterByPrice(properties, price);
+  // const filter2 = filterByType(filter1, type);
+  const filter3 = filterByAmbients(filter1, ambients);
   let filter4 = filter3;
   if (pets) {
     filter4 = filterPetsAllowed(filter4);
   }
-  const filter5 = filterByArea(filter4, area);
-  return filterByOpType(filter5, op_type);
+  return filterByArea(filter4, area);
+  // return filterByOpType(filter5, op_type);
 }

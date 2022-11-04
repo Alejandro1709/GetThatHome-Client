@@ -276,7 +276,7 @@ export default function NewPropertyForm() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [propertyData, setPropertyData] = useState(default_data);
-  const { propertyTypes } = useProperties();
+  const { propertyTypes, changePropReload } = useProperties();
   const [error, setError] = useState("");
 
   const location = {
@@ -363,6 +363,7 @@ export default function NewPropertyForm() {
         createProperty(newPropertyData)
           .then(() => {
             navigate("/myproperties");
+            changePropReload();
           })
           .catch((_e) =>
             setError("Please, complete all the form. Only photos are optional.")
@@ -616,7 +617,7 @@ export default function NewPropertyForm() {
             ))
           )}
         </UploadedBoxContainer>
-        {error && <span style={{ color: colors.error[500]}}>{error}</span>}
+        {error && <span style={{ color: colors.error[500] }}>{error}</span>}
         <Button
           type="submit"
           style={{ width: "fit-content", padding: "1rem 1.5rem" }}

@@ -40,9 +40,13 @@ const BtnContainer = styled.div`
 const FindHome = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   width: 10.5rem;
   gap: 0.5rem;
+  border-radius: 1rem;
+  &:hover {
+    background-color: ${colors.primary[100]};
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`

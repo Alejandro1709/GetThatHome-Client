@@ -126,7 +126,7 @@ export default function PropertyDetailPage() {
     photo_urls,
     operation_type,
     address,
-    owner_id
+    owner_id,
   } = propertyByID;
 
   const { type, price, monthly_rent, maintenance, pets_allowed } =
@@ -163,7 +163,7 @@ export default function PropertyDetailPage() {
                   <MoneyIcon />
                   <h4>{type === "for rent" ? monthly_rent : price}</h4>
                 </DescMoney>
-                <h5>{type === "for rent" ? "+"+maintenance : ""}</h5>
+                <h5>{type === "for rent" ? "+" + maintenance : ""}</h5>
               </DescHeaderRight>
             </DescHeader>
             <DescOptions>
@@ -182,7 +182,8 @@ export default function PropertyDetailPage() {
               <DescSingleOpt>
                 {pets_allowed ? (
                   <>
-                    <MdPets /> Pets allowed
+                    <MdPets />
+                    <h4> Pets allowed</h4>
                   </>
                 ) : (
                   ""
@@ -190,11 +191,11 @@ export default function PropertyDetailPage() {
               </DescSingleOpt>
             </DescOptions>
             <AboutDesc>
-            <h3>About this property</h3>
+              <h3>About this property</h3>
               <p>
                 {bedrooms} Bedroom/ {bathrooms} Bathroom.
               </p>
-              <br/>
+              <br />
               <p>{description}</p>
             </AboutDesc>
             <AboutDesc>
@@ -206,7 +207,7 @@ export default function PropertyDetailPage() {
         </MainContainer>
         <aside>
           <CardContainer>
-            <PropertyCustomCard ownerId={owner_id}/>
+            <PropertyCustomCard ownerId={owner_id} />
           </CardContainer>
         </aside>
       </Container>

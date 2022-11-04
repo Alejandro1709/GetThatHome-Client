@@ -100,7 +100,6 @@ export default function PropertyCustomCard({ ownerId }) {
       (e) => parseInt(e.property_details.id) === parseInt(id)
     );
     setSavedProp(savedProp);
-    console.log("Saved Prop", savedProp);
     if (!savedProp) return;
     if (savedProp.favorite === true) setIsFav(true);
     if (savedProp.favorite === false) setIsFav(false);
@@ -123,7 +122,6 @@ export default function PropertyCustomCard({ ownerId }) {
   const addFavorite = (id) => {
     updateSavedProperties({ favorite: true }, id)
       .then((data) => {
-        console.log("adding to fav...");
         setIsFav(true);
         changeReload();
       })
@@ -132,7 +130,6 @@ export default function PropertyCustomCard({ ownerId }) {
 
   const createFavorite = (id) => {
     createSavedProperties({ favorite: true, property_id: id }).then((data) => {
-      console.log("creating favorite....");
       setIsFav(true);
       changeReload();
     });
@@ -141,7 +138,6 @@ export default function PropertyCustomCard({ ownerId }) {
   const removeFavorite = (id) => {
     updateSavedProperties({ favorite: false }, id)
       .then((data) => {
-        console.log("deleting from fav...");
         setIsFav(false);
         changeReload();
       })
@@ -150,7 +146,6 @@ export default function PropertyCustomCard({ ownerId }) {
 
   const createContacted = (id) => {
     createSavedProperties({ contacted: true, property_id: id }).then((data) => {
-      console.log("creating contacted....");
       setShowContactInfo(true);
       changeReload();
     });
@@ -158,7 +153,6 @@ export default function PropertyCustomCard({ ownerId }) {
 
   const updateContacted = (id) => {
     updateSavedProperties({ contacted: true }, id).then((data) => {
-      console.log("adding to contacted....");
       setShowContactInfo(true);
       changeReload();
     });

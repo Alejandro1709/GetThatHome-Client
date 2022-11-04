@@ -4,8 +4,10 @@ import { useState } from "react";
 import * as styled from "./ui";
 import { BedBathPopUp, MorePopUp, PricePopUp, TypePopUp } from "./button-types";
 import { useComponentVisible } from "../../hooks";
+import { useProperties } from "../../context/properties-context";
 
 export function ButtonGroup({ filters, setFilters }) {
+  const { preferences, changePreferences } = useProperties();
   const [price, setPrice] = useState("price");
   const [type, setType] = useState("property type");
   const [priceRef, pricePopup, setPricePopup] = useComponentVisible(false);
@@ -44,14 +46,18 @@ export function ButtonGroup({ filters, setFilters }) {
     const elements = e.target.elements,
       showHouses = elements[0].checked,
       showApartments = elements[1].checked;
-    setFilters({
-      ...filters,
-      type: { apartments: showApartments, houses: showHouses },
-    });
 
     setTypePopup(false);
-    if (showHouses && !showApartments) return setType("houses");
-    if (showApartments && !showHouses) return setType("apartments");
+    if (showHouses && !showApartments) {
+      changePreferences({ ...preferences, looking: "House" });
+      return setType("houses");
+    }
+    if (showApartments && !showHouses) {
+      changePreferences({ ...preferences, looking: "Apartment" });
+      return setType("apartments");
+    }
+
+    changePreferences({ ...preferences, looking: "all" });
     setType("Property type");
   };
 
@@ -85,7 +91,7 @@ export function ButtonGroup({ filters, setFilters }) {
       pets: showPets,
       area: { min: elements[1].value, max: elements[2].value },
     });
-    setMorePopUp(false)
+    setMorePopUp(false);
   };
 
   return (

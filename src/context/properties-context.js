@@ -23,13 +23,9 @@ function PropertiesProvider({ children }) {
   const [savedProps, setSavedProps] = useState([]);
   const [preferences, setPreferences] = useState(defaultPreferences);
   const [reload, setReload] = useState(false);
+  const [propertiesReload, setPropertiesReload] = useState(false);
 
   useEffect(() => {
-    getProperties()
-      .then((data) => {
-        setProperties(data);
-      })
-      .catch(console.log);
     getPropertyTypes()
       .then((data) => {
         setTypes(data);
@@ -38,7 +34,14 @@ function PropertiesProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    console.log("Get saved properties effect");
+    getProperties()
+      .then((data) => {
+        setProperties(data);
+      })
+      .catch(console.log);
+  }, [propertiesReload]);
+
+  useEffect(() => {
     if (user?.role_name === "Homeseeker") {
       getSavedProperties()
         .then((data) => {
@@ -65,26 +68,24 @@ function PropertiesProvider({ children }) {
     return properties.sort(sort_by_cost).slice(0, 3);
   }
 
-  function changeReload() {
-    setReload(!reload);
-  }
-
   const propsByPreferences = properties.filter((property) => {
     const { lat, lng } = preferences.location.coordinates;
     const cond1 =
       property.operation_type.type === `for ${preferences.wanting}` ||
       preferences.wanting === "all";
     const cond2 =
-      property.property_type.name === preferences.looking ||
-      preferences.looking === "all";
+      property.property_type.name.toLowerCase() ===
+        preferences.looking.toLowerCase() || preferences.looking === "all";
     const cond3 = lat
-      ? Math.ceil(+property.address.latitude) === Math.ceil(lat)
+      ? +property.address.latitude >= lat - 1 &&
+        +property.address.latitude <= lat + 1
       : true;
     const cond4 = lng
-      ? Math.ceil(+property.address.longitude) === Math.ceil(lng)
+      ? +property.address.longitude >= lng - 1 &&
+        +property.address.longitude <= lng + 1
       : true;
-    const cond5 = property.active;
-    return cond1 && cond2 && cond3 && cond4 && cond5;
+
+    return cond1 && cond2 && cond3 && cond4;
   });
 
   return (
@@ -98,7 +99,12 @@ function PropertiesProvider({ children }) {
         preferences,
         savedProps,
         changeToDefaultPreferences,
-        changeReload,
+        changeReload() {
+          setReload(!reload);
+        },
+        changePropReload() {
+          setPropertiesReload(!propertiesReload);
+        },
       }}
     >
       {children}
