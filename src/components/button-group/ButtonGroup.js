@@ -12,6 +12,7 @@ export function ButtonGroup({ filters, setFilters }) {
   const [type, setType] = useState("property type");
   const [priceRef, pricePopup, setPricePopup] = useComponentVisible(false);
   const [typeRef, typePopup, setTypePopup] = useComponentVisible(false);
+  const [bedbathValue, setbedbathValue] = useState(null);
   const [bedbathRef, bedbathPopup, setBedBathPopup] =
     useComponentVisible(false);
   const [moreRef, morePopUp, setMorePopUp] = useComponentVisible(false);
@@ -68,15 +69,15 @@ export function ButtonGroup({ filters, setFilters }) {
       baths = 0;
     if (activeBed) {
       beds = activeBed.getAttribute("value");
-      if (beds === "any") beds = 0;
     }
     if (activeBath) {
       baths = activeBath.getAttribute("value");
-      if (baths === "any") baths = 0;
     }
+    const selected = { beds: beds, baths: baths };
+    setbedbathValue(selected);
     setFilters({
       ...filters,
-      ambients: { beds: beds, baths: baths },
+      ambients: selected,
     });
     setBedBathPopup(false);
   };
@@ -125,7 +126,9 @@ export function ButtonGroup({ filters, setFilters }) {
         >
           Beds and baths
         </Button>
-        {bedbathPopup && <BedBathPopUp onSubmit={submitBedBaths} />}
+        {bedbathPopup && (
+          <BedBathPopUp onSubmit={submitBedBaths} bedbathValue={bedbathValue} />
+        )}
       </styled.ButtonContainer>
 
       <styled.ButtonContainer ref={moreRef}>

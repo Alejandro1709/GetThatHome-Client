@@ -262,7 +262,7 @@ const default_data = {
   active: true,
   description: "",
   operation_type: {
-    type: "for sale",
+    type: "",
     price: "",
   },
   address: {
@@ -292,6 +292,23 @@ export default function EditPropertyForm() {
       })
       .catch(console.log);
   }, [id]);
+
+  useEffect(() => {
+    const type = propertyData.operation_type.type;
+    if (type === "for rent") {
+      document.getElementById("for rent").classList.add("activeType");
+    }
+    if (type === "for sale") {
+      document.getElementById("for sale").classList.add("activeType");
+    }
+    let propImgs = [];
+    for (let i = 0; i < propertyData.photo_urls.length; i++) {
+      propImgs.push({ index: i, url: propertyData.photo_urls[i] });
+    }
+    console.log(propImgs);
+    // setImages(propImgs);
+  }, [propertyData]);
+
   const location = {
     whereing: propertyData.address.name,
     coordinates: {
@@ -309,8 +326,9 @@ export default function EditPropertyForm() {
     } else {
       indexImg = 0;
     }
-
+    console.log("Images", images);
     let newImgsToState = readMultiFiles(e, indexImg);
+    // console.log(newImgsToState);
     let newImgsState = [...images, ...newImgsToState];
     setImages(newImgsState);
   };
@@ -395,7 +413,7 @@ export default function EditPropertyForm() {
           <Type left={true} id="for rent" onClick={changeType}>
             Rent
           </Type>
-          <Type className="activeType" id="for sale" onClick={changeType}>
+          <Type id="for sale" onClick={changeType}>
             Sale
           </Type>
         </TypePicker>
@@ -461,6 +479,7 @@ export default function EditPropertyForm() {
                 }
                 placeholder="100"
                 width="50%"
+                value={propertyData.operation_type.price}
                 onChange={handleChange}
                 label="Price"
               />
