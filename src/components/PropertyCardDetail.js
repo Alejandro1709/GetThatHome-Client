@@ -1,4 +1,3 @@
-
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { boxShadow } from "../styles/utils";
@@ -28,6 +27,11 @@ export const ShowCaseBox = styled.div`
   background-color: white;
   cursor: pointer;
   user-select: none;
+  transition: all 0.6s ease;
+  &:hover {
+    ${boxShadow[2]};
+    transform: scale(1.05);
+  }
 `;
 
 export const CardImg = styled.div`
@@ -191,8 +195,16 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
     }
   }, [id, user, savedProps]);
 
+  const closeAnimation = (id) => {
+    const elem = document.getElementById("card" + id);
+    elem.animate([{ transform: "scale(0.05)" }], {
+      duration: 500,
+      easing: "ease-in",
+    });
+  };
+
   return (
-    <ShowCaseBox>
+    <ShowCaseBox id={`card${id}`}>
       <StyledNavLink to={`/properties/${id}`}>
         <CardImg>
           <Deal>
@@ -249,11 +261,12 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
               EDIT
             </StyledOption>
             <StyledOption
-              onClick={() =>
+              onClick={() => {
+                closeAnimation(id);
                 updateProperty({ active: false }, id)
                   .then(() => onCloseProperty())
-                  .catch(console.log)
-              }
+                  .catch(console.log);
+              }}
             >
               <AiOutlineCloseCircle />
               CLOSE
