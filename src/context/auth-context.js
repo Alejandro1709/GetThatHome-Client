@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../services/auth-service";
 import { createUser, getUser, updateUser } from "../services/users-service";
@@ -11,16 +17,19 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   function loadUser() {
-    setUserStatus("loading")
+    setUserStatus("loading");
     getUser()
-    .then((data) => {
-      setUser(data);
-      setUserStatus("success")
-    })
-    .catch((error) => console.log(error));
+      .then((data) => {
+        setUser(data);
+        setUserStatus("success");
+      })
+      .catch((error) => {
+        console.log(error);
+        setUserStatus("error");
+      });
   }
 
-  const loadMemoizedUser = useCallback(loadUser, [])
+  const loadMemoizedUser = useCallback(loadUser, []);
 
   useEffect(() => {
     loadMemoizedUser();
@@ -48,11 +57,10 @@ function AuthProvider({ children }) {
   }
 
   function handleUpdate(userData) {
-    return updateUser(userData)
-    .then((data) => {
+    return updateUser(userData).then((data) => {
       setUser(data);
       navigate("/");
-    })
+    });
   }
 
   return (
@@ -64,6 +72,7 @@ function AuthProvider({ children }) {
         signup: handleSignup,
         logout: handleLogout,
         edit: handleUpdate,
+        loadUser,
       }}
     >
       {children}

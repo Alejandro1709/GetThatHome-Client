@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { colors } from "../../styles";
 import Button from "../Button";
@@ -40,18 +41,34 @@ export function PricePopUp({ onSubmit }) {
   );
 }
 
-export function TypePopUp({ onSubmit }) {
+export function TypePopUp({ onSubmit, type }) {
+  const checkedHouses = () => {
+    return type === "houses" ? true : false;
+  };
+  const checkedApartments = () => {
+    return type === "apartments" ? true : false;
+  };
   return (
     <styled.Popup>
-      <styled.PopUpCard onSubmit={onSubmit}>
+      <styled.PopUpCard onSubmit={onSubmit} id="typeForm">
         <p>property type</p>
         <styled.InputsWrapper>
           <styled.CheckboxWrapper>
-            <input type="checkbox" value="houses" id="houses" />
+            <input
+              type="checkbox"
+              value="houses"
+              id="houses"
+              defaultChecked={checkedHouses()}
+            />
             <label htmlFor="houses">Houses</label>
           </styled.CheckboxWrapper>
           <styled.CheckboxWrapper>
-            <input type="checkbox" value="apartments" id="apartments" />
+            <input
+              type="checkbox"
+              value="apartments"
+              id="apartments"
+              defaultChecked={checkedApartments()}
+            />
             <label htmlFor="apartments">Apartments</label>
           </styled.CheckboxWrapper>
         </styled.InputsWrapper>
@@ -61,7 +78,25 @@ export function TypePopUp({ onSubmit }) {
   );
 }
 
-export function BedBathPopUp({ onSubmit }) {
+export function BedBathPopUp({ onSubmit, bedbathValue }) {
+  useEffect(() => {
+    bedbathActive(bedbathValue);
+  }, [bedbathValue]);
+
+  const bedbathActive = (bedbathValue) => {
+    const bedOpts = document.getElementById("bedOpts");
+    const bathOpts = document.getElementById("bathOpts");
+    if (!bedbathValue || !bedOpts || !bathOpts) return;
+    for (let item of bedOpts.children) {
+      if (item.getAttribute("value") === bedbathValue.beds)
+        item.classList.add("activeTypeBed");
+    }
+    for (let item of bathOpts.children) {
+      if (item.getAttribute("value") === bedbathValue.baths)
+        item.classList.add("activeTypeBath");
+    }
+  };
+
   const changeTypeBed = (e) => {
     const selected = e.target,
       active = document.querySelector(".activeTypeBed");
@@ -83,12 +118,13 @@ export function BedBathPopUp({ onSubmit }) {
       selected.classList.add("activeTypeBath");
     }
   };
+
   return (
-    <styled.Popup>
+    <styled.Popup id="bedbathForm">
       <styled.PopUpCard onSubmit={onSubmit}>
         <p>beds</p>
-        <styled.InputsWrapper2>
-          <styled.Type position="left" value="any" onClick={changeTypeBed}>
+        <styled.InputsWrapper2 id="bedOpts">
+          <styled.Type position="left" value="0" onClick={changeTypeBed}>
             Any
           </styled.Type>
           <styled.Type value="1" onClick={changeTypeBed}>
@@ -105,8 +141,8 @@ export function BedBathPopUp({ onSubmit }) {
           </styled.Type>
         </styled.InputsWrapper2>
         <p>baths</p>
-        <styled.InputsWrapper2>
-          <styled.Type position="left" value="any" onClick={changeTypeBath}>
+        <styled.InputsWrapper2 id="bathOpts">
+          <styled.Type position="left" value="0" onClick={changeTypeBath}>
             Any
           </styled.Type>
           <styled.Type value="1" onClick={changeTypeBath}>
