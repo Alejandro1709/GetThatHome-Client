@@ -89,7 +89,12 @@ function SignUpForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
 
   const [searchParams] = useSearchParams();
 
@@ -104,7 +109,7 @@ function SignUpForm() {
     const { passwordConfirm, ...user } = formData;
 
     if (user.password !== passwordConfirm) {
-      setError("Passwords do not match");
+      setError({ passwordConfirm: "passwords do not match" });
       return;
     }
 
@@ -115,7 +120,8 @@ function SignUpForm() {
         setLoading(false);
       })
       .catch((error) => {
-        setError(error.message);
+        console.log(error.message || error);
+        setError(JSON.parse(error.message));
         setLoading(false);
       });
   }
@@ -135,6 +141,7 @@ function SignUpForm() {
             value={formData.name}
             onChange={handleChange}
           />
+          {error.name && <StyledFormError>{error.name}</StyledFormError>}
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor="email">Email</StyledFormLabel>
@@ -147,6 +154,7 @@ function SignUpForm() {
             value={formData.email}
             onChange={handleChange}
           />
+          {error.email && <StyledFormError>{error.email}</StyledFormError>}
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor="phone">Phone</StyledFormLabel>
@@ -159,6 +167,7 @@ function SignUpForm() {
             value={formData.phone}
             onChange={handleChange}
           />
+          {error.phone && <StyledFormError>{error.phone}</StyledFormError>}
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor="password">Password</StyledFormLabel>
@@ -172,6 +181,9 @@ function SignUpForm() {
             value={formData.password}
             onChange={handleChange}
           />
+          {error.password && (
+            <StyledFormError>{error.password}</StyledFormError>
+          )}
         </StyledFormGroup>
         <StyledFormGroup>
           <StyledFormLabel htmlFor="password-confirm">
@@ -187,7 +199,9 @@ function SignUpForm() {
             value={formData.passwordConfirm}
             onChange={handleChange}
           />
-          {error && <StyledFormError>{error}</StyledFormError>}
+          {error.passwordConfirm && (
+            <StyledFormError>{error.passwordConfirm}</StyledFormError>
+          )}
         </StyledFormGroup>
         {loading && <LoadingWave />}
         <StyledFormButton type="submit">Create Account</StyledFormButton>
