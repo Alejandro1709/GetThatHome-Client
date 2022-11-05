@@ -62,6 +62,8 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
   const listRef = useRef(null);
   const cardRef = useRef(null);
 
+  const sortedProperties = properties.sort((a,b)=>new Date(b?.updated_at)-new Date(a?.updated_at))
+
   useEffect(() => {
     const columnGap = 16;
     const rowGap = 64;
@@ -81,7 +83,7 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
       <div>
         <p>{properties.length} Properties found</p>
         <StyledList ref={listRef}>
-          {properties
+          {sortedProperties
             .slice((page - 1) * maxLength, page * maxLength)
             .map((item) => {
               return (
@@ -109,7 +111,7 @@ function PropertyList({ properties, isLandlord, isActive, onCloseProperty }) {
           <TbMoodEmpty size="4rem" />
         </StyledNotFound>
       )}
-      {properties.length > maxLength && (
+      {sortedProperties.length > maxLength && (
         <PaginationBar
           totalPages={Math.ceil(properties.length / maxLength)}
           page={page}

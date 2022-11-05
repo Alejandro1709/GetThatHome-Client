@@ -91,10 +91,9 @@ export default function PropertyCustomCard({ ownerId }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [contactInfo, setContactInfo] = useState({});
 
-
   useEffect(() => {
     if (!user) return;
-    console.log(savedProps);
+    // console.log(savedProps);
 
     const savedProp = savedProps.find(
       (e) => parseInt(e.property_details.id) === parseInt(id)
@@ -110,7 +109,9 @@ export default function PropertyCustomCard({ ownerId }) {
 
   useEffect(() => {
     if (!ownerId) return;
-    showUser(ownerId).then((data) => setContactInfo(data));
+    showUser(ownerId)
+      .then((data) => setContactInfo(data))
+      .catch((error) => console.log(error));
   }, [ownerId]);
 
   function handleCloseModal(e) {
@@ -247,11 +248,17 @@ export default function PropertyCustomCard({ ownerId }) {
             )}
           </Wrapper>
         )}
-        {user?.role_name === "Landlord" && (
+        {user?.role_name === "Landlord" && ownerId === user.id && (
           <NavLink to={`/editproperty/${id}`}>
             <Button leftIcon={<FaRegEdit size="1.5rem" />}>
               Edit Property
             </Button>
+          </NavLink>
+        )}
+
+        {user?.role_name === "Landlord" && ownerId !== user.id && (
+          <NavLink to={`/create`}>
+            <Button>Create a new property ad</Button>
           </NavLink>
         )}
       </>

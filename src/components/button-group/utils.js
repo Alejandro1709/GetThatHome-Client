@@ -31,7 +31,7 @@ export function filterByAmbients(properties, { beds, baths }) {
 
 export function filterByArea(properties, { min, max }) {
   if (!min && !max) return properties;
-  return properties.filter((prop) => prop.area >= min && prop.area <= max);
+  return properties.filter((prop) => +prop.area >= (+min||0) && +prop.area <= (+max||Infinity));
 }
 
 export function filterPetsAllowed(properties) {
