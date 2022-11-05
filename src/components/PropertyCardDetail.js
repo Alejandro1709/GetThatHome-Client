@@ -198,7 +198,7 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
   const closeAnimation = (id) => {
     const elem = document.getElementById("card" + id);
     elem.animate([{ transform: "scale(0.05)" }], {
-      duration: 500,
+      duration: 700,
       easing: "ease-in",
     });
   };
@@ -262,10 +262,10 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
             </StyledOption>
             <StyledOption
               onClick={() => {
-                closeAnimation(id);
                 updateProperty({ active: false }, id)
                   .then(() => onCloseProperty())
                   .catch(console.log);
+                closeAnimation(id);
               }}
             >
               <AiOutlineCloseCircle />
@@ -280,6 +280,7 @@ function PropertyCardDetail({ property, belongsToMe, onCloseProperty }) {
                 updateProperty({ active: true }, id)
                   .then(() => onCloseProperty())
                   .catch(console.log);
+                closeAnimation(id);
               }}
             >
               <TbArrowBarUp />

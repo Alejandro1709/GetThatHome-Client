@@ -111,7 +111,7 @@ function LandingPage({ isMapReady }) {
     setIntro(!user);
     setTimeout(() => {
       setIntro(false);
-    }, 2600);
+    }, 2500);
   }, [user, status]);
 
   return (
