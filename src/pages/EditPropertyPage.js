@@ -305,7 +305,6 @@ export default function EditPropertyForm() {
     for (let i = 0; i < propertyData.photo_urls.length; i++) {
       propImgs.push({ index: i, url: propertyData.photo_urls[i] });
     }
-    console.log(propImgs);
     setImages(propImgs);
   }, [propertyData]);
 
@@ -326,7 +325,6 @@ export default function EditPropertyForm() {
     } else {
       indexImg = 0;
     }
-    console.log("Images", images);
     let newImgsToState = readMultiFiles(e, indexImg);
     // console.log(newImgsToState);
     let newImgsState = [...images, ...newImgsToState];
@@ -339,6 +337,10 @@ export default function EditPropertyForm() {
     });
     setImages(newImgs);
   }
+
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
 
   const changeType = (e) => {
     const newType = e.target.id;
@@ -357,9 +359,16 @@ export default function EditPropertyForm() {
   function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    Promise.all(submitImages(images))
+    const imagesToUpload = images.filter((img) =>
+      img?.url.includes("localhost")
+    );
+    const uploadedImgsUrls = images
+      .filter((img) => !img?.url.includes("localhost"))
+      .map((img) => img.url);
+
+    Promise.all(submitImages(imagesToUpload))
       .then((urls) => {
-        const newPhotoUrls = [...propertyData.photo_urls, ...urls];
+        const newPhotoUrls = [...uploadedImgsUrls, ...urls];
         const newPropertyData = {
           ...propertyData,
           photo_urls: newPhotoUrls,
